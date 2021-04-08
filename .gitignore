@@ -7,7 +7,7 @@
 # Ignore bundler config.
 /.bundle
 
-/app/.bundle
+/pong/.bundle
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -15,31 +15,31 @@
 !/log/.keep
 !/tmp/.keep
 
-/app/log/*
-/app/tmp/*
-!/app/log/.keep
-!/app/tmp/.keep
+/pong/log/*
+/pong/tmp/*
+!/pong/log/.keep
+!/pong/tmp/.keep
 
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*
 !/tmp/pids/
 !/tmp/pids/.keep
 
-/app/tmp/pids/*
-!/app/tmp/pids/
-!/app/tmp/pids/.keep
+/pong/tmp/pids/*
+!/pong/tmp/pids/
+!/pong/tmp/pids/.keep
 
 
 /public/assets
 .byebug_history
 
-/app/public/assets
-/app/.byebug_history
+/pong/public/assets
+/pong/.byebug_history
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-/app/config/master.key
+/pong/config/master.key
 
 
 Gemfile.lock
@@ -50,11 +50,11 @@ Gemfile.lock
 yarn-debug.log*
 .yarn-integrity
 
-/app/Gemfile.lock
-/app/public/packs
-/app/public/packs-test
-/app/node_modules
-/app/yarn-error.log
-/app/yarn-debug.log*
-/app/.yarn-integrity
+/pong/Gemfile.lock
+/pong/public/packs
+/pong/public/packs-test
+/pong/node_modules
+/pong/yarn-error.log
+/pong/yarn-debug.log*
+/pong/.yarn-integrity
 
