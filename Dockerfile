@@ -1,7 +1,7 @@
 FROM ruby:3.0
 RUN apt-get update -qq && apt-get install -y postgresql-client graphviz
-COPY ./app /app
-WORKDIR /app
+COPY ./pong /pong
+WORKDIR /pong
 ENV NVM_DIR /root/.nvm
 ENV NODE_VERSION=14.16.0
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
