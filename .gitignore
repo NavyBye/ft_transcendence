@@ -8,7 +8,7 @@
 /.bundle
 
 /pong/.bundle
-
+/pong/.initialized
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
