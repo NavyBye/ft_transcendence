@@ -1,5 +1,7 @@
 FROM ruby:3.0.0
-RUN apt-get update -qq && apt-get install -y postgresql-client graphviz
+RUN apt-get update -qq && apt-get install -y --no-install-recommends postgresql-client=11+200+deb10u4 graphviz=2.40.1-6 \
+	&& apt-get clean \
+	&& rm -rf /var/lib/apt/lists/*
 COPY ./pong /pong
 WORKDIR /pong
 ENV NVM_DIR /root/.nvm
