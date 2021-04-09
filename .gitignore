@@ -58,3 +58,4 @@ yarn-debug.log*
 /pong/yarn-debug.log*
 /pong/.yarn-integrity
 
+/pong/config/secrets.yml
