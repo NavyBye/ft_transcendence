@@ -8,6 +8,8 @@
   -webkit-box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.2);
   box-shadow: 0px 6px 30px rgba(0, 0, 0, 0.2);
+
+  font-family: 'Ubuntu Mono', 'monospace';
 }
 
 .login-box-header {
