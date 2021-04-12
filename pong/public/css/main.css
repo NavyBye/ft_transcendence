@@ -1,0 +1,9 @@
+html, body, #main {
+    padding: 0;
+    margin: 0;
+    height: 100%;
+}
+
+.fill-remain {
+    height: 100%;
+}
