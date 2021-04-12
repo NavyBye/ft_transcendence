@@ -1,0 +1,14 @@
+#side {
+  overflow: hidden;
+}
+#side .nav .active {
+  color: black;
+}
+
+#side .nav-link {
+  color: white;
+}
+
+#side .nav-item {
+  padding: 0;
+}

@@ -10,6 +10,7 @@ const MainView = common.View.extend({
     this.addRegion('side', '#side');
 
     this.show('nav', new view.NavView());
+    this.show('side', new view.SideView());
   },
 });
 
