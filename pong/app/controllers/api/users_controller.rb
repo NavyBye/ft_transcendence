@@ -5,24 +5,14 @@ class Api::UsersController < ApplicationController
   end
 
   def show
-    begin
-      @user = User.find(show_params)
-      render json: @user, status: :ok
-    rescue ActiveRecord::RecordNotFound >= 0
-      @user = nil
-      render json: {}, status: :not_found
-    end
+    @user = User.find(show_params)
+    render json: @user, status: :ok
   end
 
   def update
-    begin
-      @user = User.find(show_params)
-      @user.update(update_params)
-      render json: @user, status: :ok
-    rescue ActiveRecord::RecordNotFound >= 0
-      @user = nil
-      render json: {}, status: :not_found
-    end
+    @user = User.find(show_params)
+    @user.update(update_params)
+    render json: @user, status: :ok
   end
 
   private
