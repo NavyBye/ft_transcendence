@@ -1,7 +1,10 @@
 FROM ruby:3.0.0
-RUN apt-get update -qq && apt-get install -y --no-install-recommends postgresql-client=11+200+deb10u4 graphviz=2.40.1-6 \
+
+RUN apt-get update -qq && apt-get install -y --no-install-recommends \
+	postgresql-client=11+200+deb10u4 graphviz=2.40.1-6 sudo=1.8.27-1+deb10u3 \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
+
 COPY ./pong /pong
 WORKDIR /pong
 ENV NVM_DIR /root/.nvm
@@ -18,5 +21,11 @@ COPY entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 EXPOSE 3000
+
+RUN adduser --disabled-password --gecos "" hyeyoo \
+	&& echo 'hyeyoo:hyeyoo' | chpasswd \
+	&& adduser hyeyoo sudo \
+	&& echo 'hyeyoo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+USER hyeyoo
 
 CMD ["rails", "server", "-b", "0.0.0.0"]
