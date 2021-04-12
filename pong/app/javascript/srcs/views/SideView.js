@@ -1,5 +1,6 @@
+import view from '.';
 import common from '../common';
-import template from '../templates/side.html';
+import template from '../templates/SideView.html';
 
 const SideView = common.View.extend({
   el: '#side',
@@ -8,8 +9,10 @@ const SideView = common.View.extend({
     'click .nav-item': 'showTab',
   },
   onRender() {
-    this.currentTab = 'chat-tab';
     this.addRegion('content', '#side .content');
+
+    this.currentTab = 'chat-tab';
+    this.getRegion('content').show(new view.ChatRoomCollectionView());
   },
   showTab(event) {
     /* change tab */
@@ -20,6 +23,13 @@ const SideView = common.View.extend({
     this.currentTab = target;
 
     /* attach view to region */
+    if (target === 'chat-tab') {
+      this.getRegion('content').show(new view.ChatRoomCollectionView());
+    } else if (target === 'dm-tab') {
+      this.getRegion('content').show(new view.DmRoomCollectionView());
+    } else if (target === 'friend-tab') {
+      this.getRegion('content').show(new view.FriendCollectionView());
+    }
   },
 });
 

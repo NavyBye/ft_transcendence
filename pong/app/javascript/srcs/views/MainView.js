@@ -1,6 +1,6 @@
 import view from '.';
 import common from '../common';
-import template from '../templates/main.html';
+import template from '../templates/MainView.html';
 
 const MainView = common.View.extend({
   template,

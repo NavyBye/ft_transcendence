@@ -1,5 +1,5 @@
 import common from '../common';
-import template from '../templates/login.html';
+import template from '../templates/LoginView.html';
 
 const LoginView = common.View.extend({
   template,

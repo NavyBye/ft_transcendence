@@ -1,6 +1,6 @@
 import Radio from 'backbone.radio';
 import common from '../common';
-import template from '../templates/nav.html';
+import template from '../templates/NavView.html';
 
 function link(event) {
   const href = event.target.getAttribute('href');
