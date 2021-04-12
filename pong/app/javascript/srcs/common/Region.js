@@ -7,7 +7,7 @@ function Region(regionName, selector) {
     if (this.view) this.view.destroy();
 
     this.view = view;
-    this.view.render();
+    this.view.render(selector);
   };
 }
 

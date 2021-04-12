@@ -17,14 +17,15 @@ const View = Backbone.View.extend({
 
     this.regions = {};
 
-    this.trigger('initialize');
+    this.trigger('initialize', obj);
   },
-  render() {
+  render(selector) {
+    const el = selector || this.el;
     this.template = this.template || _.template('');
     if (this.model) {
-      $(this.el).html(this.template(this.model.toJSON()));
+      $(el).html(this.template(this.model.toJSON()));
     } else {
-      $(this.el).html(this.template());
+      $(el).html(this.template());
     }
     this.trigger('render');
     return this;
