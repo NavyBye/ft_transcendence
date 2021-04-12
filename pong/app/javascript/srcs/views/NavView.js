@@ -7,7 +7,7 @@ function link(event) {
   const channel = Radio.channel('route');
 
   event.preventDefault();
-  channel.trigger(`route:${href}`);
+  channel.trigger('route', href);
 }
 
 const NavView = common.View.extend({
