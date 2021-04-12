@@ -1,9 +1,11 @@
-html, body, #main {
-    padding: 0;
-    margin: 0;
+/* common styles for website */
+
+html, body, main, #root .content {
     height: 100%;
 }
 
-.fill-remain {
-    height: 100%;
+/* background image */
+.background-image {
+    background-size: cover;
+    background-image: url('../images/space.jpg');
 }
