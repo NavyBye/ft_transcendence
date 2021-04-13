@@ -11,3 +11,8 @@ Style/Documentation:
 
 Rails/FilePath:
         Enabled: false
+
+Metrics/BlockLength:
+    Exclude:
+        - 'config/*.rb'
+        - 'config/**/*.rb'
