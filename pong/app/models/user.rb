@@ -34,7 +34,7 @@ class User < ApplicationRecord
     nickname == 'newcomer'
   end
 
-  def initial_rank
+  def self.initial_rank
     maximum_rank = User.maximum(:rank)
     result = User.where(rank: maximum_rank).count
     result += 1 if result == maximum_rank
