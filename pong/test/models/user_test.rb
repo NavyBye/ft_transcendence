@@ -57,4 +57,30 @@ class UserTest < ActiveSupport::TestCase
     @valid_user.trophy = -1
     assert_not @valid_user.valid?
   end
+
+  test 'presence test' do
+    @valid_user.status = nil
+    assert_not @valid_user.valid?
+    @valid_user.status = 0
+
+    @valid_user.is_banned = nil
+    assert_not @valid_user.valid?
+    @valid_user.is_banned = false
+
+    @valid_user.is_email_auth = nil
+    assert_not @valid_user.valid?
+    @valid_user.is_email_auth = false
+
+    @valid_user.rating = nil
+    assert_not @valid_user.valid?
+    @valid_user.rating = 1500
+
+    @valid_user.rank = nil
+    assert_not @valid_user.valid?
+    @valid_user.rank = 1
+
+    @valid_user.trophy = nil
+    assert_not @valid_user.valid?
+    @valid_user.trophy = 10
+  end
 end
