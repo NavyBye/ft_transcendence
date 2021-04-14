@@ -45,7 +45,7 @@ class User < ApplicationRecord
     self.rating = 1500
     self.is_banned = false
     self.is_email_auth = false
-    self.nickname = 'newcomer'
+    self.nickname ||= 'newcomer'
     self.trophy = 0
     self.rank ||= User.initial_rank
     self.name ||= "not42user_#{User.count}"
