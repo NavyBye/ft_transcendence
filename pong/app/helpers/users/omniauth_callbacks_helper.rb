@@ -1,2 +1,4 @@
-module Users::OmniauthCallbacksHelper
+module Users
+  module OmniauthCallbacksHelper
+  end
 end

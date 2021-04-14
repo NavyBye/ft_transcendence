@@ -6,12 +6,14 @@ class AddColumnsToUsers < ActiveRecord::Migration[6.1]
     add_index :users, :provider
     add_column :users, :uid, :string
     add_index :users, :uid
-    add_column :users, :nickname, :string, default: 'newcomer'
-    add_column :users, :status, :integer, default: 0
-    add_column :users, :rating, :integer, default: 1500
-    add_column :users, :rank, :integer
-    add_column :users, :trophy, :integer, default: 0
-    add_column :users, :is_banned, :boolean, default: false
-    add_column :users, :is_email_auth, :boolean, default: false
+    change_table :users, bulk: true do |t|
+      t.string :nickname, default: 'newcomer'
+      t.integer :status, default: 0
+      t.integer :rating, default: 1500
+      t.integer :rank
+      t.integer :trophy, default: 0
+      t.boolean :is_banned, default: false
+      t.boolean :is_email_auth, default: false
+    end
   end
 end
