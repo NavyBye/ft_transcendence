@@ -16,12 +16,10 @@ hyeyoo:
     rank: 1
     trophy: 10
 
-# column: value
-#
 hyekim:
     id: 2
     name: hyekim
-    nickname: Private
+    nickname: hyekim
     email: hyekim@student.42seoul.kr
     status: 1
     is_banned: false
@@ -29,4 +27,51 @@ hyekim:
     rating: 1555
     rank: 2
     trophy: 0
-# column: value
+
+hyeyoo_duplicated:
+    id: 3
+    name: hyeyoo3
+    nickname: Private
+    email: hyeyoo3@student.42seoul.kr
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 15550
+    rank: 2
+    trophy: 10
+
+newcomer_1:
+    id: 4
+    name: hyeyoo4
+    nickname: newcomer
+    email: hyeyoo4@student.42seoul.kr
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 15550
+    rank: 2
+    trophy: 10
+
+newcomer_2:
+    id: 5
+    name: hyeyoo5
+    nickname: newcomer
+    email: hyeyoo5@student.42seoul.kr
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 15550
+    rank: 2
+    trophy: 10
+
+stripped:
+    id: 6
+    name: stripped
+    nickname: '  stripped \n\r'
+    email: <%= Faker::Internet.email %>
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 15550
+    rank: 2
+    trophy: 10
