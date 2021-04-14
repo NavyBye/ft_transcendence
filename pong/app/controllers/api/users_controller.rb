@@ -5,6 +5,10 @@ module Api
       render json: User.all
     end
 
+    def rank
+      render json: User.all.order(rating: :desc).page(params[:page])
+    end
+
     def show
       @user = User.find(show_params)
       render json: @user, status: :ok

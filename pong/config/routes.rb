@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
+    get 'users/rank', to: 'users#rank'
     resources :users, only: %i[index show update]
   end
 
