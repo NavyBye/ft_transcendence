@@ -8,6 +8,7 @@ class User < ApplicationRecord
   enum status: { offline: 0, online: 1, game: 2, ready: 3 }
 
   before_validation :strip_whitespaces
+  after_initialize :second_initialize
 
   validates :status, inclusion: { in: User.statuses.keys }
   validates :nickname, length: { in: 2..20 }
@@ -27,11 +28,22 @@ class User < ApplicationRecord
       user.is_email_auth = false
       user.nickname = 'newcomer'
       user.trophy = 0
-      user.rank = initial_rank
+      user.rank = User.initial_rank
     end
   end
 
   private
+  def second_initialize
+    self.status ||= 0
+    self.rating ||= 1500
+    self.is_banned ||= false
+    self.is_email_auth ||= false
+    self.nickname ||= 'newcomer'
+    self.trophy ||= 0
+    self.rank ||= User.initial_rank
+    self.name ||= 'not42user_' + self.rank.to_s
+  end
+
   def newcommer?
     nickname == 'newcomer'
   end
@@ -41,6 +53,7 @@ class User < ApplicationRecord
   end
 
   def self.initial_rank
+    return 1 if User.count == 0
     maximum_rank = User.maximum(:rank)
     result = User.where(rank: maximum_rank).count
     result += 1 if result == maximum_rank
