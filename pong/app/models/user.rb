@@ -8,7 +8,7 @@ class User < ApplicationRecord
   enum status: { offline: 0, online: 1, game: 2, ready: 3 }
 
   before_validation :strip_whitespaces
-  after_initialize :second_initialize
+  after_create :second_initialize
 
   validates :status, inclusion: { in: User.statuses.keys }
   validates :nickname, length: { in: 2..20 }
