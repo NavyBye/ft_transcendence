@@ -7,10 +7,12 @@ class User < ApplicationRecord
 
   enum status: { offline: 0, online: 1, game: 2, ready: 3 }
 
+  before_validation :strip_whitespaces
+
   validates :status, inclusion: { in: User.statuses.keys }
   validates :nickname, length: { in: 2..20 }
   validates :trophy, numericality: { greater_than: -1 }
-  validates :nickname, uniqueness: true, unless: :is_newcommer?
+  validates :nickname, uniqueness: true, unless: :newcommer?
   validates :name, :nickname, :status, :rating, :trophy, :rank, presence: true
   validates :is_banned, :is_email_auth, exclusion: [nil]
 
@@ -30,8 +32,12 @@ class User < ApplicationRecord
   end
 
   private
-  def is_newcommer?
+  def newcommer?
     nickname == 'newcomer'
+  end
+
+  def strip_whitespaces
+    self.nickname = self.nickname.strip unless self.name.nil?
   end
 
   def self.initial_rank
