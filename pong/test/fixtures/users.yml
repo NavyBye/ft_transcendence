@@ -7,7 +7,7 @@
 hyeyoo:
     id: 1
     name: hyeyoo
-    nickname: Private
+    nickname: 'Private'
     email: hyeyoo@student.42seoul.kr
     status: 0
     is_banned: false
@@ -31,44 +31,8 @@ hyekim:
 hyeyoo_duplicated:
     id: 3
     name: hyeyoo3
-    nickname: Private
+    nickname: 'Privates'
     email: hyeyoo3@student.42seoul.kr
-    status: 0
-    is_banned: false
-    is_email_auth: false
-    rating: 15550
-    rank: 2
-    trophy: 10
-
-newcomer_1:
-    id: 4
-    name: hyeyoo4
-    nickname: newcomer
-    email: hyeyoo4@student.42seoul.kr
-    status: 0
-    is_banned: false
-    is_email_auth: false
-    rating: 15550
-    rank: 2
-    trophy: 10
-
-newcomer_2:
-    id: 5
-    name: hyeyoo5
-    nickname: newcomer
-    email: hyeyoo5@student.42seoul.kr
-    status: 0
-    is_banned: false
-    is_email_auth: false
-    rating: 15550
-    rank: 2
-    trophy: 10
-
-stripped:
-    id: 6
-    name: stripped
-    nickname: '  stripped \n\r'
-    email: <%= Faker::Internet.email %>
     status: 0
     is_banned: false
     is_email_auth: false
