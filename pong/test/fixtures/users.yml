@@ -4,8 +4,29 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
+hyeyoo:
+    id: 1
+    name: hyeyoo
+    nickname: Private
+    email: hyeyoo@student.42seoul.kr
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 15550
+    rank: 1
+    trophy: 10
+
 # column: value
 #
-two: {}
+hyekim:
+    id: 2
+    name: hyekim
+    nickname: Private
+    email: hyekim@student.42seoul.kr
+    status: 1
+    is_banned: false
+    is_email_auth: false
+    rating: 1555
+    rank: 2
+    trophy: 0
 # column: value
