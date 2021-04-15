@@ -1,8 +1,9 @@
 module Api
   class ChatRoomsController < ApplicationController
-    # before_action :authenticate_user!
+    before_action :authenticate_user!
+
     def index
-      render json: ChatRoom.select(:id, :name).to_json(methods: :public)
+      render json: serialize(ChatRoom.all)
     end
 
     def update
@@ -13,7 +14,7 @@ module Api
 
     def destroy
       ChatRoom.find(params[:id]).destroy!
-      render status: :success
+      render json: {}, status: :ok
     end
 
     def create
