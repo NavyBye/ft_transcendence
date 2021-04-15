@@ -3,29 +3,65 @@
   height: 100%;
 }
 
+#chat-setting {
+  height: 55px;
+}
+
+#chat-setting button {
+  height: 55px;
+}
+
 .chat .text-small {
   font-size: 0.9rem;
 }
 
-.chat .chat-box {
-  margin-top: 5px;
-  height: 80%;
+#chat-box {
   overflow-y: scroll;
   overflow-x: hidden;
   word-wrap: break-word;
-}
-
-#chat-box {
   padding-right: 0;
   padding-left: 0;
+  height: calc(100% - 40px - 55px - 50px);
+}
+
+.recv-chat {
+  margin-left: 10px;
+}
+
+.send-chat {
+  margin-right: 10px;
+}
+
+.recv-chat,
+.send-chat {
+  width: 70%;
+}
+
+/* userName | time */
+
+.small-text {
+  color: white;
+  font-size: 9px;
+}
+
+#input-chat {
+  height: 50px;
+}
+
+#input-chat input {
+  width: calc(100% - 50px);
+}
+
+#input-chat .submit {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  right: 0;
+  background-color: white;
 }
 
 .chat::-webkit-scrollbar {
   display: none;
-}
-
-.chat .input-group {
-  height: 10%;
 }
 
 .chat .rounded-lg {
