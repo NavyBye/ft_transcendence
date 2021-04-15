@@ -1,23 +1,33 @@
 class User < ApplicationRecord
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   mount_uploader :image, UserImageUploader
 
-  devise :database_authenticatable, :registerable,
-         :rememberable, :validatable,
-         :omniauthable, omniauth_providers: [:marvin]
-
+  # constants & enums
   enum status: { offline: 0, online: 1, game: 2, ready: 3 }
 
-  before_validation :strip_whitespaces
-  after_create :second_initialize
+  # associations
+  has_many :friendship_as_user, class_name: "Friend", foreign_key: :user_id, dependent: :destroy
+  has_many :friendship_as_follow, class_name: "Friend", foreign_key: :follow_id, dependent: :destroy
+  has_many :followings, through: :friendship_as_user, source: :follow
+  has_many :followers, through: :friendship_as_follow, source: :user
 
+  # validations
   validates :status, inclusion: { in: User.statuses.keys }
   validates :nickname, length: { in: 2..20 }
   validates :trophy, numericality: { greater_than: -1 }
   validates :nickname, uniqueness: true, unless: :newcommer?
   validates :name, :nickname, :status, :rating, :trophy, :rank, presence: true
   validates :is_banned, :is_email_auth, exclusion: [nil]
+
+  # callbacks
+  before_validation :strip_whitespaces
+  after_create :second_initialize
+
+  # devise
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :rememberable, :validatable,
+         :omniauthable, omniauth_providers: [:marvin]
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
