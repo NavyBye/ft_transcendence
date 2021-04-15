@@ -9,6 +9,10 @@ Style/StringLiterals:
 Style/Documentation:
     Enabled: false
 
+Style/RegexpLiteral:
+    Exclude:
+        - 'app/uploaders/user_image_uploader.rb'
+
 Rails/FilePath:
     Enabled: false
 

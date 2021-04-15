@@ -39,7 +39,7 @@ module Api
     test 'user update' do
       @user = users(:hyeyoo)
       sign_in @user
-      put api_user_path(@user.id), params: {nickname: 'new_nickname'}
+      put api_user_path(@user.id), params: { nickname: 'new_nickname' }
       result = JSON.parse @response.body
       assert_equal result['nickname'], 'new_nickname'
     end
