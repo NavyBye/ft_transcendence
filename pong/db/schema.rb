@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2021_04_15_075145) do
 
   create_table "chat_rooms", force: :cascade do |t|
     t.string "name"
-    t.string "password"
+    t.string "encrypted_password"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_chat_rooms_on_name", unique: true
