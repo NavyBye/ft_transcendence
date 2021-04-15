@@ -9,6 +9,12 @@
   border-top-right-radius: 0.25rem;
 }
 
+@media screen and (max-width: 900px) {
+  #side {
+    display: none;
+  }
+}
+
 #side-nav {
   height: 40px;
 }
