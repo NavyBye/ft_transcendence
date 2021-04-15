@@ -14,7 +14,7 @@ Rails.application.routes.draw do
   namespace :api do
     resources :users, only: %i[index show update] do
       get 'rank', on: :collection
-      resources :friends, only: %i[index create destroy]
+      resources :friends, only: %i[index create destroy], param: :follow_id
     end
     resources :chat_rooms, path: 'chatrooms', only: %i[index update destroy create] do
     end
