@@ -1,6 +1,7 @@
-import view from '.';
 import common from '../common';
 import template from '../templates/MainView.html';
+import NavView from './NavView';
+import SideView from './SideView';
 
 const MainView = common.View.extend({
   template,
@@ -9,8 +10,8 @@ const MainView = common.View.extend({
     this.addRegion('content', '#content');
     this.addRegion('side', '#side');
 
-    this.show('nav', new view.NavView());
-    this.show('side', new view.SideView());
+    this.show('nav', new NavView());
+    this.show('side', new SideView());
   },
 });
 
