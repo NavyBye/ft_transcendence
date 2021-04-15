@@ -16,7 +16,7 @@ module Api
 
     def update
       @user = User.find(show_params)
-      @user.update(update_params)
+      @user.update!(update_params)
       render json: @user, status: :ok
     end
 
