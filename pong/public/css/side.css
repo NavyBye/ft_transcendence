@@ -1,6 +1,11 @@
 #side {
   overflow: hidden;
+  position: absolute;
+  right: 0;
+  width: 400px;
+  height: calc(100% - 50px);
 }
+
 #side .nav .active {
   color: black;
 }

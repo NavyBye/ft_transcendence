@@ -1,0 +1,33 @@
+.chat {
+  overflow: none;
+  height: 100%;
+}
+
+.chat .text-small {
+  font-size: 0.9rem;
+}
+
+.chat .chat-box {
+  margin-top: 5px;
+  height: 80%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  word-wrap: break-word;
+}
+
+#chat-box {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.chat::-webkit-scrollbar {
+  display: none;
+}
+
+.chat .input-group {
+  height: 10%;
+}
+
+.chat .rounded-lg {
+  border-radius: 0.5rem;
+}

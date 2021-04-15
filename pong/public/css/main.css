@@ -1,11 +1,32 @@
 /* common styles for website */
 
-html, body, main, #root .content {
-    height: 100%;
+html,
+body,
+main,
+#root .content {
+  height: 100%;
+}
+
+/* navigation */
+
+#nav {
+  height: 50px;
+}
+
+main {
+  height: calc(100% - 50px);
 }
 
 /* background image */
+
 .background-image {
-    background-size: cover;
-    background-image: url('../images/space.jpg');
+  background-size: cover;
+  background-image: url('../images/space.jpg');
+}
+
+#content {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 50px);
 }
