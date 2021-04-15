@@ -7,8 +7,9 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
-    get 'users/rank', to: 'users#rank'
-    resources :users, only: %i[index show update]
+    resources :users, only: %i[index show update] do
+      get 'rank', on: :collection
+    end
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
