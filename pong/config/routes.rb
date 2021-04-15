@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  namespace :api do
+    get 'friends/index'
+    get 'friends/create'
+    get 'friends/destroy'
+  end
   root 'home#index'
   get 'home/index'
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
@@ -9,14 +14,9 @@ Rails.application.routes.draw do
   namespace :api do
     resources :users, only: %i[index show update] do
       get 'rank', on: :collection
+      resources :friends, only: %i[index create destroy]
     end
-  end
-
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  namespace 'api' do
     resources :chat_rooms, path: 'chatrooms', only: %i[index update destroy create] do
     end
   end
-
-  get "/", to: "hello#index"
 end
