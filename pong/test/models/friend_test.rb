@@ -1,9 +1,6 @@
 require "test_helper"
 
 class FriendTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
   def setup
     @user = users(:hyeyoo)
     @follow = users(:hyekim)
