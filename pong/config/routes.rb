@@ -18,7 +18,6 @@ Rails.application.routes.draw do
       resources :friends, only: %i[index create destroy], param: :follow_id
       resources :blocks, only: %i[index create destroy], param: :blocked_user_id
     end
-
     resources :chat_rooms, path: 'chatrooms', only: %i[index update destroy create] do
     end
   end

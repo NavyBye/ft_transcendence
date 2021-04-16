@@ -1,0 +1,32 @@
+#side {
+  background-color: #0000007a;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  width: 400px;
+  height: calc(100% - 50px);
+  border-top-left-radius: 0.25rem;
+  border-top-right-radius: 0.25rem;
+}
+
+@media screen and (max-width: 900px) {
+  #side {
+    display: none;
+  }
+}
+
+#side-nav {
+  height: 40px;
+}
+
+#side .nav .active {
+  color: black;
+}
+
+#side .nav-link {
+  color: white;
+}
+
+#side .nav-item {
+  padding: 0;
+}

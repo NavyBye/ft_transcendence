@@ -1,3 +1,5 @@
 {
-  "*.js": ["npx prettier --check", "npx eslint --fix"]
+  "*.js": ["npx prettier --write", "npx eslint --fix"],
+  "*.html": ["npx prettier --write"],
+  "*.css": ["npx prettier --write"],
 }
