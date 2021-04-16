@@ -21,6 +21,18 @@ module Api
       render json: @user, status: :ok
     end
 
+    def challenge
+      render json: { error: 'not implemented yet!' }, status: :not_implemented
+    end
+
+    def game
+      render json: { error: 'not implemented yet!' }, status: :not_implemented
+    end
+
+    def history
+      render json: { error: 'not implemented yet!' }, status: :not_implemented
+    end
+
     private
 
     def update_params
