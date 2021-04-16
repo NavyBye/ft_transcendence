@@ -1,2 +1,4 @@
-module Api::FriendsHelper
+module Api
+  module FriendsHelper
+  end
 end

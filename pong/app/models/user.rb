@@ -5,8 +5,8 @@ class User < ApplicationRecord
   enum status: { offline: 0, online: 1, game: 2, ready: 3 }
 
   # associations
-  has_many :friendship_as_user, class_name: "Friend", foreign_key: :user_id, dependent: :destroy
-  has_many :friendship_as_follow, class_name: "Friend", foreign_key: :follow_id, dependent: :destroy
+  has_many :friendship_as_user, class_name: "Friend", inverse_of: :user, dependent: :destroy
+  has_many :friendship_as_follow, class_name: "Friend", inverse_of: :follow, dependent: :destroy
   has_many :followings, through: :friendship_as_user, source: :follow
   has_many :followers, through: :friendship_as_follow, source: :user
 
@@ -20,7 +20,7 @@ class User < ApplicationRecord
 
   # callbacks
   before_validation :strip_whitespaces
-  after_create :second_initialize
+  before_validation :second_initialize, on: :create
 
   # devise
   # Include default devise modules. Others available are:
@@ -50,6 +50,10 @@ class User < ApplicationRecord
     end
   end
 
+  def newcommer?
+    nickname == 'newcomer'
+  end
+
   private
 
   def second_initialize
@@ -61,10 +65,6 @@ class User < ApplicationRecord
     self.trophy = 0
     self.rank ||= User.initial_rank
     self.name ||= "not42user_#{User.count}"
-  end
-
-  def newcommer?
-    nickname == 'newcomer'
   end
 
   def strip_whitespaces
