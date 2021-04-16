@@ -5,6 +5,7 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
+_
 /.bundle
 
 /pong/.bundle
@@ -58,3 +59,4 @@ yarn-debug.log*
 /pong/yarn-debug.log*
 /pong/.yarn-integrity
 
+/pong/config/secrets.yml
