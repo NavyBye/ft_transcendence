@@ -28,9 +28,9 @@ const CollectionView = Backbone.View.extend({
     this.trigger('initialize', obj);
   },
   add(model) {
-    const view = this.ViewType({ model });
+    const view = new this.ViewType({ model });
     this.subViews.push(view);
-    this.$(this.childContainer).append(view.render().el);
+    $(this.childContainer).append(view.render().el);
   },
   render(selector) {
     const el = selector || this.el;
