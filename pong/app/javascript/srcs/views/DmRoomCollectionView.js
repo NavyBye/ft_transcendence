@@ -1,9 +1,13 @@
+import collection from '../collections';
 import common from '../common';
 import template from '../templates/DmRoomCollectionView.html';
+import DmRoomView from './DmRoomView';
 
-const DmRoomCollectionView = common.View.extend({
+const DmRoomCollectionView = common.CollectionView.extend({
   template,
-  onRender() {},
+  childContainer: '#dmroom-collection',
+  ViewType: DmRoomView,
+  CollectionType: collection.DmRoomCollection,
 });
 
 export default DmRoomCollectionView;
