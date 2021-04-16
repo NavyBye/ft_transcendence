@@ -1,4 +1,6 @@
 require "test_helper"
 
-class Api::BlocksControllerTest < ActionDispatch::IntegrationTest
+module Api
+  class BlocksControllerTest < ActionDispatch::IntegrationTest
+  end
 end

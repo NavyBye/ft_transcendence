@@ -24,3 +24,7 @@ Metrics/BlockLength:
     Exclude:
         - 'config/*.rb'
         - 'config/**/*.rb'
+
+Rails/RedundantForeignKey:
+    Exclude:
+        - 'app/models/*.rb'

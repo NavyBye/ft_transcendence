@@ -5,10 +5,17 @@ class User < ApplicationRecord
   enum status: { offline: 0, online: 1, game: 2, ready: 3 }
 
   # associations
-  has_many :friendship_as_user, class_name: "Friend", inverse_of: :user, dependent: :destroy
-  has_many :friendship_as_follow, class_name: "Friend", inverse_of: :follow, dependent: :destroy
+  has_many :friendship_as_user, class_name: "Friend", inverse_of: :user,
+                                foreign_key: :user_id, dependent: :destroy
+  has_many :friendship_as_follow, class_name: "Friend", inverse_of: :follow,
+                                  foreign_key: :follow_id, dependent: :destroy
   has_many :followings, through: :friendship_as_user, source: :follow
-  has_many :followers, through: :friendship_as_follow, source: :user
+
+  has_many :block_as_user, class_name: "Block", inverse_of: :user,
+                           foreign_key: :user_id, dependent: :destroy
+  has_many :block_as_blocked_user, class_name: "Block", inverse_of: :blocked_user,
+                                   foreign_key: :blocked_user_id, dependent: :destroy
+  has_many :blacklist, through: :block_as_user, source: :blocked_user
 
   # validations
   validates :status, inclusion: { in: User.statuses.keys }
