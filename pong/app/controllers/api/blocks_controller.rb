@@ -2,7 +2,7 @@ module Api
   class BlocksController < ApplicationController
     def index
       @user = User.find(params[:user_id])
-      render json: @user.blocks, status: :ok
+      render json: @user.blacklist, status: :ok
     end
 
     def create
