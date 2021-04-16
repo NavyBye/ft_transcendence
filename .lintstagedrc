@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "*.js": ["npx prettier --write", "npx eslint --fix"],
   "*.html": ["npx prettier --write"],
   "*.css": ["npx prettier --write"],
+=======
+  "*.js": ["npx prettier --check", "eslint --fix"]
+>>>>>>> 70ce11bdeebc8a9666d1e559e6db645846b220ba
 }
