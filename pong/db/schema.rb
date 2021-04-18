@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_09_070759) do
+ActiveRecord::Schema.define(version: 2021_04_16_064659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "blocks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "blocked_user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["blocked_user_id"], name: "index_blocks_on_blocked_user_id"
+    t.index ["user_id", "blocked_user_id"], name: "index_blocks_on_user_id_and_blocked_user_id", unique: true
+    t.index ["user_id"], name: "index_blocks_on_user_id"
+  end
 
   create_table "chat_rooms", force: :cascade do |t|
     t.string "name"
@@ -21,6 +31,16 @@ ActiveRecord::Schema.define(version: 2021_04_09_070759) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_chat_rooms_on_name", unique: true
+  end
+
+  create_table "friends", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "follow_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["follow_id"], name: "index_friends_on_follow_id"
+    t.index ["user_id", "follow_id"], name: "index_friends_on_user_id_and_follow_id", unique: true
+    t.index ["user_id"], name: "index_friends_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -41,6 +61,7 @@ ActiveRecord::Schema.define(version: 2021_04_09_070759) do
     t.integer "trophy", default: 0
     t.boolean "is_banned", default: false
     t.boolean "is_email_auth", default: false
+    t.string "image"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["provider"], name: "index_users_on_provider"
@@ -48,4 +69,8 @@ ActiveRecord::Schema.define(version: 2021_04_09_070759) do
     t.index ["uid"], name: "index_users_on_uid"
   end
 
+  add_foreign_key "blocks", "users"
+  add_foreign_key "blocks", "users", column: "blocked_user_id"
+  add_foreign_key "friends", "users"
+  add_foreign_key "friends", "users", column: "follow_id"
 end
