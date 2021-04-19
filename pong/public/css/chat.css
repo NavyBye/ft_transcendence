@@ -1,4 +1,5 @@
-.chat {
+.chat,
+.dm {
   overflow: none;
   height: 100%;
 }
@@ -26,6 +27,15 @@
   padding-right: 0;
   padding-left: 0;
   height: calc(100% - 40px - 55px - 50px);
+}
+
+#dm-collection {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  padding-left: 0;
+  padding-right: 0;
+  height: calc(100% - 40px - 50px);
 }
 
 .recv-chat {
