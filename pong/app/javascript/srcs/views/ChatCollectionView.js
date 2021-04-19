@@ -1,7 +1,7 @@
 import common from '../common';
 import template from '../templates/ChatCollectionView.html';
 
-const ChatCollectionView = common.View.extend({
+const ChatCollectionView = common.CollectionView.extend({
   template,
   onRender() {},
 });
