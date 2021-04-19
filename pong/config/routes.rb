@@ -6,8 +6,19 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
-    get 'users/rank', to: 'users#rank'
-    resources :users, only: %i[index show update]
+    resources :users, only: %i[index show update] do
+      collection do
+        get 'rank'
+        get 'challenge'
+        get 'me'
+      end
+      member do
+        get 'game'
+        get 'history'
+      end
+      resources :friends, only: %i[index create destroy], param: :follow_id
+      resources :blocks, only: %i[index create destroy], param: :blocked_user_id
+    end
     resources :chat_rooms, path: 'chatrooms', only: %i[index update destroy create] do
     end
   end
