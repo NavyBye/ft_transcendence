@@ -14,6 +14,11 @@ module Api
       render json: @user, status: :ok
     end
 
+    def me
+      @user = User.find(current_user.id)
+      render json: @user, status: :ok
+    end
+
     def update
       @user = User.find(params[:id])
       @user.update!(update_params)
