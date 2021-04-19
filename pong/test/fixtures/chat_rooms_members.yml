@@ -4,12 +4,12 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-    
-chat_room_1:
-    name: one
+one_hyekim:
+  id: 1
+  chat_room: one
+  user: hyekim
 
-chat_room_2:
-    name: two
-
-hello:
-    name: hello
+one_hyeyoo:
+  id: 2
+  chat_room: one
+  user: hyeyoo

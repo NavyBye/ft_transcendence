@@ -4,12 +4,15 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-    
-chat_room_1:
-    name: one
 
-chat_room_2:
-    name: two
+<% 10.times do |n| %>
+chatroom_1_hyekim_message_<%= n %>:
+  user: hyekim
+  chat_room: chat_room_1
+  body: <%= "hello#{n} from hyekim" %>
 
-hello:
-    name: hello
+chatroom_1_hyeyoo_message_<%= n %>:
+  user: hyeyoo
+  chat_room: chat_room_1
+  body: <%= "hello#{n} from hyeyoo" %>
+<% end %>

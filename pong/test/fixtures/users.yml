@@ -39,3 +39,10 @@ hyeyoo_duplicated:
     rating: 15550
     rank: 2
     trophy: 10
+
+<% 10.times do |n| %>
+user_<%= n %>:
+    name:  <%= "user#{n}" %>
+    nickname: <%= "nickname#{n}" %>
+    email: <%= "user#{n}@student.42seoul.kr" %>
+<% end %>
