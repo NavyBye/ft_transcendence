@@ -2,6 +2,9 @@ require 'bcrypt'
 class ChatRoom < ApplicationRecord
   include BCrypt
 
+  has_many :users, through: :chat_rooms_members
+  has_many :messages, class_name: "ChatRoomMessage"
+
   validates :name, presence: true, uniqueness: true, length: { minimum: 1, maximum: 10 }
   validates :password, allow_nil: true, length: { minimum: 4, maximum: 10 }
 
