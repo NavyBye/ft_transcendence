@@ -19,7 +19,7 @@
   font-size: 0.9rem;
 }
 
-#chat-box {
+#chat-collection {
   overflow-y: scroll;
   overflow-x: hidden;
   word-wrap: break-word;
