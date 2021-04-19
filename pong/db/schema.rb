@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2021_04_09_070759) do
     t.index ["name"], name: "index_chat_rooms_on_name", unique: true
   end
 
+<<<<<<< Updated upstream
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -48,4 +49,6 @@ ActiveRecord::Schema.define(version: 2021_04_09_070759) do
     t.index ["uid"], name: "index_users_on_uid"
   end
 
+=======
+>>>>>>> Stashed changes
 end
