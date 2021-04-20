@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_19_075209) do
+ActiveRecord::Schema.define(version: 2021_04_19_061836) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,15 +41,6 @@ ActiveRecord::Schema.define(version: 2021_04_19_075209) do
     t.index ["follow_id"], name: "index_friends_on_follow_id"
     t.index ["user_id", "follow_id"], name: "index_friends_on_user_id_and_follow_id", unique: true
     t.index ["user_id"], name: "index_friends_on_user_id"
-  end
-
-  create_table "guild_members", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "guild_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["guild_id"], name: "index_guild_members_on_guild_id"
-    t.index ["user_id"], name: "index_guild_members_on_user_id"
   end
 
   create_table "guilds", force: :cascade do |t|
@@ -92,6 +83,4 @@ ActiveRecord::Schema.define(version: 2021_04_19_075209) do
   add_foreign_key "blocks", "users", column: "blocked_user_id"
   add_foreign_key "friends", "users"
   add_foreign_key "friends", "users", column: "follow_id"
-  add_foreign_key "guild_members", "guilds"
-  add_foreign_key "guild_members", "users"
 end
