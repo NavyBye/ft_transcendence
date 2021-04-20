@@ -17,6 +17,10 @@ class User < ApplicationRecord
                                    foreign_key: :blocked_user_id, dependent: :destroy
   has_many :blacklist, through: :block_as_user, source: :blocked_user
 
+  has_one :guild_member_relation, class_name: "GuildMember", inverse_of: :user,
+                                  foreign_key: :user_id, dependent: :destroy
+  has_one :guild, through: :guild_member_relation, source: :guild
+
   # validations
   validates :status, inclusion: { in: User.statuses.keys }
   validates :nickname, length: { in: 2..20 }
