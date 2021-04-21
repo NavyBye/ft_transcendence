@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import $ from 'jquery';
+import $ from 'jquery/src/jquery';
 import Backbone from 'backbone';
 import Region from './Region';
 
