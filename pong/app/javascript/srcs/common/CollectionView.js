@@ -13,13 +13,14 @@ const CollectionView = Backbone.View.extend({
     this.listenTo(this, 'render', this.onRender);
     this.listenTo(this, 'destroy', this.onDestroy);
   },
+  /* {} */
   initialize(obj) {
     if (obj && obj.model) {
       this.model = obj.model;
       this.listenTo(this.model, 'change', this.render);
     }
 
-    this.collection = new this.CollectionType();
+    this.collection = new this.CollectionType(obj);
     this.listenTo(this.collection, 'add', this.add);
 
     this.subViews = [];
