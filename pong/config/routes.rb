@@ -30,7 +30,7 @@ Rails.application.routes.draw do
       member do
         get 'histories'
       end
-      resources :members, only: %i[index update destroy], controller:'guild_members', param: :user_id
+      resources :members, only: %i[index update destroy], controller: 'guild_members', param: :user_id
       resources :invites, only: %i[index create update destroy]
     end
     resources :chat_rooms, path: 'chatrooms', only: %i[index update destroy create] do
