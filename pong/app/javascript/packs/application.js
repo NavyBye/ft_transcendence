@@ -6,8 +6,12 @@
 import Rails from '@rails/ujs';
 import Turbolinks from 'turbolinks';
 import $ from 'jquery/src/jquery';
-import app from '../srcs/app';
 import 'bootstrap';
+import jquery from 'jquery';
+import app from '../srcs/app';
+
+window.$ = jquery;
+window.jquery = jquery;
 
 Rails.start();
 Turbolinks.start();
