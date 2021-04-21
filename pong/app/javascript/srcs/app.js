@@ -3,11 +3,22 @@ import $ from 'jquery/src/jquery';
 import Radio from 'backbone.radio';
 import view from './views';
 import Router from './router';
+import auth from './utils/auth';
 
 const app = {
   start() {
     Radio.channel('app').reply('logout', function logout() {
       app.user = null;
+      const data = {};
+      data[auth.getTokenKey()] = auth.getTokenValue();
+      $.ajax({
+        type: 'DELETE',
+        url: '/sign_out',
+        data,
+        success() {
+          Radio.channel('route').trigger('route', 'login');
+        } /* TODO: Error handling */,
+      });
     });
 
     /* reply user */
