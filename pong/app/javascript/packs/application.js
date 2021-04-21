@@ -5,13 +5,16 @@
 
 import Rails from '@rails/ujs';
 import Turbolinks from 'turbolinks';
+import _ from 'underscore';
 import $ from 'jquery/src/jquery';
-import 'bootstrap';
 import jquery from 'jquery';
+import 'bootstrap';
 import app from '../srcs/app';
 
-window.$ = jquery;
-window.jquery = jquery;
+_.extend($, jquery);
+
+window.$ = $;
+window.jquery = $;
 
 Rails.start();
 Turbolinks.start();
