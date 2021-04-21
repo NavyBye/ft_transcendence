@@ -15,15 +15,26 @@ const Router = Backbone.Router.extend({
     /* register router event handler */
     channel.on('route', function route(target) {
       router.navigate(target, { trigger: true });
+      // router[target].call(router);
     });
   },
   home() {
     const rootView = Radio.channel('app').request('rootView');
-    rootView.show('content', new view.MainView());
+    const login = Radio.channel('app').request('login');
+    if (!login) {
+      Radio.channel('route').trigger('route', 'login');
+    } else {
+      rootView.show('content', new view.MainView());
+    }
   },
   login() {
     const rootView = Radio.channel('app').request('rootView');
-    rootView.show('content', new view.LoginView());
+    const login = Radio.channel('app').request('login');
+    if (login) {
+      Radio.channel('route').trigger('route', 'home');
+    } else {
+      rootView.show('content', new view.LoginView());
+    }
   },
 });
 

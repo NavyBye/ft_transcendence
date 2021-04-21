@@ -2,6 +2,7 @@ import Radio from 'backbone.radio';
 import $ from 'jquery/src/jquery';
 import common from '../common';
 import template from '../templates/NavView.html';
+import auth from '../utils/auth';
 
 function link(event) {
   const href = event.target.getAttribute('href');
@@ -11,12 +12,15 @@ function link(event) {
 }
 
 function logout(event) {
-  Radio.channel('app').request('logout');
   event.preventDefault();
+  const data = {};
+  data[auth.getTokenKey()] = auth.getTokenValue();
   $.ajax({
     type: 'DELETE',
     url: '/sign_out',
+    data,
     success() {
+      Radio.channel('app').request('logout');
       Radio.channel('route').trigger('route', 'login');
     },
   });
