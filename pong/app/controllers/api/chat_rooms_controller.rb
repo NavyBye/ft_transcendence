@@ -19,6 +19,8 @@ module Api
 
     def create
       chat_room = ChatRoom.create! chat_room_params
+      chat_room.members << current_user
+      chat_room.change_role current_user.id, :owner
       render json: serialize(chat_room), status: :created
     end
 
