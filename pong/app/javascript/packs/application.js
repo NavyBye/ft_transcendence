@@ -5,7 +5,7 @@
 
 import Rails from '@rails/ujs';
 import Turbolinks from 'turbolinks';
-import $ from 'jquery';
+import $ from 'jquery/src/jquery';
 import app from '../srcs/app';
 import 'bootstrap';
 
