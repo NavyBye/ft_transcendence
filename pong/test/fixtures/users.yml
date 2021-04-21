@@ -5,7 +5,6 @@
 # below each fixture, per the syntax in the comments below
 #
 hyeyoo:
-    id: 1
     name: hyeyoo
     nickname: 'Private'
     email: hyeyoo@student.42seoul.kr
@@ -17,7 +16,6 @@ hyeyoo:
     trophy: 10
 
 hyekim:
-    id: 2
     name: hyekim
     nickname: hyekim
     email: hyekim@student.42seoul.kr
@@ -29,7 +27,6 @@ hyekim:
     trophy: 0
 
 hyeyoo_duplicated:
-    id: 3
     name: hyeyoo3
     nickname: 'Privates'
     email: hyeyoo3@student.42seoul.kr
@@ -39,3 +36,10 @@ hyeyoo_duplicated:
     rating: 15550
     rank: 2
     trophy: 10
+
+<% 10.times do |n| %>
+user<%= n %>:
+    name:  <%= "user#{n}" %>
+    nickname: <%= "nickname#{n}" %>
+    email: <%= "user#{n}@student.42seoul.kr" %>
+<% end %>
