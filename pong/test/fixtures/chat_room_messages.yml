@@ -5,14 +5,14 @@
 # below each fixture, per the syntax in the comments below
 #
 
-<% 10.times do |n| %>
-chatroom_1_hyekim_message_<%= n %>:
+<% 100.times do |n| %>
+chatroom1_hyekim_message<%= n %>:
   user: hyekim
-  chat_room: chat_room_1
+  chat_room: chat_room1
   body: <%= "hello#{n} from hyekim" %>
 
-chatroom_1_hyeyoo_message_<%= n %>:
+chatroom1_hyeyoo_message<%= n %>:
   user: hyeyoo
-  chat_room: chat_room_1
+  chat_room: chat_room1
   body: <%= "hello#{n} from hyeyoo" %>
 <% end %>

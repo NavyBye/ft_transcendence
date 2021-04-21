@@ -5,11 +5,9 @@
 # below each fixture, per the syntax in the comments below
 #
 one_hyekim:
-  id: 1
-  chat_room: one
+  chat_room: chat_room1
   user: hyekim
 
 one_hyeyoo:
-  id: 2
-  chat_room: one
+  chat_room: chat_room1
   user: hyeyoo

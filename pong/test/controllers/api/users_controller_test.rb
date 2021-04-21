@@ -20,7 +20,7 @@ module Api
     test 'user show' do
       user = users(:hyeyoo)
       sign_in user
-      get '/api/users/1'
+      get "/api/users/#{user.id}"
       assert_response :success
     end
 

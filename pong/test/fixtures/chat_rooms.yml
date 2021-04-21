@@ -5,10 +5,10 @@
 # below each fixture, per the syntax in the comments below
 #
     
-chat_room_1:
+chat_room1:
     name: one
 
-chat_room_2:
+chat_room2:
     name: two
 
 hello:
