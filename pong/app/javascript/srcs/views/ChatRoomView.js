@@ -1,11 +1,17 @@
+import Radio from 'backbone.radio';
 import common from '../common';
 import template from '../templates/ChatRoomView.html';
-import models from '../models';
 
 const ChatRoomView = common.View.extend({
   template,
-  model: models.ChatRoomModel,
-  onRender() {},
+  // onRender() {},
+  events: {
+    'click .enter-room': 'enterRoom',
+  },
+  enterRoom() {
+    const chatRoomId = this.model.get('id');
+    Radio.channel('side').trigger('enter-chatroom', chatRoomId);
+  },
 });
 
 export default ChatRoomView;
