@@ -5,9 +5,9 @@
 # below each fixture, per the syntax in the comments below
 #
 hyeyoo:
-    name: hyeyoo
+    name: hyeyoos
     nickname: 'Private'
-    email: hyeyoo@student.42seoul.kr
+    email: hyeyoos@student.42seoul.kr
     status: 0
     is_banned: false
     is_email_auth: false
@@ -16,9 +16,9 @@ hyeyoo:
     trophy: 10
 
 hyekim:
-    name: hyekim
-    nickname: hyekim
-    email: hyekim@student.42seoul.kr
+    name: hyekims
+    nickname: hyekims
+    email: hyekims@student.42seoul.kr
     status: 1
     is_banned: false
     is_email_auth: false
