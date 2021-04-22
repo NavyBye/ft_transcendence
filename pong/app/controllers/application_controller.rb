@@ -1,6 +1,12 @@
 class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :error_not_found
   rescue_from ActiveRecord::RecordNotDestroyed, ActiveRecord::RecordInvalid, with: :error_invalid
+  protect_from_forgery with: :null_session
+  
+  after_action :set_csrf_cookie
+  def set_csrf_cookie
+    cookies["my_csrf_token"] = form_authenticity_token
+  end
 
   private
 
