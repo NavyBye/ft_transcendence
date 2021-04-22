@@ -16,9 +16,13 @@ module Users
     # end
 
     # DELETE /resource/sign_out
-    # def destroy
-    #   super
-    # end
+	def destroy
+	  signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
+	  render json: {
+        csrf_param: request_forgery_protection_token,
+        csrf_token: form_authenticity_token
+	  }, status: :ok
+	end
 
     protected
 
