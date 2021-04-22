@@ -4,11 +4,17 @@ import Radio from 'backbone.radio';
 import view from './views';
 import Router from './router';
 import auth from './utils/auth';
+import ErrorModalView from './views/ErrorModalView';
 
 const app = {
   start() {
+    $.ajaxSetup({
+      error: function error(res) {
+        new ErrorModalView().show('Error', res.responseText);
+      },
+    });
+
     Radio.channel('app').reply('logout', function logout() {
-      app.user = null;
       const data = {};
       data[auth.getTokenKey()] = auth.getTokenValue();
       $.ajax({
@@ -16,8 +22,9 @@ const app = {
         url: '/sign_out',
         data,
         success() {
+          app.user = null;
           Radio.channel('route').trigger('route', 'login');
-        } /* TODO: Error handling */,
+        },
       });
     });
 
@@ -44,6 +51,7 @@ const app = {
       });
       app.rootView.render();
       if (!Backbone.History.started) Backbone.history.start();
+      Backbone.history.loadUrl(Backbone.history.fragment);
       app.router.navigate(Backbone.history.fragment, { trigger: true });
     });
   },
