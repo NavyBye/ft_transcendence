@@ -25,10 +25,10 @@ module Api
 
     def create
       @master = current_user
-      if master.guild.nil?
+      if @master.guild.nil?
         @guild = Guild.create!(name: params[:name], anagram: params[:anagram], point: 4200)
         @guild_master_join = GuildMember.create!(user_id: @master.id, guild_id: @guild.id, role: 2)
-        @master.invitations.destroy_all!
+        @master.invitations.destroy_all
         render json: @guild, status: :created
       else
         render json: { message: "You already have a guild." }, status: :bad_request
@@ -37,7 +37,7 @@ module Api
 
     def destroy
       @guild = Guild.find(params[:id])
-      if can_destroy?(current_user, @guild)
+      if Guild.can_destroy?(current_user, @guild)
         @guild.destroy!
         render json: {}, status: :no_content
       else

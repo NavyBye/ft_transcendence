@@ -49,35 +49,42 @@ module Api
       assert_equal @result['name'], guild.name
     end
 
-    # TODO : make guild, member made automatically, invite removed
-    test 'guild create userguild test' do
+    test 'guild create guildscount check' do
       login :hyekim
-      assert_change '@user.guild' do
-        post "/api/guilds/", params: { name: 'createTest', anagram: 'CRTS' }
+      assert_difference 'Guild.count', 1 do
+        post "/api/guilds", params: { name: 'crTest1212', anagram: 'CRTS' }
       end
       assert_response :created
-      assert_equal result['name'], 'createdTest'
+      assert_equal result['name'], 'crTest1212'
     end
 
-    test 'guild create userguild test' do
+    test 'guild create userguild check' do
       login :hyekim
-      assert_difference '@user.invitations.count', -2 do
-        post "/api/guilds/", params: { name: 'createTest', anagram: 'CRTS' }
+      assert_changes '@user.reload.guild' do
+        post "/api/guilds/", params: { name: 'crTest', anagram: 'CRTS' }
       end
       assert_response :created
-      assert_equal result['name'], 'createdTest'
+      assert_equal result['name'], 'crTest'
+    end
+
+    test 'guild create invite auto_destroy' do
+      login :hyekim
+      assert_difference '@user.invitations.count', -2 do
+        post "/api/guilds/", params: { name: 'crTest', anagram: 'CRTS' }
+      end
+      assert_response :created
+      assert_equal result['name'], 'crTest'
     end
 
     test 'guild create fail when creator already have a guild' do
       login :hyeyoo
-      assert_not_change '@user.guild' do
-        post "/api/guilds/", params: { name: 'createTest', anagram: 'CRTS' }
+      assert_no_changes '@user.guild' do
+        post "/api/guilds/", params: { name: 'crTest', anagram: 'CRTS' }
       end
       assert_response :bad_request
     end
 
-    # TODO : guild destroy, guild members destroy, guild invitations destroy
-    test 'guild destroy test' do
+    test 'guild destroy' do
       login :master
       guild = guilds(:test)
       assert_difference 'Guild.count', -1 do
@@ -86,17 +93,17 @@ module Api
       assert_response :no_content
     end
 
-    test 'guild destroy member test' do
+    test 'guild destroy member_with_reload' do
       login :master
       guild = guilds(:test)
-      member = users(:member)
-      assert_change 'member.guild' do
+      @member = users(:member)
+      assert_changes '@member.reload.guild.nil?' do
         delete "/api/guilds/#{guild.id}"
       end
       assert_response :no_content
     end
 
-    test 'guild destroy invite test' do
+    test 'guild destroy invite' do
       login :master
       guild = guilds(:test)
       assert_difference 'Invite.count', -1 do
@@ -108,7 +115,7 @@ module Api
     test 'guild destroy with no right to destroy' do
       login :member
       guild = guilds(:test)
-      assert_not_difference 'Guild.count' do
+      assert_no_difference 'Guild.count' do
         delete "/api/guilds/#{guild.id}"
       end
       assert_response :forbidden
@@ -116,7 +123,7 @@ module Api
 
     private
 
-    def login (someone)
+    def login(someone)
       @user = users(someone)
       sign_in @user
     end
