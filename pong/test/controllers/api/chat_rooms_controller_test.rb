@@ -5,7 +5,8 @@ class ChatRoomsControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @chat_room = chat_rooms(:hello)
-    sign_in users(:hyeyoo)
+    @logined_user = users(:hyekim)
+    sign_in @logined_user
   end
 
   test "chat_room list api" do
@@ -17,7 +18,7 @@ class ChatRoomsControllerTest < ActionDispatch::IntegrationTest
     post api_chat_rooms_path, as: :json
     assert_response :bad_request
 
-    post api_chat_rooms_path, params: { name: "hyekim", password: "4242" }, as: :json
+    post api_chat_rooms_path, params: { name: "RUBY", password: "4242" }, as: :json
     assert_response :created
   end
 
