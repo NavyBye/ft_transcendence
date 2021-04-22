@@ -1,5 +1,5 @@
 {
-  "*.js": ["npx prettier --write", "npx eslint --fix"],
-  "*.html": ["npx prettier --write"],
-  "*.css": ["npx prettier --write"],
+  "*.js": ["npx prettier --write", "npx eslint --fix", "git add"],
+  "*.html": ["npx prettier --write", "git add"],
+  "*.css": ["npx prettier --write", "git add"],
 }
