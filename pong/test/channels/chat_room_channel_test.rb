@@ -10,7 +10,7 @@ class ChatRoomChannelTest < ActionCable::Channel::TestCase
 
   test "subscribes and stream for room" do
     subscribe id: @chat_room.id
-    
+
     assert subscription.confirmed?
     assert_has_stream_for @chat_room
 
@@ -19,6 +19,5 @@ class ChatRoomChannelTest < ActionCable::Channel::TestCase
   end
 
   test "broadcast" do
-    
   end
 end
