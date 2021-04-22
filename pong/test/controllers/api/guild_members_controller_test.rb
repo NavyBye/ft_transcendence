@@ -10,7 +10,7 @@ module Api
     end
 
     test "guild member lists" do
-      login_member
+      login :member
       get "/api/guilds/#{@guild.id}/members"
       assert_response :success
       result.each do |members|
@@ -19,7 +19,7 @@ module Api
     end
 
     test "guild member update successfully" do
-      login_master
+      login :master
       member = users(:member)
       put "/api/guilds/#{@guild.id}/members/#{member.id}", params: { role: 'officer' }
       assert_response :success
@@ -27,14 +27,14 @@ module Api
     end
 
     test "guild member update with member" do
-      login_member
+      login :member
       officer = users(:officer)
       put "/api/guilds/#{@guild.id}/members/#{officer.id}", params: { role: 'member' }
       assert_response :forbidden
     end
 
     test "guild member master update is unavailable" do
-      login_master
+      login :master
       member = users(:member)
       put "/api/guilds/#{@guild.id}/members/#{member.id}", params: { role: 'master' }
       assert_response :bad_request
@@ -42,7 +42,7 @@ module Api
 
     # destroy
     test "guild normal member self destroy" do
-      login_member
+      login :member
       assert_difference '@guild.members.count', -1 do
         delete "/api/guilds/#{@guild.id}/members/#{@user.id}"
       end
@@ -50,7 +50,7 @@ module Api
     end
 
     test "guild normal member destroy by master" do
-      login_master
+      login :master
       member = users(:member)
       assert_difference '@guild.members.count', -1 do
         delete "/api/guilds/#{@guild.id}/members/#{member.id}"
@@ -59,7 +59,7 @@ module Api
     end
 
     test "guild master member destroy" do
-      login_master
+      login :master
       assert_difference 'Guild.count', -1 do
         delete "/api/guilds/#{@guild.id}/members/#{@user.id}"
       end
@@ -69,25 +69,15 @@ module Api
     test "destroy fail" do
       hyeyoo = users(:hyeyoo)
       testguild = guilds(:one)
-      login_master
+      login :master
       delete "/api/guilds/#{testguild.id}/members/#{hyeyoo.id}"
       assert_response :forbidden
     end
 
     private
 
-    def login_master
-      @user = users(:master)
-      sign_in @user
-    end
-
-    def login_officer
-      @user = users(:officer)
-      sign_in @user
-    end
-
-    def login_member
-      @user = users(:member)
+    def login(user_fixture_symbol)
+      @user = users(user_fixture_symbol)
       sign_in @user
     end
 

@@ -23,6 +23,10 @@ Metrics/MethodLength:
     Exclude:
         - 'db/migrate/*.rb'
 
+Metrics/ClassLength:
+    Exclude:
+        - 'test/**/*.rb'
+
 Metrics/BlockLength:
     Exclude:
         - 'config/*.rb'

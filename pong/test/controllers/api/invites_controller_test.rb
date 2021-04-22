@@ -7,7 +7,7 @@ module Api
 
     # index
     test 'get invite list' do
-      hyekim_login
+      login :hyekim
       get "/api/users/#{@user.id}/invites"
       assert_response :success
       result
@@ -19,9 +19,11 @@ module Api
 
     # create
     test 'invite create with no guild' do
-      hyekim_login
+      login :hyekim
       dummy = users(:dummy)
-      post "/api/users/#{dummy.id}/invites"
+      assert_no_changes 'dummy.reload.invitations' do
+        post "/api/users/#{dummy.id}/invites"
+      end
       assert_response :missing
     end
 
@@ -29,7 +31,9 @@ module Api
       @user = users(:hyeyoo)
       sign_in @user
       dummy = users(:dummy)
-      post "/api/users/#{dummy.id}/invites"
+      assert_difference 'dummy.reload.invitations.count', 1 do
+        post "/api/users/#{dummy.id}/invites"
+      end
       assert_response :success
     end
 
@@ -37,7 +41,9 @@ module Api
       @user = users(:dummy_member_one)
       sign_in @user
       dummy = users(:dummy)
-      post "/api/users/#{dummy.id}/invites"
+      assert_no_changes 'dummy.reload.invitations' do
+        post "/api/users/#{dummy.id}/invites"
+      end
       assert_response :forbidden
     end
 
@@ -45,31 +51,39 @@ module Api
       hyeyoo = users(:hyeyoo)
       sign_in hyeyoo
       dummy = users(:dummy_member_one)
-      post "/api/users/#{dummy.id}/invites"
+      assert_no_changes 'dummy.reload.invitations' do
+        post "/api/users/#{dummy.id}/invites"
+      end
       assert_response :bad_request
     end
 
     # update (accept)
     test 'invite accept success' do
-      hyekim_login
+      login :hyekim
       inv = @user.invitations.first
-      put "/api/users/#{@user.id}/invites/#{inv.id}"
+      assert_changes '@user.reload.guild' do
+        assert_difference '@user.invitations.count', -2 do
+          put "/api/users/#{@user.id}/invites/#{inv.id}"
+        end
+      end
       assert_response :success
       assert_equal result['id'], inv.guild_id
     end
 
     # destroy (refuse)
     test 'invite refuse success' do
-      hyekim_login
+      login :hyekim
       inv = @user.invitations.first
-      delete "/api/users/#{@user.id}/invites/#{inv.id}"
+      assert_difference '@user.invitations.count', -1 do
+        delete "/api/users/#{@user.id}/invites/#{inv.id}"
+      end
       assert_response :no_content
     end
 
     private
 
-    def hyekim_login
-      @user = users(:hyekim)
+    def login(user_fixture_symbol)
+      @user = users(user_fixture_symbol)
       sign_in @user
     end
 
