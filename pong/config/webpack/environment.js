@@ -1,12 +1,11 @@
 const { environment } = require('@rails/webpacker');
-
 const webpack = require('webpack');
 
 environment.plugins.prepend(
   'Provide',
   new webpack.ProvidePlugin({
-    $: 'jquery',
-    jQuery: 'jquery',
+    $: 'jquery/src/jquery',
+    jQuery: 'jquery/src/jquery',
     Popper: ['popper.js', 'default'],
     _: 'underscore',
     Backbone: 'backbone',
