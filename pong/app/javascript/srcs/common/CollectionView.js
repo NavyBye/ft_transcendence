@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import $ from 'jquery';
+import $ from 'jquery/src/jquery';
 import Backbone from 'backbone';
 import Region from './Region';
 
@@ -12,6 +12,7 @@ const CollectionView = Backbone.View.extend({
     this.listenTo(this, 'initialize', this.onInitialize);
     this.listenTo(this, 'render', this.onRender);
     this.listenTo(this, 'destroy', this.onDestroy);
+    this.listenTo(this, 'afteradd', this.afterAdd);
   },
   /* {} */
   initialize(obj) {
@@ -31,7 +32,8 @@ const CollectionView = Backbone.View.extend({
   add(model) {
     const view = new this.ViewType({ model });
     this.subViews.push(view);
-    $(this.childContainer).append(view.render().el);
+    Promise.all([$(this.childContainer).append(view.render().el)]);
+    this.trigger('afteradd');
   },
   render(selector) {
     const el = selector || this.el;

@@ -1,15 +1,15 @@
 <div class="recv-chat mb-3">
   <div>
     <!-- User Profile -->
-    <img src="" width="50" class="rounded-circle" />
+    <img src="/images/chat-icon.png" width="50" class="rounded-circle" />
     <!-- UserName -->
-    <span class="small small-text"></span>
+    <span class="small small-text"><%= user_nickname %></span>
   </div>
   <!-- <div class="recv-media-body"> -->
   <div class="bg-light rounded py-2 px-3">
     <!-- Msg-->
-    <p class="text-small mb-0 text-muted"></p>
+    <p class="text-small mb-0 text-muted"><%= body %>></p>
   </div>
   <!-- 12:00 PM -->
-  <p class="small small-text"></p>
+  <p class="small small-text"><%= created_at %></p>
 </div>

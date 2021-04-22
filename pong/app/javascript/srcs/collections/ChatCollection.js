@@ -9,6 +9,9 @@ const ChatCollection = Backbone.Collection.extend({
   url() {
     return `/api/chatrooms/${this.chatRoomId}/messages`;
   },
+  parse(response) {
+    return response.messages;
+  },
 });
 
 export default ChatCollection;
