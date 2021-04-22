@@ -82,6 +82,6 @@ class User < ApplicationRecord
   end
 
   def strip_whitespaces
-    self.nickname = nickname.strip unless self.name.nil?
+    self.nickname = nickname.strip unless self.nickname.nil?
   end
 end

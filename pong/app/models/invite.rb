@@ -5,4 +5,18 @@ class Invite < ApplicationRecord
 
   # validations
   validates :guild_id, uniqueness: { scope: :user_id }
+  validate :already_have_guild
+
+  # public methods
+  def invitable(inviter, inv_guild)
+    @role = GuildMember.find_by(user_id: inviter.id, guild_id: inv_guild.id).role
+    @role != 'member'
+  end
+
+  private
+
+  def already_have_guild
+    user = User.find(user_id)
+    errors.add(:user_id, 'this user already have a guild.') unless user.guild.nil?
+  end
 end

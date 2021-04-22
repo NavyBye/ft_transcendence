@@ -16,6 +16,13 @@ class Guild < ApplicationRecord
   # callbacks
   before_validation :strip_string_columns
 
+  # public methods
+  def can_destroy?(user, guild)
+    # TODO : owner/admin check
+    role = GuildMember.find_by(user_id: user.id, guild_id: guild.id).role
+    role == 'master'
+  end
+
   private
 
   def strip_string_columns
