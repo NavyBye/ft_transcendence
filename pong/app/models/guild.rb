@@ -7,6 +7,7 @@ class Guild < ApplicationRecord
   # validations
   validates :name, length: { in: 4..10 }
   validates :anagram, length: { is: 4 }
+  validates :name, :anagram, uniqueness: true
   validates :name, :anagram, :point, presence: true
 
   # callbacks
