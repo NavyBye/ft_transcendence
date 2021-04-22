@@ -10,7 +10,7 @@ class Guild < ApplicationRecord
   validates :name, :anagram, :point, presence: true
 
   # callbacks
-  before_validation :strip_string_columns, on: :create
+  before_validation :strip_string_columns
 
   private
 
