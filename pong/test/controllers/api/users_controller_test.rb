@@ -14,7 +14,7 @@ module Api
 
     test 'users index without login' do
       get '/api/users'
-      assert_response :redirect
+      assert_response :unauthorized
     end
 
     test 'user show' do
@@ -33,7 +33,7 @@ module Api
 
     test 'user show without login' do
       get '/api/users/1'
-      assert_response :redirect
+      assert_response :unauthorized
     end
 
     test 'user update' do
