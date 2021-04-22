@@ -8,4 +8,9 @@ one:
     name: testguild
     anagram: TEST
     point: 4200
+
+two:
+    name: test2
+    anagram: HELL
+    point: 42
 # column: value

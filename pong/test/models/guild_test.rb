@@ -62,4 +62,18 @@ class GuildTest < ActiveSupport::TestCase
     @test_guild.anagram = '  1   5  '
     assert_not @test_guild.valid?
   end
+
+  test "guild name uniqueness" do
+    @test_guild.name = 'test2'
+    assert_not @test_guild.valid?
+
+    @test_guild.name = 'lotto'
+    assert @test_guild.valid?
+
+    @test_guild.name = '  test2  '
+    assert_not @test_guild.valid?
+
+    @test_guild.name = ' pow pow '
+    assert @test_guild.valid?
+  end
 end
