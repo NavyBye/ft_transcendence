@@ -8,7 +8,7 @@ class GuildMemberTest < ActiveSupport::TestCase
   end
 
   test "normal_guild_member" do
-    assert_equal 'hyeyoo', @member.user.name
+    assert_equal 'hyeyoos', @member.user.name
     assert_equal 'testguild', @member.guild.name
     assert_equal 'master', @member.role
   end
