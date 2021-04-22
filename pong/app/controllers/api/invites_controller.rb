@@ -8,18 +8,22 @@ module Api
     end
 
     def create
-      unless Invite.invitable(current_user, Guild.find(params[:guild_id]))
-        render json: { message: 'you cannot invite someone!' }, status: :forbidden
+      render json: { message: 'you have no guild.' }, status: :not_found and return if current_user.guild.nil?
+
+      guild = current_user.guild
+      unless Invite.invitable(current_user, guild)
+        render json: { message: 'you cannot invite someone!' }, status: :forbidden and return
       end
-      new_invitation = Invite.new(guild_id: params[:guild_id], user_id: params[:user_id])
+
+      new_invitation = Invite.new(guild_id: guild.id, user_id: params[:user_id])
       new_invitation.save!
       render json: new_invitation, status: :created
     end
 
     def update
       @invitation = Invite.find(params[:id])
-      accept
-      render json: {}, status: :no_content
+      @guild = accept.guild
+      render json: @guild, status: :ok
     end
 
     def destroy
@@ -34,7 +38,7 @@ module Api
       guild = @invitation.guild
       user = @invitation.user
       member = GuildMember.create!(user_id: user.id, guild_id: guild.id)
-      user.invitations.destroy_all!
+      user.invitations.destroy_all
       member
     end
   end

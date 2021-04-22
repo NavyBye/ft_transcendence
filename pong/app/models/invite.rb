@@ -8,7 +8,7 @@ class Invite < ApplicationRecord
   validate :already_have_guild
 
   # public methods
-  def invitable(inviter, inv_guild)
+  def self.invitable(inviter, inv_guild)
     @role = GuildMember.find_by(user_id: inviter.id, guild_id: inv_guild.id).role
     @role != 'member'
   end
