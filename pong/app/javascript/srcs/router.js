@@ -15,7 +15,10 @@ const Router = Backbone.Router.extend({
     /* register router event handler */
     channel.on('route', function route(target) {
       router.navigate(target, { trigger: true });
-      // router[target].call(router);
+    });
+
+    channel.on('refresh', function refresh() {
+      Backbone.history.loadUrl(Backbone.history.fragment);
     });
   },
   home() {
