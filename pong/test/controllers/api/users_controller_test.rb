@@ -28,7 +28,7 @@ module Api
       user = users(:hyeyoo)
       sign_in user
       get '/api/users/0'
-      assert_response :not_found
+      assert_response :missing
     end
 
     test 'user show without login' do
