@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     registrations: "users/registrations"
   }
   devise_scope :user do
-    delete 'sign_out', to: 'devise/sessions#destroy', as: :destroy_user_session_path
+    delete 'sign_out', to: 'users/sessions#destroy', as: :destroy_user_session_path
   end
 
   namespace :api do

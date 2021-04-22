@@ -9,20 +9,22 @@ import ErrorModalView from './views/ErrorModalView';
 const app = {
   start() {
     $.ajaxSetup({
+      headers: {
+        X_CSRF_TOKEN: auth.getTokenValue(),
+      },
       error: function error(res) {
         new ErrorModalView().show('Error', res.responseText);
       },
     });
 
     Radio.channel('app').reply('logout', function logout() {
-      const data = {};
-      data[auth.getTokenKey()] = auth.getTokenValue();
       $.ajax({
         type: 'DELETE',
         url: '/sign_out',
-        data,
-        success() {
+        success(res) {
           app.user = null;
+          $('meta[name="csrf-param"]').attr('content', res.csrf_param);
+          $('meta[name="csrf-token"]').attr('content', res.csrf_token);
           Radio.channel('route').trigger('route', 'login');
         },
       });
