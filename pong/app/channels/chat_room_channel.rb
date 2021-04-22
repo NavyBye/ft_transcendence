@@ -20,6 +20,6 @@ class ChatRoomChannel < ApplicationCable::Channel
   end
 
   def error_invalid(exception)
-    ChatRoomChannel.broadcast_to @chatroom, { data: exception, status: :bad_request }
+    ChatRoomChannel.broadcast_to @chat_room, { data: exception, status: :bad_request }
   end
 end
