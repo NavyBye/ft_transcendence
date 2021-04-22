@@ -5,8 +5,6 @@
 # below each fixture, per the syntax in the comments below
 #
 hyeyoo_in_testguild:
-    user_id: 1
-    guild_id: 1
+    user: hyeyoo
+    guild: one
     role: 2
-# column: value
-#
