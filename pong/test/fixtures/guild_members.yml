@@ -8,3 +8,24 @@ hyeyoo_in_testguild:
     user: hyeyoo
     guild: one
     role: 2
+
+dummy_member_in_testguild:
+    user: dummy_member_one
+    guild: one
+    role: 0
+
+master_in_tguild:
+    user: master
+    guild: test
+    role: 2
+
+officer_in_tguild:
+    user: officer
+    guild: test
+    role: 1
+
+member_in_tguild:
+    user: member
+    guild: test
+    role: 0
+

@@ -11,3 +11,7 @@ testguild_to_hyekim:
 test2_to_hyekim:
     guild: two
     user: hyekim
+
+test_to_member:
+    guild: test
+    user: member

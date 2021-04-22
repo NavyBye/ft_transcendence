@@ -13,5 +13,17 @@ class InviteTest < ActiveSupport::TestCase
     assert_not new_invite.valid?
   end
 
-  # TODO : invite to someone who already have guild
+  test "invite to guild member" do
+    hyeyoo = users(:hyeyoo)
+    testguild = guilds(:one)
+    new_invite = Invite.new(guild_id: testguild.id, user_id: hyeyoo.id)
+    assert_not new_invite.valid?
+  end
+
+  test "good invite" do
+    random_user = users(:hyeyoo_duplicated)
+    testguild = guilds(:one)
+    new_invite = Invite.new(guild_id: testguild.id, user_id: random_user.id)
+    assert new_invite.valid?
+  end
 end

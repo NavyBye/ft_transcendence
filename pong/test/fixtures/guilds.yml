@@ -13,3 +13,8 @@ two:
     name: test2
     anagram: HELL
     point: 42
+
+test:
+    name: tguild
+    anagram: TGLD
+    point: 555

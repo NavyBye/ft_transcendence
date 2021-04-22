@@ -39,7 +39,6 @@ class GuildMemberTest < ActiveSupport::TestCase
   end
 
   # associations test
-
   test "associations" do
     assert_equal @guild.id, @user.guild.id
 
@@ -49,7 +48,4 @@ class GuildMemberTest < ActiveSupport::TestCase
     assert @guild.members.where(id: @user.id).exists?
     assert_not @guild.members.where(id: no_guild_user.id).exists?
   end
-
-  # TODO : two master in one guild is invalid.
-  # TODO : no master is invalid.
 end
