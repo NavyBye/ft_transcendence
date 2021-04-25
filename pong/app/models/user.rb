@@ -21,6 +21,9 @@ class User < ApplicationRecord
                                   foreign_key: :user_id, dependent: :destroy
   has_one :guild, through: :guild_member_relation, source: :guild
 
+  has_many :invitations, class_name: "Invite", inverse_of: :user, foreign_key: :user_id, dependent: :destroy
+  has_many :invited_guilds, through: :invitations, source: :guild
+
   # validations
   validates :status, inclusion: { in: User.statuses.keys }
   validates :nickname, length: { in: 2..20 }

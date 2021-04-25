@@ -4,6 +4,9 @@ class Guild < ApplicationRecord
                                        inverse_of: :guild, dependent: :destroy
   has_many :members, through: :guild_member_relationship, source: :user
 
+  has_many :invitations, class_name: "Invite", inverse_of: :guild, foreign_key: :guild_id, dependent: :destroy
+  has_many :invited_users, through: :invitations, source: :user
+
   # validations
   validates :name, length: { in: 4..10 }
   validates :anagram, length: { is: 4 }
