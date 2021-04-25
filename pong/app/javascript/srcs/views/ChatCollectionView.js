@@ -1,3 +1,4 @@
+/* eslint-disable no-new */
 /* eslint-disable prefer-destructuring */
 import $ from 'jquery/src/jquery';
 import collection from '../collections';
@@ -6,6 +7,7 @@ import template from '../templates/ChatCollectionView.html';
 import ChatView from './ChatView';
 import consumer from '../../channels/consumer';
 import model from '../models';
+import ChatRoomSettingModalView from './ChatRoomSettingModalView';
 
 const ChatCollectionView = common.CollectionView.extend({
   el: '#side .content',
@@ -14,11 +16,11 @@ const ChatCollectionView = common.CollectionView.extend({
   ViewType: ChatView,
   CollectionType: collection.ChatCollection,
   events: {
+    'click #chatroom-setting-button': 'showChatRoomSettingModalView',
     'click #input-chat .submit': 'sendMsg',
     'keypress #input-chat input': 'sendMsgEnter',
   },
   onInitialize() {
-    window.comsumer = consumer;
     const chatRoomId = this.collection.chatRoomId;
     const view = this;
     this.channel = consumer.subscriptions.create(
@@ -57,6 +59,9 @@ const ChatCollectionView = common.CollectionView.extend({
         this.channel.send({ body });
       }
     }
+  },
+  showChatRoomSettingModalView() {
+    new ChatRoomSettingModalView();
   },
 });
 
