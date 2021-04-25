@@ -6,11 +6,13 @@ const AddChatRoomModalView = common.View.extend({
   el: '#add-chatroom-modal',
   events: {
     'click .create-button': 'createChatRoom',
-    'click .close-button': 'createChatRoom',
+    'click .close-button': 'close',
     'click #is-private': 'togglePassword',
   },
   onInitialize() {
     $(this.el).modal('show');
+    $('#is-private').prop('checked', false);
+    $('#room-password').prop('disabled', true);
   },
   onDestroy() {
     $('#add-chatroom-modal input').val('');
@@ -34,8 +36,10 @@ const AddChatRoomModalView = common.View.extend({
     this.destroy();
   },
   togglePassword() {
+    console.log('toggling...');
     const current = $('#room-password').prop('disabled');
     $('#room-password').prop('disabled', !current);
+    console.log(`result = ${$('#room-password').prop('disabled')}`);
   },
 });
 
