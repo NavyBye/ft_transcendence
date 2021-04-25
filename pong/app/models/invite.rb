@@ -4,5 +4,5 @@ class Invite < ApplicationRecord
   belongs_to :guild, class_name: "Guild", foreign_key: :guild_id
 
   # validations
-  validations :guild_id, uniqueness: { scope: :user_id }
+  validates :guild_id, uniqueness: { scope: :user_id }
 end
