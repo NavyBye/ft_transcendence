@@ -5,40 +5,38 @@ const ChatRoomSettingModalView = common.View.extend({
   el: '#chatroom-setting-modal',
   events: {
     'click .create-button': 'createChatRoom',
-    'click .close-button': 'close',
-    'click #is-private': 'togglePassword',
+    'click #chatroom-setting-is-private': 'togglePassword',
   },
   onInitialize() {
     $(this.el).modal('show');
-    $('#is-private').prop('checked', false);
-    $('#room-password').prop('disabled', true);
+    $('#chatroom-setting-is-private').prop('checked', false);
+    $('#chatroom-setting-password').prop('disabled', true);
+
+    const view = this;
+    $(this.el).on('hide.bs.modal', function destroy() {
+      view.destroy();
+    });
   },
   onDestroy() {
-    $('#add-chatroom-modal input').val('');
-    $(this.el).modal('hide');
+    $('#chatroom-setting-modal input').val('');
   },
   createChatRoom() {
     const data = {};
-    data.name = $('#room-name').val();
-    const isPrivate = $('#is-private').is(':checked');
-    if (isPrivate) data.password = $('#room-password').val();
+    data.name = $('#chatroom-setting-name').val();
+    const isPrivate = $('#chatroom-setting-is-private').is(':checked');
+    if (isPrivate) data.password = $('#chatroom-setting-password').val();
 
     $.ajax({
-      type: 'POST',
+      type: 'PUT',
       url: '/api/chatrooms',
       data,
     });
+    $(this.el).modal('hide');
+  },
 
-    this.destroy();
-  },
-  close() {
-    this.destroy();
-  },
   togglePassword() {
-    console.log('toggling...');
-    const current = $('#room-password').prop('disabled');
-    $('#room-password').prop('disabled', !current);
-    console.log(`result = ${$('#room-password').prop('disabled')}`);
+    const current = $('#chatroom-setting-password').prop('disabled');
+    $('#chatroom-setting-password').prop('disabled', !current);
   },
 });
 
