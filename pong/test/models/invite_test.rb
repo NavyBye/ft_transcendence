@@ -14,5 +14,4 @@ class InviteTest < ActiveSupport::TestCase
   end
 
   # TODO : invite to someone who already have guild
-
 end

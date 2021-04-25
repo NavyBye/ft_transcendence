@@ -21,6 +21,7 @@ Rails.application.routes.draw do
       end
       resources :friends, only: %i[index create destroy], param: :follow_id
       resources :blocks, only: %i[index create destroy], param: :blocked_user_id
+      resources :invites, only: %i[index update destroy]
     end
     resources :guilds, only: %i[index show create destroy] do
       collection do
@@ -31,7 +32,7 @@ Rails.application.routes.draw do
         get 'histories'
       end
       resources :members, only: %i[index update destroy], controller: 'guild_members', param: :user_id
-      resources :invites, only: %i[index create update destroy]
+      resources :invites, only: %i[index create], param: :user_id
     end
     resources :chat_rooms, path: 'chatrooms', only: %i[index update destroy create] do
       resources :chat_room_members, path: 'members', only: %i[index update destroy create]
