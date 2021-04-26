@@ -1,3 +1,4 @@
+/* eslint-disable for-direction */
 /* eslint-disable no-new */
 /* eslint-disable prefer-destructuring */
 import $ from 'jquery/src/jquery';
@@ -39,6 +40,46 @@ const ChatCollectionView = common.CollectionView.extend({
         },
       },
     );
+  },
+  onRender() {
+    const view = this;
+    if (this.$el.scrollTop() === 0) {
+      view.pageUp();
+    }
+
+    $('#chat-collection').scroll(function scroll() {
+      const position = $(this).scrollTop();
+      if (position === 0) {
+        view.pageUp();
+      }
+    });
+  },
+  pageUp() {
+    if (!this.collection.page || this.collection.page <= 0) return;
+
+    /* get previous page */
+    this.collection.page -= 1;
+    const page = this.collection.page;
+    const prev = new collection.ChatCollection(
+      this.collection.chatRoomId,
+      page,
+    );
+
+    const ViewType = this.ViewType;
+    const childContainer = this.childContainer;
+    const subViews = this.subViews;
+    const scrollHeight = $('#chat-collection')[0].scrollHeight;
+    prev.fetch({
+      success() {
+        for (let i = prev.models.length - 1; i >= 0; i -= 1) {
+          const view = new ViewType({ model: prev.models[i] });
+          subViews.push(view);
+          Promise.all([$(childContainer).prepend(view.render().el)]);
+        }
+        const current = $('#chat-collection')[0].scrollHeight;
+        $('#chat-collection').scrollTop(current - scrollHeight);
+      },
+    });
   },
   onDestroy() {
     this.channel.unsubscribe();
