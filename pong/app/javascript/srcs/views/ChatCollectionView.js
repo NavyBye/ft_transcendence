@@ -8,6 +8,7 @@ import ChatView from './ChatView';
 import consumer from '../../channels/consumer';
 import model from '../models';
 import ChatRoomSettingModalView from './ChatRoomSettingModalView';
+import ChatRoomUserCollectionModalView from './ChatRoomUserCollectionModalView';
 
 const ChatCollectionView = common.CollectionView.extend({
   el: '#side .content',
@@ -17,6 +18,7 @@ const ChatCollectionView = common.CollectionView.extend({
   CollectionType: collection.ChatCollection,
   events: {
     'click #chatroom-setting-button': 'showChatRoomSettingModalView',
+    'click #chat-user-button': 'showUserModal',
     'click #input-chat .submit': 'sendMsg',
     'keypress #input-chat input': 'sendMsgEnter',
   },
@@ -62,6 +64,10 @@ const ChatCollectionView = common.CollectionView.extend({
   },
   showChatRoomSettingModalView() {
     new ChatRoomSettingModalView();
+  },
+  showUserModal() {
+    new ChatRoomUserCollectionModalView(this.collection.chatRoomId);
+    $('#chatRoomUserModal').modal('show');
   },
 });
 
