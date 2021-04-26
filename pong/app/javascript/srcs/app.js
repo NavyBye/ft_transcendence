@@ -30,10 +30,19 @@ const app = {
       });
     });
 
+    if (!Backbone.History.started) Backbone.history.start();
+
     /* reply user */
     Radio.channel('app').reply('login', function getUser() {
       return app.user;
     });
+
+    app.rootView = new view.RootView();
+    /* reply rootView */
+    Radio.channel('app').reply('rootView', function getRootView() {
+      return app.rootView;
+    });
+    app.rootView.render();
 
     Promise.all([
       /* get userinfo */
@@ -46,15 +55,9 @@ const app = {
       }),
     ]).finally(function then() {
       app.router = new Router();
-      /* reply rootView */
-      app.rootView = new view.RootView();
-      Radio.channel('app').reply('rootView', function getRootView() {
-        return app.rootView;
-      });
-      app.rootView.render();
-      if (!Backbone.History.started) Backbone.history.start();
       Backbone.history.loadUrl(Backbone.history.fragment);
-      app.router.navigate(Backbone.history.fragment, { trigger: true });
+      // app.router.navigate(Backbone.history.fragment, { trigger: true });
+      // Radio.channel('route').trigger('route', Backbone.history.fragment);
     });
   },
 };
