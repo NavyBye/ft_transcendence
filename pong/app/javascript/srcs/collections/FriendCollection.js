@@ -3,8 +3,8 @@ import model from '../models';
 
 const FriendCollection = Backbone.Collection.extend({
   model: model.FriendModel,
-  initialize(userId) {
-    this.userId = userId;
+  initialize(obj) {
+    if (obj && obj.userId) this.userId = obj.userId;
   },
   url() {
     return `/api/users/${this.userId}/friends`;
