@@ -22,7 +22,7 @@ module Api
     private
 
     def friendship_params
-      params.require(:user_id, :follow_id)
+      params.permit(:user_id, :follow_id)
     end
   end
 end
