@@ -23,7 +23,7 @@ Rails.application.routes.draw do
       resources :blocks, only: %i[index create destroy], param: :blocked_user_id
     end
     resources :chat_rooms, path: 'chatrooms', only: %i[index update destroy create] do
-      resources :chat_room_members, path: 'members', only: %i[index update destroy create]
+      resources :chat_rooms_members, path: 'members', only: %i[index update destroy create]
       resources :chat_room_messages, path: 'messages', only: %i[index]
     end
   end
