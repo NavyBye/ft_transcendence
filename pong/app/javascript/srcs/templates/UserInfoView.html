@@ -1,1 +1,18 @@
-<%= nickname %> <%= rating %>
+<div class="user-info row" style="max-height: 200px">
+  <img
+    class="profile-image"
+    style="height: 200px; width: 200px"
+    src="/images/42.jpg"
+  />
+  <div class="profile-string">
+    <h2>name : <%= nickname %></h2>
+    <h2>rating : <%= rating %></h2>
+  </div>
+</div>
+<div class="profile-buttons">
+  <button type="button" class="btn btn-primary">Add Friend</button>
+  <button type="button" class="btn btn-primary">Block User</button>
+  <button type="button" class="btn btn-primary">Request Pong</button>
+  <button type="button" class="btn btn-primary">Guild Invite</button>
+  <button type="button" class="btn btn-primary">DM</button>
+</div>
