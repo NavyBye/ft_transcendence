@@ -9,7 +9,7 @@ const BlockCollection = Backbone.Collection.extend({
     this.userId = login.id;
   },
   url() {
-    return `/api/users/${this.userId}/block`;
+    return `/api/users/${this.userId}/blocks`;
   },
 });
 
