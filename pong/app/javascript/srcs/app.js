@@ -5,6 +5,7 @@ import view from './views';
 import Router from './router';
 import auth from './utils/auth';
 import ErrorModalView from './views/ErrorModalView';
+import collection from './collections';
 
 const app = {
   start() {
@@ -55,7 +56,25 @@ const app = {
       if (!Backbone.History.started) Backbone.history.start();
       Backbone.history.loadUrl(Backbone.history.fragment);
       app.router.navigate(Backbone.history.fragment, { trigger: true });
+
+      /* init routines after login is finished */
+      app.initBlacklist();
     });
+  },
+  initBlacklist() {
+    /* reply blacklist */
+    app.blacklist = new collection.BlockCollection();
+    app.blacklist.fetch();
+    Radio.channel('app').reply(
+      'filter',
+      function blacklist(model, filterBy, replaceKey) {
+        if (app.blacklist.findWhere({ user_id: model.get(filterBy) })) {
+          model.set(replaceKey, 'blocked');
+          return model;
+        }
+        return model;
+      },
+    );
   },
 };
 
