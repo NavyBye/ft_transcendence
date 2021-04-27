@@ -1,3 +1,4 @@
+import Radio from 'backbone.radio';
 import $ from 'jquery/src/jquery';
 import common from '../common';
 import UserInfoView from './UserInfoView';
@@ -6,7 +7,13 @@ import model from '../models';
 
 const UserProfileModalView = common.View.extend({
   el: '#user-profile-modal',
-  events: {},
+  events: {
+    'click #add-friend-button': 'addFriend',
+    'click #block-button': 'block',
+    'click #request-pong-button': 'requestPong',
+    'click #guild-invite-button': 'guildInvite',
+    'click #dm-button': 'dm',
+  },
   onInitialize(obj) {
     this.userId = obj;
     this.addRegion('userinfo', '#user-info');
@@ -25,13 +32,35 @@ const UserProfileModalView = common.View.extend({
       view.destroy();
     });
   },
-  onRender() {
-    // this.addRegion('userinfo', '#user-info');
-    // this.addRegion('userhistroy', '#user-history');
-    // this.show('userinfo', new UserInfoView(this.userId));
-    // this.show('userhistory', new UserHistoryCollectionView(this.userId));
-  },
+  onRender() {},
   onDestroy() {},
+  addFriend() {
+    console.log('add_friend btn');
+    const login = Radio.channel('app').request('login');
+    $.ajax({
+      type: 'POST',
+      url: `/api/users/${login.id}/friends`,
+      data: { follow_id: this.userId },
+    });
+  },
+  block() {
+    console.log('block btn');
+    const login = Radio.channel('app').request('login');
+    $.ajax({
+      type: 'POST',
+      url: `/api/user/${login.id}/block`,
+      data: { user_id: this.userId },
+    });
+  },
+  requestPong() {
+    console.log('rpm');
+  },
+  guildInvite() {
+    console.log('guild');
+  },
+  dm() {
+    console.log('dm');
+  },
 });
 
 export default UserProfileModalView;
