@@ -16,7 +16,7 @@ const UserProfileModalView = common.View.extend({
     user.fetch({
       success() {
         self.show('userinfo', new UserInfoView({ model: user }));
-        self.show('userhistory', new UserHistoryCollectionView(this.userId));
+        self.show('userhistory', new UserHistoryCollectionView(self.userId));
       },
     });
     $(this.el).modal('show');
