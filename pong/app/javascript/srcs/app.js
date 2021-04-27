@@ -1,3 +1,5 @@
+/* eslint-disable no-unneeded-ternary */
+/* eslint-disable camelcase */
 import Backbone from 'backbone';
 import $ from 'jquery/src/jquery';
 import Radio from 'backbone.radio';
@@ -57,22 +59,48 @@ const app = {
       Backbone.history.loadUrl(Backbone.history.fragment);
       app.router.navigate(Backbone.history.fragment, { trigger: true });
 
-      /* init routines after login is finished */
-      app.initBlacklist();
+      /* only when logged in */
+      if (app.user) {
+        /* init routines after login is finished */
+        app.initBlacklist();
+      }
     });
   },
   initBlacklist() {
     /* reply blacklist */
     app.blacklist = new collection.BlockCollection();
     app.blacklist.fetch();
-    Radio.channel('app').reply(
+    Radio.channel('blacklist').reply(
       'filter',
       function blacklist(model, filterBy, replaceKey) {
-        if (app.blacklist.findWhere({ user_id: model.get(filterBy) })) {
+        if (app.blacklist.findWhere({ block_user_id: model.get(filterBy) })) {
           model.set(replaceKey, 'blocked');
           return model;
         }
         return model;
+      },
+    );
+
+    Radio.channel('blacklist').reply(
+      'isBlocked',
+      function blacklist(model, userIdKey) {
+        const found = app.blacklist.findWhere({
+          blocked_user_id: model.get(userIdKey),
+        });
+        return found ? true : false;
+      },
+    );
+
+    Radio.channel('blacklist').reply('block', function block(block_user_id) {
+      app.blacklist.create({ block_user_id, user_id: app.user.id });
+    });
+
+    Radio.channel('blacklist').reply(
+      'unblock',
+      function unblock(block_user_id) {
+        const blocked = app.blacklist.findWhere({ block_user_id });
+        app.blacklist.remove(blocked);
+        blocked.remove();
       },
     );
   },
