@@ -14,7 +14,7 @@ module Api
 
     test 'users index without login' do
       get '/api/users'
-      assert_response :redirect
+      assert_response :unauthorized
     end
 
     test 'user show' do
@@ -28,12 +28,12 @@ module Api
       user = users(:hyeyoo)
       sign_in user
       get '/api/users/0'
-      assert_response :not_found
+      assert_response :missing
     end
 
     test 'user show without login' do
       get '/api/users/1'
-      assert_response :redirect
+      assert_response :unauthorized
     end
 
     test 'user update' do

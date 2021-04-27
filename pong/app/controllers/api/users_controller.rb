@@ -6,7 +6,7 @@ module Api
     end
 
     def rank
-      render json: User.all.order(rating: :desc).page(params[:page]), status: ok
+      render json: User.all.order(rating: :desc).page(params[:page]), status: :ok
     end
 
     def show

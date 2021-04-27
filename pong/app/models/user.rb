@@ -17,6 +17,13 @@ class User < ApplicationRecord
                                    foreign_key: :blocked_user_id, dependent: :destroy
   has_many :blacklist, through: :block_as_user, source: :blocked_user
 
+  has_one :guild_member_relation, class_name: "GuildMember", inverse_of: :user,
+                                  foreign_key: :user_id, dependent: :destroy
+  has_one :guild, through: :guild_member_relation, source: :guild
+
+  has_many :invitations, class_name: "Invite", inverse_of: :user, foreign_key: :user_id, dependent: :destroy
+  has_many :invited_guilds, through: :invitations, source: :guild
+
   # validations
   validates :status, inclusion: { in: User.statuses.keys }
   validates :nickname, length: { in: 2..20 }
@@ -75,6 +82,6 @@ class User < ApplicationRecord
   end
 
   def strip_whitespaces
-    self.nickname = nickname.strip unless self.name.nil?
+    self.nickname = nickname.strip unless self.nickname.nil?
   end
 end
