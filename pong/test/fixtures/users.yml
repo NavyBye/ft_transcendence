@@ -37,6 +37,53 @@ hyeyoo_duplicated:
     rank: 2
     trophy: 10
 
+dummy:
+    name: hello42
+    nickname: 'dummybot'
+    email: dummy@dum.my
+    status: 0
+    rank: 3
+
+dummy_member_one:
+    name: hello4242
+    nickname: 'dummybot2'
+    email: dummya@dum.mya
+    status: 0
+    rank: 3
+
+master:
+    name: master
+    nickname: 'master'
+    email: master@airforcebye.com
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 5550
+    rank: 3
+    trophy: 10
+
+officer:
+    name: officer
+    nickname: 'officer'
+    email: officer@airforcebye.com
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 5549
+    rank: 4
+    trophy: 1
+
+member:
+    name: member
+    nickname: 'member'
+    email: member@airforcebye.com
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 5548
+    rank: 4
+    trophy: 0
+
 <% 10.times do |n| %>
 user<%= n %>:
     name:  <%= "user#{n}" %>

@@ -2,13 +2,10 @@
 const modules = require.context('.', false, /\.js$/);
 
 const view = {};
-console.log('hehehehehehe');
 modules.keys().forEach(filename => {
   if (filename !== './index.js') {
     const moduleName = filename.replace(/(\.\/|\.js)/g, '');
-    console.log(moduleName);
     view[moduleName] = modules(filename).default;
-    console.log(view[moduleName]);
   }
 });
 

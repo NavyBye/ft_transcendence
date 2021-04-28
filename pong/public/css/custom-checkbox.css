@@ -1,0 +1,38 @@
+.custom-checkbox {
+  display: inline;
+}
+.custom-checkbox label {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(139, 139, 139, 0.3);
+  color: #adadad;
+  border-radius: 3px;
+  white-space: nowrap;
+  margin: 3px 0px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s;
+}
+
+.custom-checkbox label {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.custom-checkbox input[type='checkbox']:checked + label {
+  background-color: #5cb85c;
+  color: #fff;
+  transition: all 0.2s;
+}
+
+.custom-checkbox input[type='checkbox'] {
+  display: absolute;
+}
+.custom-checkbox input[type='checkbox'] {
+  position: absolute;
+  opacity: 0;
+}
