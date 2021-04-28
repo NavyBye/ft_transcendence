@@ -95,7 +95,10 @@ const app = {
     Radio.channel('blacklist').reply('unblock', function unblock(id) {
       const blocked = app.blacklist.findWhere({ id });
       app.blacklist.remove(blocked);
-      blocked.destroy();
+      $.ajax({
+        type: 'DELETE',
+        url: `/api/users/${app.user.id}/blocks/${id}`,
+      });
     });
   },
 };
