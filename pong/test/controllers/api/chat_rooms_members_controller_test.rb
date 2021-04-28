@@ -23,7 +23,8 @@ class ChatRoomsMembersControllerTest < ActionDispatch::IntegrationTest
   test "update" do
     chat_room = chat_rooms :chat_room1
     target = users(:user1)
-    put api_chat_room_chat_rooms_member_path(chat_room.id, target.id), params: { status: 1, duration: 3, role: "admin" }, as: :json
+    put api_chat_room_chat_rooms_member_path(chat_room.id, target.id),
+        params: { status: 1, duration: 3, role: "admin" }, as: :json
     assert_response :ok
     assert ChatRoomsMember.find_by!(chat_room: chat_room, user: target).muted?
   end
