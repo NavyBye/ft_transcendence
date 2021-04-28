@@ -9,8 +9,12 @@ module Api
     end
 
     def create
-      @chat_room.members << current_user
-      render json: serialize(User.find(current_user.id)), status: :created
+      if !@chat_room.public && @chat_room.password != params[:password]
+        render json: { message: "password is not correct" }, status: :bad_request
+      else
+        @chat_room.members << current_user
+        render json: serialize(User.find(current_user.id)), status: :created
+      end
     end
 
     def update
