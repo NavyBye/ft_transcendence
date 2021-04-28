@@ -1,0 +1,2 @@
+class DmRoomMessage < ApplicationRecord
+end

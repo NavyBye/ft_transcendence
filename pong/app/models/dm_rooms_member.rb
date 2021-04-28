@@ -1,0 +1,2 @@
+class DmRoomsMember < ApplicationRecord
+end
