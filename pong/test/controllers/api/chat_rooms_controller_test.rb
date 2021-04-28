@@ -14,6 +14,12 @@ class ChatRoomsControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
   end
 
+  test "chat_room list my chatrooms api" do
+    get api_my_chatrooms_path, as: :json
+    puts @response.body
+    assert_response :ok
+  end
+
   test "chat_room create api" do
     post api_chat_rooms_path, as: :json
     assert_response :bad_request
