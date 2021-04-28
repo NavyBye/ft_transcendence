@@ -10,9 +10,10 @@ module Api
       render json: @new_block, status: :created
     end
 
-    def delete
+    def destroy
       @cancel_block = Block.find_by(block_params)
-      render json: @cancel_block, status: :no_content
+      @cancel_block.destroy!
+      render json: {}, status: :no_content
     end
 
     private
