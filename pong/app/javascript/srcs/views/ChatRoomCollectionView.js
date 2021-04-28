@@ -1,9 +1,13 @@
+import collection from '../collections';
 import common from '../common';
 import template from '../templates/ChatRoomCollectionView.html';
+import ChatRoomView from './ChatRoomView';
 
-const ChatRoomCollectionView = common.View.extend({
+const ChatRoomCollectionView = common.CollectionView.extend({
   template,
-  onRender() {},
+  childContainer: '#chatroom-collection',
+  ViewType: ChatRoomView,
+  CollectionType: collection.ChatRoomCollection,
 });
 
 export default ChatRoomCollectionView;

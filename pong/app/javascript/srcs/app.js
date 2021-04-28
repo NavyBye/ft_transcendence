@@ -1,23 +1,35 @@
+/* eslint-disable no-unneeded-ternary */
+/* eslint-disable camelcase */
 import Backbone from 'backbone';
 import $ from 'jquery/src/jquery';
 import Radio from 'backbone.radio';
 import view from './views';
 import Router from './router';
 import auth from './utils/auth';
+import ErrorModalView from './views/ErrorModalView';
+import collection from './collections';
 
 const app = {
   start() {
+    $.ajaxSetup({
+      headers: {
+        X_CSRF_TOKEN: auth.getTokenValue(),
+      },
+      error: function error(res) {
+        new ErrorModalView().show('Error', res.responseText);
+      },
+    });
+
     Radio.channel('app').reply('logout', function logout() {
-      app.user = null;
-      const data = {};
-      data[auth.getTokenKey()] = auth.getTokenValue();
       $.ajax({
         type: 'DELETE',
         url: '/sign_out',
-        data,
-        success() {
+        success(res) {
+          app.user = null;
+          $('meta[name="csrf-param"]').attr('content', res.csrf_param);
+          $('meta[name="csrf-token"]').attr('content', res.csrf_token);
           Radio.channel('route').trigger('route', 'login');
-        } /* TODO: Error handling */,
+        },
       });
     });
 
@@ -44,8 +56,53 @@ const app = {
       });
       app.rootView.render();
       if (!Backbone.History.started) Backbone.history.start();
+      Backbone.history.loadUrl(Backbone.history.fragment);
       app.router.navigate(Backbone.history.fragment, { trigger: true });
+
+      /* only when logged in */
+      if (app.user) {
+        /* init routines after login is finished */
+        app.initBlacklist();
+      }
     });
+  },
+  initBlacklist() {
+    /* reply blacklist */
+    app.blacklist = new collection.BlockCollection();
+    app.blacklist.fetch();
+    Radio.channel('blacklist').reply(
+      'filter',
+      function blacklist(model, filterBy, replaceKey) {
+        if (app.blacklist.findWhere({ block_user_id: model.get(filterBy) })) {
+          model.set(replaceKey, 'blocked');
+          return model;
+        }
+        return model;
+      },
+    );
+
+    Radio.channel('blacklist').reply(
+      'isBlocked',
+      function blacklist(model, userIdKey) {
+        const found = app.blacklist.findWhere({
+          blocked_user_id: model.get(userIdKey),
+        });
+        return found ? true : false;
+      },
+    );
+
+    Radio.channel('blacklist').reply('block', function block(block_user_id) {
+      app.blacklist.create({ block_user_id, user_id: app.user.id });
+    });
+
+    Radio.channel('blacklist').reply(
+      'unblock',
+      function unblock(block_user_id) {
+        const blocked = app.blacklist.findWhere({ block_user_id });
+        app.blacklist.remove(blocked);
+        blocked.remove();
+      },
+    );
   },
 };
 

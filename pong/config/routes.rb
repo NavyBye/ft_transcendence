@@ -2,13 +2,14 @@ Rails.application.routes.draw do
   root 'home#index'
   devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks",
+    sessions: "users/sessions",
     registrations: "users/registrations"
   }
   devise_scope :user do
-    delete 'sign_out', to: 'devise/sessions#destroy', as: :destroy_user_session_path
+    delete 'sign_out', to: 'users/sessions#destroy', as: :destroy_user_session_path
   end
 
-  namespace :api do
+  namespace :api, defaults: { format: :json } do
     resources :users, only: %i[index show update] do
       collection do
         get 'rank'
@@ -21,6 +22,17 @@ Rails.application.routes.draw do
       end
       resources :friends, only: %i[index create destroy], param: :follow_id
       resources :blocks, only: %i[index create destroy], param: :blocked_user_id
+      resources :invites, only: %i[index create update destroy]
+    end
+    resources :guilds, only: %i[index show create destroy] do
+      collection do
+        get 'rank'
+        get 'my'
+      end
+      member do
+        get 'histories'
+      end
+      resources :members, only: %i[index update destroy], controller: 'guild_members', param: :user_id
     end
     resources :chat_rooms, path: 'chatrooms', only: %i[index update destroy create] do
       resources :chat_rooms_members, path: 'members', only: %i[index update destroy create]
