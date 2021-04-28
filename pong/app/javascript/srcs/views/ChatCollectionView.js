@@ -106,7 +106,7 @@ const ChatCollectionView = common.CollectionView.extend({
     }
   },
   showChatRoomSettingModalView() {
-    new ChatRoomSettingModalView();
+    new ChatRoomSettingModalView({ chatRoomId: this.collection.chatRoomId });
   },
   showUserModal() {
     new ChatRoomUserCollectionModalView(this.collection.chatRoomId);

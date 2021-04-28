@@ -7,8 +7,9 @@ const ChatRoomSettingModalView = common.View.extend({
     'click .create-button': 'createChatRoom',
     'click #chatroom-setting-is-private': 'togglePassword',
   },
-  onInitialize() {
+  onInitialize(obj) {
     $(this.el).modal('show');
+    if (obj && obj.chatRoomId) this.chatRoomId = obj.chatRoomId;
     $('#chatroom-setting-is-private').prop('checked', false);
     $('#chatroom-setting-password').prop('disabled', true);
 
@@ -28,7 +29,7 @@ const ChatRoomSettingModalView = common.View.extend({
 
     $.ajax({
       type: 'PUT',
-      url: '/api/chatrooms',
+      url: `/api/chatrooms/${this.chatRoomId}`,
       data,
     });
     $(this.el).modal('hide');
