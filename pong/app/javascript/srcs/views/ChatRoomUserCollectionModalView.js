@@ -8,9 +8,9 @@ const ChatRoomUserCollectionModalView = common.View.extend({
   onInitialize(obj) {
     this.collectionView = new ChatRoomUserCollectionView(obj);
     const collectionView = this.collectionView;
-    $('#chatRoomUserModal > .modal-body').append(collectionView.render().el);
+    $('#chatRoomUserModal .modal-body').append(collectionView.render().el);
     $('#chatRoomUserModal').on('hide.bs.modal', function hide() {
-      $('#chatRoomUserModal > .modal-body').html('');
+      $('#chatRoomUserModal .modal-body').html('');
       collectionView.destroy();
     });
   },
