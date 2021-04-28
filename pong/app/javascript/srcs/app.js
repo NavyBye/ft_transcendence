@@ -69,7 +69,7 @@ const app = {
   initBlacklist() {
     /* reply blacklist */
     app.blacklist = new collection.BlockCollection();
-    app.blacklist.fetch();
+    app.blacklist.fetch({ async: false });
     Radio.channel('blacklist').reply(
       'filter',
       function blacklist(model, filterBy, replaceKey) {
@@ -81,28 +81,22 @@ const app = {
       },
     );
 
-    Radio.channel('blacklist').reply(
-      'isBlocked',
-      function blacklist(model, userIdKey) {
-        const found = app.blacklist.findWhere({
-          blocked_user_id: model.get(userIdKey),
-        });
-        return found ? true : false;
-      },
-    );
+    Radio.channel('blacklist').reply('isBlocked', function blacklist(userId) {
+      const found = app.blacklist.findWhere({
+        id: userId,
+      });
+      return found ? true : false;
+    });
 
     Radio.channel('blacklist').reply('block', function block(block_user_id) {
       app.blacklist.create({ block_user_id, user_id: app.user.id });
     });
 
-    Radio.channel('blacklist').reply(
-      'unblock',
-      function unblock(block_user_id) {
-        const blocked = app.blacklist.findWhere({ block_user_id });
-        app.blacklist.remove(blocked);
-        blocked.remove();
-      },
-    );
+    Radio.channel('blacklist').reply('unblock', function unblock(id) {
+      const blocked = app.blacklist.findWhere({ id });
+      app.blacklist.remove(blocked);
+      blocked.destroy();
+    });
   },
 };
 
