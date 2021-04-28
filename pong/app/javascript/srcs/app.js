@@ -75,7 +75,7 @@ const app = {
     Radio.channel('blacklist').reply(
       'filter',
       function blacklist(model, filterBy, replaceKey) {
-        if (app.blacklist.findWhere({ block_user_id: model.get(filterBy) })) {
+        if (app.blacklist.findWhere({ blocked_user_id: model.get(filterBy) })) {
           model.set(replaceKey, 'blocked');
           return model;
         }
@@ -93,14 +93,14 @@ const app = {
       },
     );
 
-    Radio.channel('blacklist').reply('block', function block(block_user_id) {
-      app.blacklist.create({ block_user_id, user_id: app.user.id });
+    Radio.channel('blacklist').reply('block', function block(blocked_user_id) {
+      app.blacklist.create({ blocked_user_id, user_id: app.user.id });
     });
 
     Radio.channel('blacklist').reply(
       'unblock',
-      function unblock(block_user_id) {
-        const blocked = app.blacklist.findWhere({ block_user_id });
+      function unblock(blocked_user_id) {
+        const blocked = app.blacklist.findWhere({ blocked_user_id });
         app.blacklist.remove(blocked);
         blocked.remove();
       },
