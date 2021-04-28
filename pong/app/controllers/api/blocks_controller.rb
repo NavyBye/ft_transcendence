@@ -18,7 +18,7 @@ module Api
     private
 
     def block_params
-      params.require(:user_id, :blocked_user_id)
+      params.permit(:user_id, :blocked_user_id)
     end
   end
 end
