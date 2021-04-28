@@ -16,7 +16,7 @@ class FriendChannel < ApplicationCable::Channel
   private
 
   def serialize
-    @user.reload.to_json only: %i[id nickname status]
+    @user.reload.to_json only: %i[id name nickname status]
   end
 
   def error_invalid(exception)
