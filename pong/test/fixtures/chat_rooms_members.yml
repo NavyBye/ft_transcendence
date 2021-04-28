@@ -7,7 +7,24 @@
 one_hyekim:
   chat_room: chat_room1
   user: hyekim
+  role: 2
 
 one_hyeyoo:
   chat_room: chat_room1
   user: hyeyoo
+  role: 1
+
+one_user1:
+  chat_room: chat_room1
+  user: user1
+  role: 0
+
+one_user2:
+  chat_room: chat_room1
+  user: user2
+  role: 0
+
+private_user1:
+  chat_room: private_room
+  user: user1
+  role: 0

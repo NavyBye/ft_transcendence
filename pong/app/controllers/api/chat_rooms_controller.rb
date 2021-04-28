@@ -1,19 +1,24 @@
 module Api
   class ChatRoomsController < ApplicationController
+    before_action :find_chat_room!, only: %i[update destroy]
     before_action :authenticate_user!
 
     def index
       render json: serialize(ChatRoom.all)
     end
 
+    def index_my_chat_rooms
+      render json: serialize(current_user.chat_rooms)
+    end
+
     def update
-      chat_room = ChatRoom.find(params[:id])
-      chat_room.update! chat_room_params
-      render json: serialize(chat_room)
+      @chat_room = ChatRoom.find(params[:id])
+      @chat_room.update! chat_room_params
+      render json: serialize(@chat_room)
     end
 
     def destroy
-      ChatRoom.find(params[:id]).destroy!
+      @chat_room.destroy!
       render json: {}, status: :ok
     end
 
@@ -25,6 +30,10 @@ module Api
     end
 
     private
+
+    def find_chat_room!
+      @chat_room = ChatRoom.find params[:id]
+    end
 
     def chat_room_params
       params.permit :name, :password
