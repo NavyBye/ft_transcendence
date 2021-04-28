@@ -16,6 +16,8 @@ class User < ApplicationRecord
   has_many :block_as_blocked_user, class_name: "Block", inverse_of: :blocked_user,
                                    foreign_key: :blocked_user_id, dependent: :destroy
   has_many :blacklist, through: :block_as_user, source: :blocked_user
+  has_many :chat_rooms_members, dependent: :destroy
+  has_many :chat_rooms, through: :chat_rooms_members
 
   has_one :guild_member_relation, class_name: "GuildMember", inverse_of: :user,
                                   foreign_key: :user_id, dependent: :destroy
