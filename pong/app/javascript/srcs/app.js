@@ -81,15 +81,12 @@ const app = {
       },
     );
 
-    Radio.channel('blacklist').reply(
-      'isBlocked',
-      function blacklist(model, userIdKey) {
-        const found = app.blacklist.findWhere({
-          id: model.get(userIdKey),
-        });
-        return found ? true : false;
-      },
-    );
+    Radio.channel('blacklist').reply('isBlocked', function blacklist(userId) {
+      const found = app.blacklist.findWhere({
+        id: userId,
+      });
+      return found ? true : false;
+    });
 
     Radio.channel('blacklist').reply('block', function block(block_user_id) {
       app.blacklist.create({ block_user_id, user_id: app.user.id });
