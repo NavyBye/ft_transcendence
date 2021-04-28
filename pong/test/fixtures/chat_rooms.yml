@@ -15,5 +15,5 @@ hello:
   name: "hello"
 
 private_room:
-  name: "private room"
+  name: "private"
   encrypted_password: <%= ChatRoom::Password.create "password" %>
