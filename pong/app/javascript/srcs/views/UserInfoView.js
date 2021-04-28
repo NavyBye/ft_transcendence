@@ -7,12 +7,7 @@ const UserInfoView = common.View.extend({
   template,
   onInitialize() {},
   onRender() {
-    const isBlocked = Radio.channel('blacklist').request(
-      'isBlocked',
-      this.model,
-      'id',
-    );
-    console.log(isBlocked);
+    const isBlocked = Radio.channel('blacklist').request(this.model.get('id'));
     if (isBlocked) {
       $('#block-button').html('unblock');
     }
