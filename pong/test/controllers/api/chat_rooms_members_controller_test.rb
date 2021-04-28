@@ -22,12 +22,11 @@ class ChatRoomsMembersControllerTest < ActionDispatch::IntegrationTest
 
   test "create with password" do
     chat_room = chat_rooms :private_room
-    post api_chat_room_chat_rooms_members_path(chat_room.id), params: {password: "wrong password"}, as: :json
+    post api_chat_room_chat_rooms_members_path(chat_room.id), params: { password: "wrong password" }, as: :json
     assert_response :bad_request
-    post api_chat_room_chat_rooms_members_path(chat_room.id), params: {password: "password"}, as: :json
+    post api_chat_room_chat_rooms_members_path(chat_room.id), params: { password: "password" }, as: :json
     assert_response :created
   end
-
 
   test "update" do
     chat_room = chat_rooms :chat_room1

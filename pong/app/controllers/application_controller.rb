@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   private
-  
+
   def error_not_found(exception)
     model_name = exception.model.humanize
     render json: { message: "#{model_name} is not found!" }, status: :not_found
