@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 2021_04_25_092041) do
     t.integer "role", default: 0, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["guild_id"], name: "index_guild_members_on_guild_id", unique: true
+    t.index ["guild_id"], name: "index_guild_members_on_guild_id"
     t.index ["user_id"], name: "index_guild_members_on_user_id", unique: true
   end
 

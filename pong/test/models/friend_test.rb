@@ -3,7 +3,7 @@ require "test_helper"
 class FriendTest < ActiveSupport::TestCase
   def setup
     @user = users(:hyeyoo)
-    @follow = users(:hyekim)
+    @follow = users(:member)
   end
   test 'friend validate' do
     @friendship = Friend.create(user_id: @user.id, follow_id: @follow.id)
