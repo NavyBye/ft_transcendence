@@ -21,7 +21,7 @@
 }
 
 #chat-collection {
-  position: absolute;
+  overflow-y: scroll;
   word-wrap: break-word;
   padding-right: 0;
   padding-left: 0;
