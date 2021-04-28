@@ -3,7 +3,7 @@ import Radio from 'backbone.radio';
 import model from '../models';
 
 const BlockCollection = Backbone.Collection.extend({
-  model: model.BlockCollection,
+  model: model.BlockModel,
   initialize() {
     const login = Radio.channel('app').request('login');
     this.userId = login.id;
