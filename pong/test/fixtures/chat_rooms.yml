@@ -6,10 +6,14 @@
 #
     
 chat_room1:
-    name: one
+  name: "one"
 
 chat_room2:
-    name: two
+  name: "two"
 
 hello:
-    name: hello
+  name: "hello"
+
+private_room:
+  name: "private"
+  encrypted_password: <%= ChatRoom::Password.create "password" %>
