@@ -19,6 +19,7 @@ const UserProfileModalView = common.View.extend({
     this.addRegion('userinfo', '#user-info');
     this.addRegion('userhistory', '#user-history');
     const user = new model.UserModel(this.userId);
+
     const self = this;
     user.fetch({
       success() {
@@ -45,12 +46,7 @@ const UserProfileModalView = common.View.extend({
   },
   block() {
     console.log('block btn');
-    const login = Radio.channel('app').request('login');
-    $.ajax({
-      type: 'POST',
-      url: `/api/user/${login.id}/block`,
-      data: { user_id: this.userId },
-    });
+    Radio.channel('blacklist').request('block', this.userId);
   },
   requestPong() {
     console.log('rpm');
