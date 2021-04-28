@@ -6,11 +6,13 @@ module Api
     end
 
     def create
+      # TODO : permission check
       @new_block = Block.create(block_params)
       render json: @new_block, status: :created
     end
 
     def destroy
+      # TODO : permission check
       @cancel_block = Block.find_by(block_params)
       @cancel_block.destroy!
       render json: {}, status: :no_content
