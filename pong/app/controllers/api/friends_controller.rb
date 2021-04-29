@@ -1,6 +1,7 @@
 module Api
   class FriendsController < ApplicationController
     before_action :authenticate_user!
+    before_action :check_permission, only: %i[create destroy]
 
     def index
       user = User.find(params[:user_id])
@@ -9,13 +10,13 @@ module Api
     end
 
     def create
-      @friendship = Friend.create(friendship_params)
+      @friendship = Friend.create!(friendship_params)
       render json: @friendship, status: :created
     end
 
     def destroy
       result = Friend.find_by(friendship_params)
-      result.destroy
+      result.destroy!
       render json: { message: 'successfully deleted.' }, status: :no_content
     end
 
@@ -23,6 +24,13 @@ module Api
 
     def friendship_params
       params.permit(:user_id, :follow_id)
+    end
+
+    def check_permission
+      is_admin = false # TODO : admin/owner check.
+      if Integer(params[:user_id]) != Integer(current_user.id) && !is_admin
+        raise Friend::PermissionDenied
+      end
     end
   end
 end
