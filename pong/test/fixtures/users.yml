@@ -4,6 +4,9 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
+
+<% file_path = Rails.root.join('test/fixtures/files') %>
+
 hyeyoo:
     name: hyeyoos
     nickname: 'Private'
@@ -81,6 +84,29 @@ member:
     is_banned: false
     is_email_auth: false
     rating: 5548
+    rank: 4
+    trophy: 0
+
+user_with_image:
+    name: image_user
+    nickname: 'image_user'
+    email: yes@image.com
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 5547
+    rank: 4
+    trophy: 0
+    image: <%= file_path.join('rails_logo.png') %>
+
+user_without_image:
+    name: not_image
+    nickname: 'noimg_user'
+    email: no@image.com
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 5546
     rank: 4
     trophy: 0
 
