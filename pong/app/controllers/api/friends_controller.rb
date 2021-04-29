@@ -28,9 +28,7 @@ module Api
 
     def check_permission
       is_admin = false # TODO : admin/owner check.
-      if Integer(params[:user_id]) != Integer(current_user.id) && !is_admin
-        raise Friend::PermissionDenied
-      end
+      raise Friend::PermissionDenied if Integer(params[:user_id]) != Integer(current_user.id) && !is_admin
     end
   end
 end

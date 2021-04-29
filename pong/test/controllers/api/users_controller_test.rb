@@ -7,38 +7,38 @@ module Api
 
     test 'users index' do
       login :hyeyoo
-      get '/api/users'
+      get api_users_url
       assert_response :success
     end
 
     test 'users index without login' do
-      get '/api/users'
+      get api_users_url
       assert_response :unauthorized
     end
 
     test 'user show' do
       login :hyeyoo
-      get "/api/users/#{@user.id}"
+      get api_user_url(@user.id)
       assert_response :success
     end
 
     test 'user show not found' do
       login :hyeyoo
-      get '/api/users/0'
+      get api_user_url(0)
       assert_response :missing
     end
 
     test 'user show without login' do
-      get '/api/users/1'
+      @user = users(:hyeyoo)
+      get api_user_url(@user.id)
       assert_response :unauthorized
     end
 
     test 'user update' do
       login :hyeyoo
       assert_changes '@user.reload.nickname' do
-        put api_user_path(@user.id), params: { nickname: 'new_nickname' }
+        put api_user_url(@user.id), params: { nickname: 'new_nickname' }
       end
-      result = JSON.parse @response.body
       assert_equal result['nickname'], 'new_nickname'
     end
 
@@ -47,17 +47,28 @@ module Api
       assert_changes '@user.reload.image' do
         file_dir = Rails.root.join('test/fixtures/files/')
         File.open(file_dir.join('rails_logo.png')) do |image_file|
-          put api_user_path(@user.id), params: { image: image_file }
+          put api_user_url(@user.id), params: { image: image_file }
         end
         assert_response :ok
       end
     end
 
+    test 'api_me' do
+      login :hyeyoo
+      get me_api_users_url
+      assert_response :ok
+      assert_equal result['nickname'], @user.nickname
+    end
+
     private
 
-    def login(user_symbol)
-      @user = users(user_symbol)
+    def login(someone)
+      @user = users(someone)
       sign_in @user
+    end
+
+    def result
+      @result = JSON.parse @response.body
     end
   end
 end
