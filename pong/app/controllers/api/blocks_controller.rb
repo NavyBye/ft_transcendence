@@ -1,5 +1,8 @@
 module Api
   class BlocksController < ApplicationController
+    before_action :authenticate_user!
+    before_action :check_permission, only: %i[create destroy]
+
     def index
       @user = User.find(params[:user_id])
       render json: @user.blacklist, status: :ok
@@ -22,6 +25,13 @@ module Api
 
     def block_params
       params.permit(:user_id, :blocked_user_id)
+    end
+
+    def check_permission
+      is_admin = false # TODO : admin/owner check.
+      if Integer(params[:user_id]) != Integer(current_user.id) && !is_admin
+        raise Block::PermissionDenied
+      end
     end
   end
 end
