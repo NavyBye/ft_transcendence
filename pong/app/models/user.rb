@@ -50,7 +50,6 @@ class User < ApplicationRecord
       user.email = auth.info.email
       user.password = Devise.friendly_token[0, 20]
       user.name = auth.info.nickname
-      user.rank = User.initial_rank
     end
   end
 
