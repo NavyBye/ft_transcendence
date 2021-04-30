@@ -22,6 +22,11 @@ main {
 .background-image {
   background-size: cover;
   background-image: url('../images/space.jpg');
+  width: 100%;
+  height: calc(100% - 50px);
+  left: 0;
+  position: absolute;
+  z-index: -1;
 }
 
 #content {
