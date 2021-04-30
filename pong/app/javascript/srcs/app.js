@@ -8,6 +8,7 @@ import Router from './router';
 import auth from './utils/auth';
 import ErrorModalView from './views/ErrorModalView';
 import collection from './collections';
+import model from './models';
 
 const app = {
   start() {
@@ -44,7 +45,7 @@ const app = {
         type: 'GET',
         url: '/api/users/me',
         success(data) {
-          app.user = data;
+          app.user = new model.UserModel(data.id);
         },
       }),
     ]).finally(function then() {
@@ -72,12 +73,12 @@ const app = {
     app.blacklist.fetch({ async: false });
     Radio.channel('blacklist').reply(
       'filter',
-      function blacklist(model, filterBy, replaceKey) {
-        if (app.blacklist.findWhere({ block_user_id: model.get(filterBy) })) {
-          model.set(replaceKey, 'blocked');
-          return model;
+      function blacklist(m, filterBy, replaceKey) {
+        if (app.blacklist.findWhere({ block_user_id: m.get(filterBy) })) {
+          m.set(replaceKey, 'blocked');
+          return m;
         }
-        return model;
+        return m;
       },
     );
 
