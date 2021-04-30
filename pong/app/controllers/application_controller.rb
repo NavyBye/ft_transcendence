@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   rescue_from ActiveRecord::RecordNotFound, with: :error_not_found
   rescue_from ActiveRecord::RecordNotDestroyed, ActiveRecord::RecordInvalid, with: :error_invalid
   rescue_from ChatRoomsMember::PermissionDenied, with: :error_permission_denied
+  rescue_from Friend::PermissionDenied, with: :error_permission_denied
+  rescue_from Block::PermissionDenied, with: :error_permission_denied
 
   protect_from_forgery with: :null_session
 
