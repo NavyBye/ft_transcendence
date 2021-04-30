@@ -46,6 +46,7 @@ const Router = Backbone.Router.extend({
     if (!login) {
       Radio.channel('route').trigger('route', 'login');
     } else {
+      rootView.show('content', new view.MainView());
       rootView
         .getRegion('content')
         .getView()
