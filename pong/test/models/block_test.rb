@@ -7,15 +7,21 @@ class BlockTest < ActiveSupport::TestCase
   end
 
   test 'double block' do
-    @block = Block.create(user_id: @user.id, blocked_user_id: @blocked.id)
+    assert_difference '@user.reload.blacklist.count', 1 do
+      @block = Block.create(user_id: @user.id, blocked_user_id: @blocked.id)
+    end
     assert @block.valid?
 
-    @block = Block.create(user_id: @user.id, blocked_user_id: @blocked.id)
+    assert_no_difference '@user.reload.blacklist.count', 1 do
+      @block = Block.create(user_id: @user.id, blocked_user_id: @blocked.id)
+    end
     assert_not @block.valid?
   end
 
   test 'self block' do
-    @block = Block.create(user_id: @user.id, blocked_user_id: @user.id)
+    assert_no_difference '@user.reload.blacklist.count', 1 do
+      @block = Block.create(user_id: @user.id, blocked_user_id: @user.id)
+    end
     assert_not @block.valid?
   end
 end
