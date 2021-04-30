@@ -45,7 +45,7 @@ const app = {
         type: 'GET',
         url: '/api/users/me',
         success(data) {
-          app.user = new model.UserModel(data.id);
+          app.user = new model.UserModel(data);
         },
       }),
     ]).finally(function then() {
