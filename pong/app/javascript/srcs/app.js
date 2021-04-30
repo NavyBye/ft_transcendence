@@ -56,7 +56,6 @@ const app = {
       });
       app.rootView.render();
       if (!Backbone.History.started) Backbone.history.start();
-      Backbone.history.loadUrl(Backbone.history.fragment);
       app.router.navigate(Backbone.history.fragment, { trigger: true });
 
       /* only when logged in */
