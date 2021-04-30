@@ -1,0 +1,72 @@
+#content .inner-box .rankwrapper {
+  height: calc(100% - 35px - 30px - 30px);
+  padding: 0 20px;
+}
+
+#content .inner-box .rankbody {
+  box-sizing: border-box;
+  height: 100%;
+  border: 1px solid white;
+  background-color: white;
+  margin: 0px;
+  color: black;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 0.0625em 0.0625em,
+    rgba(0, 0, 0, 0.25) 0px 0.125em 0.5em,
+    rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
+  overflow-y: scroll;
+}
+
+#content .inner-box .ranktitle {
+  height: 35px;
+  text-align: center;
+  font-family: sans-serif;
+  color: black;
+}
+
+#user-rank {
+  padding: 0 10px;
+  height: 40px;
+}
+
+#user-rank .rank-text-1 .ranking {
+  background-image: url('../images/gold.png');
+  font-size: large;
+}
+
+#user-rank .rank-text-1 .nickname {
+}
+
+#user-rank .rank-text-1 .rating {
+}
+
+#user-rank .rank-text-2 .ranking {
+  background-image: url('../images/silver.png');
+}
+
+#user-rank .rank-text-2 .nickname {
+}
+
+#user-rank .rank-text-2 .rating {
+}
+
+#user-rank .rank-text-3 .ranking {
+  background-image: url('../images/bronze.png');
+  display: block;
+}
+
+#user-rank .rank-text-3 .nickname {
+}
+
+#user-rank .rank-text-3 .rating {
+}
+
+#user-rank .rank-text .ranking {
+  background-image: url('../images/normal.png');
+}
+
+#user-rank .rank-text .nickname {
+}
+
+#user-rank .rank-text .rating {
+}
