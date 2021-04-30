@@ -18,6 +18,12 @@ class DmRoomsMembersControllerTest < ActionDispatch::IntegrationTest
     dm_room = dm_rooms :dm_room1
     put api_dm_room_dm_rooms_members_path(dm_room.id), params: { exited: true }, as: :json
     assert_response :ok
+    assert_not_nil dm_room.reload
+
+    sign_in users(:hyeyoo)
+    put api_dm_room_dm_rooms_members_path(dm_room.id), params: { exited: true }, as: :json
+    assert_response :ok
+    assert_raises(ActiveRecord::RecordNotFound) { dm_room.reload }
 
     dm_room = dm_rooms :dm_room2
     put api_dm_room_dm_rooms_members_path(dm_room.id), params: { exited: true }, as: :json
