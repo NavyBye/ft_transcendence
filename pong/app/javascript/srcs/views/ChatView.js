@@ -8,7 +8,7 @@ const ChatView = common.View.extend({
   sendTemplate,
   onInitialize() {
     const me = Radio.channel('app').request('login');
-    if (this.model.get('user_id') === me.id) {
+    if (this.model.get('user_id') === me.get('id')) {
       this.template = sendTemplate;
     } else {
       this.template = recvTemplate;
