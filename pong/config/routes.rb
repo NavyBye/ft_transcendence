@@ -40,7 +40,8 @@ Rails.application.routes.draw do
       resources :chat_room_messages, path: 'messages', only: %i[index]
     end
     resources :dm_rooms, path: 'dmrooms', only: %i[index create] do
-      resources :dm_rooms_members, path: 'members', only: %i[index update]
+      resources :dm_rooms_members, path: 'members', only: %i[index]
+      put '/members', to: 'dm_rooms_members#update'
       resources :dm_room_messages, path: 'messages', only: %i[index]
     end
   end
