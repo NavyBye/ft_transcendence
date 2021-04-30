@@ -16,5 +16,11 @@ module Api
       dm_room.members << [current_user, User.find params[:user_id]]
       render json: serialize(dm_room), status: :created
     end
+
+    private
+
+    def serialize(dm_room)
+      dm_room.to_json methods: :name
+    end
   end
 end

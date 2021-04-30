@@ -1,4 +1,6 @@
 class DmRoomsMember < ApplicationRecord
+  class PermissionDenied < StandardError; end
+
   belongs_to :dm_room
   belongs_to :user
 
