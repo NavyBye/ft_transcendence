@@ -1,4 +1,55 @@
-<div class="inner-box background-dark">
-  <h3 class="title">Title Here</h3>
-  <div class="body">Content Here</div>
+<div id="my-page" class="inner-box background-dark">
+  <h3 class="title">My Page</h3>
+  <div class="body">
+    <div class="profile">
+      <div class="upload-image">
+        <img width="200" height="200" />
+        <label class="btn btn-primary">
+          <input id="image-button" type="file" hidden />
+          Upload
+        </label>
+      </div>
+      <form>
+        <div class="inner-box">
+          <div class="form-group row">
+            <label for="inputEmail3" class="col-sm-2 col-form-label"
+              >Nickname</label
+            >
+            <div class="col-sm-10">
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail3"
+                placeholder="Email"
+              />
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-2">Enable 2FA</div>
+            <div class="col-sm-10">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="gridCheck1"
+                />
+                <label class="form-check-label" for="gridCheck1">
+                  Example checkbox
+                </label>
+              </div>
+            </div>
+          </div>
+          <p>
+            if you enable 2 factor authentication, we send an email check your
+            identity when you login
+          </p>
+          <div class="form-group row">
+            <div class="col-sm-12">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
