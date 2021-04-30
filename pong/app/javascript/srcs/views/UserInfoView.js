@@ -7,12 +7,15 @@ const UserInfoView = common.View.extend({
   template,
   onInitialize() {},
   onRender() {
-    const isBlocked = Radio.channel('blacklist').request(this.model.get('id'));
+    const isBlocked = Radio.channel('blacklist').request(
+      'isBlocked',
+      this.model.get('id'),
+    );
     if (isBlocked) {
       $('#block-button').html('unblock');
     }
-    $('#add-friend-button').html('test');
-    $('#guild-invite-button').html('gugugugugu');
+    $('#add-friend-button').html('Add Friend');
+    $('#guild-invite-button').html('길드초대');
   },
 });
 

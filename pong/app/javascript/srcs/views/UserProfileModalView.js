@@ -28,9 +28,8 @@ const UserProfileModalView = common.View.extend({
       },
     });
     $(this.el).modal('show');
-    const view = this;
     $(this.el).on('hide.bs.modal', function destroy() {
-      view.destroy();
+      self.destroy();
     });
   },
   onRender() {},
@@ -45,11 +44,20 @@ const UserProfileModalView = common.View.extend({
     });
   },
   block() {
-    console.log('block btn');
-    Radio.channel('blacklist').request('block', this.userId);
+    const isBlocked = Radio.channel('blacklist').request(
+      'isBlocked',
+      this.userId,
+    );
+    if (isBlocked) {
+      // Radio.channel('blacklist').request('unblock', this.userId);
+      this.getRegion('userinfo').render();
+    } else {
+      // Radio.channel('blacklist').request('block', this.userId);
+      this.getRegion('userinfo').render();
+    }
   },
   requestPong() {
-    console.log('rpm');
+    console.log('아직 미구현!');
   },
   guildInvite() {
     console.log('guild');
