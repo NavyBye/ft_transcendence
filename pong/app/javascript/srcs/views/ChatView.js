@@ -21,7 +21,7 @@ const ChatView = common.View.extend({
       this.template = sendTemplate;
     } else {
       this.template = recvTemplate;
-      this.menu = new BootstrapMenu(`.recv-chat[user-id=${userId}]`, {
+      this.menu = new BootstrapMenu(this.el, {
         actions: [
           {
             /* TODO: add should be in profile, it's for testing */

@@ -9,7 +9,7 @@ const FriendView = common.View.extend({
   onRender() {
     const id = this.model.get('id');
     const login = Radio.channel('app').request('login');
-    this.menu = new BootstrapMenu(`.friend[id=${id}]`, {
+    this.menu = new BootstrapMenu(this.el, {
       actions: [
         {
           name: 'Destroy',

@@ -9,8 +9,8 @@ const ChatRoomUserView = common.View.extend({
   events: {
     click: 'showUserProfile',
   },
-  showUserProfile(event) {
-    const id = event.target.getAttribute('user-id');
+  showUserProfile() {
+    const id = this.model.get('id');
     $('#chatRoomUserModal').modal('hide');
     new UserProfileModalView(id);
   },

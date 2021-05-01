@@ -48,7 +48,7 @@ const ChatRoomView = common.View.extend({
           classNames: 'dropdown-item',
         };
 
-    this.menu = new BootstrapMenu(`.chatroom[room-id=${chatRoomId}]`, {
+    this.menu = new BootstrapMenu(this.el, {
       actions: [
         joinOrExit,
         {
