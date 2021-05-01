@@ -34,7 +34,7 @@ const SideView = common.View.extend({
     } else if (target === 'friend-tab') {
       const login = Radio.channel('app').request('login');
       this.getRegion('content').show(
-        new view.FriendCollectionView({ userId: login.id }),
+        new view.FriendCollectionView({ userId: login.get('id') }),
       );
     }
   },

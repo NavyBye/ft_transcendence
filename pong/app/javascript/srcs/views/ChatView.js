@@ -30,7 +30,7 @@ const ChatView = common.View.extend({
               const login = Radio.channel('app').request('login');
               $.ajax({
                 type: 'POST',
-                url: `/api/users/${login.id}/friends`,
+                url: `/api/users/${login.get('id')}/friends`,
                 data: { follow_id: userId },
               });
             },

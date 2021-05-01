@@ -16,7 +16,7 @@ const FriendView = common.View.extend({
           onClick() {
             $.ajax({
               type: 'DELETE',
-              url: `/api/users/${login.id}/friends/${id}`,
+              url: `/api/users/${login.get('id')}/friends/${id}`,
             });
           },
           classNames: 'dropdown-item',
