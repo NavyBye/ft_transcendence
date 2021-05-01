@@ -38,6 +38,13 @@ const app = {
       return app.user;
     });
 
+    app.rootView = new view.RootView();
+    /* reply rootView */
+    Radio.channel('app').reply('rootView', function getRootView() {
+      return app.rootView;
+    });
+    app.rootView.render();
+
     Promise.all([
       /* get userinfo */
       $.ajax({
@@ -59,7 +66,20 @@ const app = {
       if (app.user) {
         /* init routines after login is finished */
         app.initBlacklist();
+        app.initChatRoomList();
       }
+    });
+  },
+  initChatRoomList() {
+    app.chatRoomList = new collection.ChatRoomCollection();
+    app.chatRoomList.url = function url() {
+      return '/api/my/chatrooms';
+    };
+
+    app.chatRoomList.fetch({ async: false });
+    Radio.channel('chatroom').reply('isJoined', function isJoined(chatRoomId) {
+      const found = app.chatRoomList.findWhere({ id: chatRoomId });
+      return found ? true : false;
     });
   },
   initBlacklist() {
