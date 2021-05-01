@@ -2,7 +2,7 @@ import Backbone from 'backbone';
 import model from '../models';
 
 const FriendCollection = Backbone.Collection.extend({
-  model: model.FriendModel,
+  model: model.UserModel,
   initialize(obj) {
     if (obj && obj.userId) this.userId = obj.userId;
   },
