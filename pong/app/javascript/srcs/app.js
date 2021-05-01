@@ -84,14 +84,17 @@ const app = {
       return found ? true : false;
     });
 
-    Radio.channel('blacklist').reply('block', function block(block_user_id) {
-      app.blacklist.create({ block_user_id, user_id: app.user.id });
+    Radio.channel('blacklist').reply('block', function block(blocked_user_id) {
+      app.blacklist.create({ blocked_user_id, user_id: app.user.get('id') });
     });
 
     Radio.channel('blacklist').reply('unblock', function unblock(id) {
       const blocked = app.blacklist.findWhere({ id });
       app.blacklist.remove(blocked);
-      blocked.destroy();
+      $.ajax({
+        type: 'DELETE',
+        url: `/api/users/${app.user.get('id')}/blocks/${id}`,
+      });
     });
   },
 };
