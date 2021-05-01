@@ -3,12 +3,10 @@ module Chat
     @self_broadcasting = "#{self.class}##{current_user.id}"
     stream_from @self_broadcasting
     @room = find_room!
-    unless @room.members.exists? id: current_user.id
-      puts "HI loser"
-      self.class.broadcast_to @room, { data: "not member of a room", status: 403 }
-    else
-      puts @room
+    if @room.members.exists? id: current_user.id
       stream_for @room
+    else
+      self.class.broadcast_to @room, { data: "not member of a room", status: 403 }
     end
   end
 
