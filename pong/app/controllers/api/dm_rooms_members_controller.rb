@@ -14,7 +14,6 @@ module Api
       if dm_rooms_member.exited?
         opponent = DmRoomsMember.find_by! 'user_id != :user_id AND dm_room_id = :dm_room_id', user_id: current_user.id,
                                                                                               dm_room_id: params[:dm_room_id]
-        puts opponent.to_json
         opponent.dm_room.destroy! if opponent.exited?
       end
       render json: {}, status: :ok
@@ -31,7 +30,7 @@ module Api
     end
 
     def serialize(user)
-      user.to_json
+      user.as_json
     end
   end
 end

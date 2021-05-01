@@ -55,7 +55,7 @@ module Api
     end
 
     def serialize(user)
-      user.to_json
+      user.as_json
     end
   end
 end

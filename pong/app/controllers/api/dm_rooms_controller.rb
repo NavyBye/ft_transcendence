@@ -31,7 +31,7 @@ module Api
     end
 
     def serialize(dm_room)
-      dm_room.to_json only: :id, methods: :name
+      dm_room.as_json only: :id, methods: :name
     end
   end
 end
