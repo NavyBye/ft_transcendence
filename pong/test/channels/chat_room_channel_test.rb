@@ -15,7 +15,6 @@ class ChatRoomChannelTest < ActionCable::Channel::TestCase
     assert_has_stream_for @chat_room
 
     perform :receive, body: "I'm here!"
-    puts transmissions
   end
 
   test "broadcast" do

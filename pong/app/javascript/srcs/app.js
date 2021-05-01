@@ -1,6 +1,5 @@
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable camelcase */
-import Backbone from 'backbone';
 import $ from 'jquery/src/jquery';
 import Radio from 'backbone.radio';
 import view from './views';
@@ -8,6 +7,7 @@ import Router from './router';
 import auth from './utils/auth';
 import ErrorModalView from './views/ErrorModalView';
 import collection from './collections';
+import model from './models';
 
 const app = {
   start() {
@@ -44,21 +44,17 @@ const app = {
         type: 'GET',
         url: '/api/users/me',
         success(data) {
-          app.user = data;
+          app.user = new model.UserModel(data);
         },
       }),
     ]).finally(function then() {
-      app.router = new Router();
       /* reply rootView */
       app.rootView = new view.RootView();
       Radio.channel('app').reply('rootView', function getRootView() {
         return app.rootView;
       });
       app.rootView.render();
-      if (!Backbone.History.started) Backbone.history.start();
-      Backbone.history.loadUrl(Backbone.history.fragment);
-      app.router.navigate(Backbone.history.fragment, { trigger: true });
-
+      app.router = new Router();
       /* only when logged in */
       if (app.user) {
         /* init routines after login is finished */
@@ -72,12 +68,12 @@ const app = {
     app.blacklist.fetch({ async: false });
     Radio.channel('blacklist').reply(
       'filter',
-      function blacklist(model, filterBy, replaceKey) {
-        if (app.blacklist.findWhere({ block_user_id: model.get(filterBy) })) {
-          model.set(replaceKey, 'blocked');
-          return model;
+      function blacklist(m, filterBy, replaceKey) {
+        if (app.blacklist.findWhere({ block_user_id: m.get(filterBy) })) {
+          m.set(replaceKey, 'blocked');
+          return m;
         }
-        return model;
+        return m;
       },
     );
 

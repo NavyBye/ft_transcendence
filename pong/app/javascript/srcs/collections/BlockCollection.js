@@ -6,10 +6,10 @@ const BlockCollection = Backbone.Collection.extend({
   model: model.UserModel,
   initialize() {
     const login = Radio.channel('app').request('login');
-    this.userId = login.id;
+    this.userId = login.get('id');
   },
   url() {
-    return `/api/users/${this.userId}/block`;
+    return `/api/users/${this.userId}/blocks`;
   },
 });
 

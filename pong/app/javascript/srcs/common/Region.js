@@ -9,6 +9,10 @@ function Region(regionName, selector) {
     this.view = view;
     this.view.render(selector);
   };
+
+  this.getView = function getView() {
+    return this.view;
+  };
 }
 
 export default Region;
