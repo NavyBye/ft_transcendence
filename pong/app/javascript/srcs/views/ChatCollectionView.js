@@ -87,7 +87,7 @@ const ChatCollectionView = common.CollectionView.extend({
   afterAdd() {
     setTimeout(function callback() {
       $('#chat-collection').scrollTop($('#chat-collection')[0].scrollHeight);
-    }, 0.1);
+    }, 0.25);
   },
   sendMsg() {
     const body = $('#input-chat input').val();
