@@ -16,11 +16,11 @@ const ChatView = common.View.extend({
   },
   onInitialize() {
     const me = Radio.channel('app').request('login');
-    if (this.model.get('user_id') === me.get('id')) {
+    const userId = this.model.get('user').id;
+    if (userId === me.get('id')) {
       this.template = sendTemplate;
     } else {
       this.template = recvTemplate;
-      const userId = this.model.get('user').id;
       this.menu = new BootstrapMenu(`.recv-chat[user-id=${userId}]`, {
         actions: [
           {

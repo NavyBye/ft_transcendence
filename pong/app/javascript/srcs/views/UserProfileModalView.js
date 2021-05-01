@@ -18,7 +18,7 @@ const UserProfileModalView = common.View.extend({
     this.userId = obj;
     this.addRegion('userinfo', '#user-info');
     this.addRegion('userhistory', '#user-history');
-    const user = new model.UserModel(this.userId);
+    const user = new model.UserModel({ id: this.userId });
 
     const self = this;
     user.fetch({
