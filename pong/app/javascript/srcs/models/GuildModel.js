@@ -1,6 +1,6 @@
 import Backbone from 'backbone';
 
-const GuildRankingModel = Backbone.Model.extend({
+const GuildModel = Backbone.Model.extend({
   defaults: {
     id: 0,
     name: '',
@@ -8,4 +8,4 @@ const GuildRankingModel = Backbone.Model.extend({
   },
 });
 
-export default GuildRankingModel;
+export default GuildModel;
