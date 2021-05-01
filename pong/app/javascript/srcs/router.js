@@ -21,6 +21,10 @@ const Router = Backbone.Router.extend({
     channel.on('refresh', function refresh() {
       Backbone.history.loadUrl(Backbone.history.fragment);
     });
+
+    if (!Backbone.History.started) {
+      Backbone.history.start();
+    }
   },
   home() {
     const rootView = Radio.channel('app').request('rootView');

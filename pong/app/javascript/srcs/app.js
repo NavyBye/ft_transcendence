@@ -1,6 +1,5 @@
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable camelcase */
-import Backbone from 'backbone';
 import $ from 'jquery/src/jquery';
 import Radio from 'backbone.radio';
 import view from './views';
@@ -58,16 +57,13 @@ const app = {
         },
       }),
     ]).finally(function then() {
-      app.router = new Router();
       /* reply rootView */
       app.rootView = new view.RootView();
       Radio.channel('app').reply('rootView', function getRootView() {
         return app.rootView;
       });
       app.rootView.render();
-      if (!Backbone.History.started) Backbone.history.start();
-      app.router.navigate(Backbone.history.fragment, { trigger: true });
-
+      app.router = new Router();
       /* only when logged in */
       if (app.user) {
         /* init routines after login is finished */
