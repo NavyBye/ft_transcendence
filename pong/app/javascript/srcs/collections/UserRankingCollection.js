@@ -3,6 +3,8 @@ import model from '../models';
 
 const UserRankingCollection = Backbone.Collection.extend({
   model: model.UserRankingModel,
+  comparator: 'rank',
+  initialize() {},
   url() {
     return `/api/users/rank`;
   },

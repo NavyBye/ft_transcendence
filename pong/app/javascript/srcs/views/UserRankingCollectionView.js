@@ -9,6 +9,10 @@ const UserRankingCollectionView = common.CollectionView.extend({
   ViewType: UserRankingView,
   CollectionType: collection.UserRankingCollection,
   onRender() {},
+  afterAdd() {
+    this.collection.sort();
+    this.reRender();
+  },
 });
 
 export default UserRankingCollectionView;
