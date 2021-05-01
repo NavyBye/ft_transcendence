@@ -7,11 +7,9 @@ const UserModel = Backbone.Model.extend({
     name: '',
     rating: 0,
   },
-  initialize(userId) {
-    this.userId = userId;
-  },
   url() {
-    return `/api/users/${this.userId}`;
+    const id = this.get('id');
+    return `/api/users/${id}`;
   },
 });
 
