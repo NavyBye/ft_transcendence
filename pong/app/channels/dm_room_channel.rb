@@ -1,4 +1,4 @@
-class ChatRoomChannel < ApplicationCable::Channel
+class DmRoomChannel < ApplicationCable::Channel
   rescue_from ActiveRecord::RecordInvalid, with: :error_invalid
   rescue_from ActiveRecord::RecordNotFound, with: :error_not_found
 
@@ -9,14 +9,14 @@ class ChatRoomChannel < ApplicationCable::Channel
   private
 
   def error_invalid(exception)
-    ChatRoomChannel.broadcast_to @self_broadcasting, { data: exception, status: :bad_request }
+    DmRoomChannel.broadcast_to @self_broadcasting, { data: exception, status: :bad_request }
   end
 
   def error_not_found(exception)
-    ChatRoomChannel.broadcast_to @self_broadcasting, { data: exception, status: :not_found }
+    DmRoomChannel.broadcast_to @self_broadcasting, { data: exception, status: :not_found }
   end
 
   def find_room!
-    ChatRoom.find params[:id]
+    DmRoom.find params[:id]
   end
 end
