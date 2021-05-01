@@ -33,8 +33,6 @@ const app = {
       });
     });
 
-    if (!Backbone.History.started) Backbone.history.start();
-
     /* reply user */
     Radio.channel('app').reply('login', function getUser() {
       return app.user;
