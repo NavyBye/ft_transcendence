@@ -71,6 +71,18 @@ const CollectionView = Backbone.View.extend({
     const region = this.getRegion(regionName);
     region.show(view);
   },
+  reRender() {
+    const self = this;
+    $(this.childContainer).empty();
+    _.each(this.subViews, function destroySubViews(subView) {
+      subView.destroy();
+    });
+    this.collection.each(function rerender(model) {
+      const view = new self.ViewType({ model });
+      self.subViews.push(view);
+      Promise.all([$(self.childContainer).append(view.render().el)]);
+    });
+  },
 });
 
 export default CollectionView;

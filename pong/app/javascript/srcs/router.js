@@ -7,6 +7,7 @@ const Router = Backbone.Router.extend({
     '': 'home',
     home: 'home',
     login: 'login',
+    ranking: 'rankPage',
     mypage: 'myPage',
   },
   initialize() {
@@ -44,13 +45,25 @@ const Router = Backbone.Router.extend({
       rootView.show('content', new view.LoginView());
     }
   },
+  rankPage() {
+    const rootView = Radio.channel('app').request('rootView');
+    const login = Radio.channel('app').request('login');
+    if (!login) {
+      Radio.channel('route').trigger('route', 'login');
+    } else {
+      rootView.show('content', new view.MainView());
+      rootView
+        .getRegion('content')
+        .getView()
+        .show('content', new view.RankPageView());
+    }
+  },
   myPage() {
     const rootView = Radio.channel('app').request('rootView');
     const login = Radio.channel('app').request('login');
     if (!login) {
       Radio.channel('route').trigger('route', 'login');
     } else {
-      console.log(login);
       rootView.show('content', new view.MainView());
       rootView
         .getRegion('content')

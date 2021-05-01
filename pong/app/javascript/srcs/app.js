@@ -105,7 +105,7 @@ const app = {
     });
 
     Radio.channel('blacklist').reply('block', function block(blocked_user_id) {
-      app.blacklist.create({ blocked_user_id, user_id: app.user.id });
+      app.blacklist.create({ blocked_user_id, user_id: app.user.get('id') });
     });
 
     Radio.channel('blacklist').reply('unblock', function unblock(id) {
@@ -113,7 +113,7 @@ const app = {
       app.blacklist.remove(blocked);
       $.ajax({
         type: 'DELETE',
-        url: `/api/users/${app.user.id}/blocks/${id}`,
+        url: `/api/users/${app.user.get('id')}/blocks/${id}`,
       });
     });
   },
