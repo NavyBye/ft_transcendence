@@ -1,14 +1,15 @@
 module Api
   class RoomMessagesController < ApplicationController
     before_action :authenticate_user!
+    before_action :find_room!
+    before_action :check_permission!
 
     def index
-      room = find_room!
       if params[:page].nil?
-        last_page = room.messages.page(0).total_pages
-        render json: serialize(room, last_page), status: :ok
+        last_page = @room.messages.page(0).total_pages
+        render json: serialize(@room, last_page), status: :ok
       else
-        render json: serialize(room, params[:page]), status: :ok
+        render json: serialize(@room, params[:page]), status: :ok
       end
     end
 
