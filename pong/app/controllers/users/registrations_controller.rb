@@ -16,7 +16,8 @@ module Users
 
       if resource.save
         sign_up(resource_name, resource)
-        respond_with resource, location: after_sign_up_path_for(resource)
+        # respond_with resource, location: after_sign_up_path_for(resource)
+        render json: resource, status: :created
       else
         expire_data_after_sign_in!
         clean_up_passwords resource

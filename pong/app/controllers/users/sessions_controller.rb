@@ -11,9 +11,11 @@ module Users
     # end
 
     # POST /resource/sign_in
-    # def create
-    #   super
-    # end
+    def create
+	  self.resource = warden.authenticate!(auth_options)
+	  sign_in(resource_name, resource)
+      render json: resource, status: :ok
+    end
 
     # DELETE /resource/sign_out
     def destroy
