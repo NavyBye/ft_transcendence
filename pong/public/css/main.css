@@ -37,12 +37,13 @@ main {
   height: calc(100% - 50px);
 }
 
-/* @media (min-width: 576px) {
-.navbar-brand.abs
-    {
-        position: absolute;
-        width: 100%;
-        left: 0;
-        text-align: center;
-    }
-} */
+@media (max-width: 576px) {
+  #collapsingNavbar {
+    background: #343a40;
+    position: relative;
+    right: -10rem;
+    width: 100%;
+    padding-left: 5px;
+    text-justify: auto;
+  }
+}
