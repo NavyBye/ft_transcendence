@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   rescue_from DmRoomsMember::PermissionDenied, with: :error_permission_denied
   rescue_from Friend::PermissionDenied, with: :error_permission_denied
   rescue_from Block::PermissionDenied, with: :error_permission_denied
+  rescue_from User::PermissionDenied, with: :error_permission_denied
 
   protect_from_forgery with: :null_session
 

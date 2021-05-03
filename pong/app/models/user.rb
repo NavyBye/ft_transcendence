@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  class PermissionDenied < StandardError; end
+
   mount_uploader :image, UserImageUploader
 
   # constants & enums
