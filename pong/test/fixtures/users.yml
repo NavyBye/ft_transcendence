@@ -110,6 +110,54 @@ user_without_image:
     rank: 4
     trophy: 0
 
+owner:
+    name: owner_user
+    nickname: 'owner_u'
+    email: owner@airforcebye.com
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 5499
+    rank: 5
+    trophy: 0
+    role: 2
+
+admin:
+    name: admin_user
+    nickname: 'admin_u'
+    email: admin@airforcebye.com
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 5498
+    rank: 5
+    trophy: 0
+    role: 1
+
+banned_admin:
+    name: banned_admin
+    nickname: 'admin_b'
+    email: banned_admin@airforcebye.com
+    status: 0
+    is_banned: true
+    is_email_auth: false
+    rating: 5497
+    rank: 5
+    trophy: 0
+    role: 1
+
+banned_user:
+    name: banned_user
+    nickname: 'user_b'
+    email: banned_user@airforcebye.com
+    status: 0
+    is_banned: true
+    is_email_auth: false
+    rating: 5496
+    rank: 5
+    trophy: 0
+    role: 1
+
 <% 10.times do |n| %>
 user<%= n %>:
     name:  <%= "user#{n}" %>

@@ -94,4 +94,18 @@ class UserTest < ActiveSupport::TestCase
       end
     end
   end
+
+  # role test
+  test 'role validations' do
+    assert_raises ArgumentError do
+      @valid_user.role = -1
+    end
+    assert_raises ArgumentError do
+      @valid_user.role = 3
+    end
+    (0..2).each do |i|
+      @valid_user.status = i
+      assert @valid_user.valid?
+    end
+  end
 end
