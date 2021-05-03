@@ -1,0 +1,18 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+
+<% 100.times do |n| %>
+dmroom1_hyekim_message<%= n %>:
+  user: hyekim
+  dm_room: dm_room1
+  body: <%= "hello#{n} from hyekim in dm" %>
+
+dmroom1_hyeyoo_message<%= n %>:
+  user: hyeyoo
+  dm_room: dm_room1
+  body: <%= "hello#{n} from hyeyoo in dm" %>
+<% end %>
