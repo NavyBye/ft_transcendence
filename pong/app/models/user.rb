@@ -28,6 +28,8 @@ class User < ApplicationRecord
   has_many :invitations, class_name: "Invite", inverse_of: :user, foreign_key: :user_id, dependent: :destroy
   has_many :invited_guilds, through: :invitations, source: :guild
 
+  has_one :auth, class_name: "EmailAuth", foreign_key: :user_id, inverse_of: :user, dependent: :destroy
+
   # validations
   validates :status, inclusion: { in: User.statuses.keys }
   validates :nickname, length: { in: 2..20 }
