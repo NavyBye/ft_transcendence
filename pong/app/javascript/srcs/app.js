@@ -36,6 +36,16 @@ const app = {
       return app.user;
     });
 
+    Radio.channel('login').reply('fetch', function fetcg() {
+      $.ajax({
+        type: 'GET',
+        url: '/api/users/me',
+        success(data) {
+          app.user = new model.UserModel(data);
+        },
+      });
+    });
+
     app.rootView = new view.RootView();
     /* reply rootView */
     Radio.channel('app').reply('rootView', function getRootView() {
