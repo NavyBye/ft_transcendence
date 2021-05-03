@@ -19,6 +19,8 @@ Rails.application.routes.draw do
       member do
         get 'game'
         get 'history'
+        post 'designate', controller: 'admin'
+        post 'ban', controller: 'admin'
       end
       resources :friends, only: %i[index create destroy], param: :follow_id
       resources :blocks, only: %i[index create destroy], param: :blocked_user_id
