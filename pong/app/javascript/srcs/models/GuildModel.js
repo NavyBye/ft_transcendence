@@ -4,7 +4,8 @@ const GuildModel = Backbone.Model.extend({
   defaults: {
     id: 0,
     name: '',
-    rating: 1,
+    point: 1,
+    point_rank: 1,
   },
 });
 

@@ -16,17 +16,19 @@
     rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
   overflow-y: scroll;
   margin-top: 10px;
-  /* min-width: 350px; */
   float: left;
   width: calc(49% - 40px);
 }
 
 @media screen and (max-width: 1200px) {
   #content > div > div > div:nth-child(2) {
-    display: none;
+    height: calc(50% - 44px) !important;
+    width: 90% !important;
+    /* display: none; */
   }
 
   #content > div > div > div:nth-child(1) {
+    height: calc(50% - 44px) !important;
     width: 90% !important;
   }
 }
@@ -38,18 +40,13 @@
   color: black;
 }
 
-/* #user-rank {
-  padding: 0 10px;
-  height: 40px;
-} */
-
-#user-rank .rank-text {
+#content .rank-text {
   height: 30px;
   margin-bottom: 5px;
   margin-left: 0px;
 }
 
-#user-rank .rank-text .ranking {
+#content .rank-text .ranking {
   background-image: url('../images/normal.png');
   background-size: 24px;
   background-position: center;
@@ -60,24 +57,24 @@
   width: 33%;
 }
 
-#user-rank .rank-text .nickname {
+#content .rank-text .nickname {
   float: left;
   width: 33%;
 }
 
-#user-rank .rank-text .rating {
+#content .rank-text .rating {
   float: left;
   width: 33%;
 }
 
-#user-rank .rank-text .rank-1 {
+#content .rank-text .rank-1 {
   background-image: url('../images/gold.png');
 }
 
-#user-rank .rank-text .rank-2 {
+#content .rank-text .rank-2 {
   background-image: url('../images/silver.png');
 }
 
-#user-rank .rank-text .rank-3 {
+#content .rank-text .rank-3 {
   background-image: url('../images/bronze.png');
 }

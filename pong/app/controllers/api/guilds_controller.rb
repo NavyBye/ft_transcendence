@@ -6,7 +6,7 @@ module Api
     end
 
     def rank
-      render json: Guild.all.order(point: :desc).page(params[:page]), status: :ok
+      render json: Guild.all.order(point: :desc), status: :ok
     end
 
     def my

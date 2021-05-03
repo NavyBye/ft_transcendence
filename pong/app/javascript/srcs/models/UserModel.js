@@ -7,6 +7,7 @@ const UserModel = Backbone.Model.extend({
     name: '',
     rating: 0,
     status: 0,
+    rating_rank: 1,
   },
   url() {
     const id = this.get('id');

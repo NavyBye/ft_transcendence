@@ -18,3 +18,10 @@ test:
     name: tguild
     anagram: TGLD
     point: 555
+
+<% 100.times do |n| %>
+guild_<%= n %>:
+    name: guild_<%= n %>
+    anagram: "<%= n.to_s.rjust(4, '0') %>"
+    point: <%= n %>
+<% end %>
