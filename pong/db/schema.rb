@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_03_050131) do
+ActiveRecord::Schema.define(version: 2021_05_03_054716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,15 @@ ActiveRecord::Schema.define(version: 2021_05_03_050131) do
     t.index ["dm_room_id"], name: "index_dm_rooms_members_on_dm_room_id"
     t.index ["user_id", "dm_room_id"], name: "index_dm_rooms_members_on_user_id_and_dm_room_id", unique: true
     t.index ["user_id"], name: "index_dm_rooms_members_on_user_id"
+  end
+
+  create_table "email_auths", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "code"
+    t.boolean "confirm"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_email_auths_on_user_id", unique: true
   end
 
   create_table "friends", force: :cascade do |t|
@@ -158,6 +167,7 @@ ActiveRecord::Schema.define(version: 2021_05_03_050131) do
   add_foreign_key "dm_room_messages", "users", on_delete: :cascade
   add_foreign_key "dm_rooms_members", "dm_rooms", on_delete: :cascade
   add_foreign_key "dm_rooms_members", "users", on_delete: :cascade
+  add_foreign_key "email_auths", "users"
   add_foreign_key "friends", "users"
   add_foreign_key "friends", "users", column: "follow_id"
   add_foreign_key "guild_members", "guilds"
