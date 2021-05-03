@@ -40,15 +40,6 @@
   color: black;
 }
 
-/* #content #user-rank #user-ranking-collection{
-  overflow-y: scroll;
-  height: calc(100% - 35px - 35px -30px - 30px);
-} */
-/* #user-rank {
-  padding: 0 10px;
-  height: 40px;
-} */
-
 #content .rank-text {
   height: 30px;
   margin-bottom: 5px;
