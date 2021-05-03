@@ -11,6 +11,7 @@ main,
 
 #nav {
   height: 50px;
+  z-index: 99999;
 }
 
 main {
@@ -35,3 +36,13 @@ main {
   width: 100%;
   height: calc(100% - 50px);
 }
+
+/* @media (min-width: 576px) {
+.navbar-brand.abs
+    {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        text-align: center;
+    }
+} */
