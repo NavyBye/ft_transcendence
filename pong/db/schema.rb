@@ -55,6 +55,32 @@ ActiveRecord::Schema.define(version: 2021_05_03_050131) do
     t.index ["user_id"], name: "index_chat_rooms_members_on_user_id"
   end
 
+  create_table "dm_room_messages", force: :cascade do |t|
+    t.bigint "dm_room_id", null: false
+    t.bigint "user_id", null: false
+    t.string "body"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["dm_room_id"], name: "index_dm_room_messages_on_dm_room_id"
+    t.index ["user_id"], name: "index_dm_room_messages_on_user_id"
+  end
+
+  create_table "dm_rooms", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "dm_rooms_members", force: :cascade do |t|
+    t.bigint "dm_room_id", null: false
+    t.bigint "user_id", null: false
+    t.boolean "exited", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["dm_room_id"], name: "index_dm_rooms_members_on_dm_room_id"
+    t.index ["user_id", "dm_room_id"], name: "index_dm_rooms_members_on_user_id_and_dm_room_id", unique: true
+    t.index ["user_id"], name: "index_dm_rooms_members_on_user_id"
+  end
+
   create_table "friends", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "follow_id", null: false
@@ -128,6 +154,10 @@ ActiveRecord::Schema.define(version: 2021_05_03_050131) do
   add_foreign_key "chat_room_messages", "users", on_delete: :cascade
   add_foreign_key "chat_rooms_members", "chat_rooms", on_delete: :cascade
   add_foreign_key "chat_rooms_members", "users", on_delete: :cascade
+  add_foreign_key "dm_room_messages", "dm_rooms", on_delete: :cascade
+  add_foreign_key "dm_room_messages", "users", on_delete: :cascade
+  add_foreign_key "dm_rooms_members", "dm_rooms", on_delete: :cascade
+  add_foreign_key "dm_rooms_members", "users", on_delete: :cascade
   add_foreign_key "friends", "users"
   add_foreign_key "friends", "users", column: "follow_id"
   add_foreign_key "guild_members", "guilds"

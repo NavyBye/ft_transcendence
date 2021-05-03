@@ -32,7 +32,10 @@ const SideView = common.View.extend({
     } else if (target === 'dm-tab') {
       this.getRegion('content').show(new view.DmRoomCollectionView());
     } else if (target === 'friend-tab') {
-      this.getRegion('content').show(new view.FriendCollectionView());
+      const login = Radio.channel('app').request('login');
+      this.getRegion('content').show(
+        new view.FriendCollectionView({ userId: login.get('id') }),
+      );
     }
   },
   enterRoom(chatRoomId) {

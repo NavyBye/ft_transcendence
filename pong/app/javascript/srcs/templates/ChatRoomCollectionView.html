@@ -1,76 +1,3 @@
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="exampleModalCenter"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalCenterTitle"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Add ChatRoom</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-row">
-            <div class="row form-group col-12">
-              <label class="col-3 col-form-label" for="room-name">name</label>
-              <input
-                class="col-9 form-control"
-                type="email"
-                class="form-control"
-                id="room-name"
-                placeholder="name"
-              />
-            </div>
-            <div class="row form-group col-12">
-              <div class="col-3"></div>
-              <div class="col-3 custom-checkbox p-0">
-                <input type="checkbox" id="public" value="public room" />
-                <label
-                  for="public"
-                  style="
-                    margin: 0;
-                    padding: 0 10px;
-                    height: 38px;
-                    line-height: 38px;
-                  "
-                  >public room</label
-                >
-              </div>
-              <div class="row m-0 p-0 col-6 form-group">
-                <label class="col-3 col-form-label" for="password">pass</label>
-                <input
-                  class="col-9 form-control"
-                  type="email"
-                  id="password"
-                  placeholder="password"
-                />
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Close
-        </button>
-        <button type="button" class="btn btn-primary">Create</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- chatroom collection -->
 <div class="flex-fill container">
   <div id="chatroom-collection">
@@ -78,7 +5,7 @@
       id="add-chatroom"
       class="chatroom row no-selection cursor"
       data-toggle="modal"
-      data-target="#exampleModalCenter"
+      data-target="#add-chatroom-modal"
     >
       <span class="col-3">
         <img src="/images/plus-icon.png" />

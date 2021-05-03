@@ -40,7 +40,7 @@ module Api
     end
 
     def serialize(chat_room)
-      chat_room.to_json only: %i[id name], methods: :public
+      chat_room.as_json only: %i[id name], methods: :public
     end
   end
 end

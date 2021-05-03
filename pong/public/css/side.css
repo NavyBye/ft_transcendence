@@ -30,3 +30,16 @@
 #side .nav-item {
   padding: 0;
 }
+
+#side > .content > .container {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  overflow-y: scroll;
+  position: relative;
+  height: 100%;
+}
+
+#side > .content > .container::-webkit-scrollbar {
+  display: none;
+}

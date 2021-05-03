@@ -1,6 +1,5 @@
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable camelcase */
-import Backbone from 'backbone';
 import $ from 'jquery/src/jquery';
 import Radio from 'backbone.radio';
 import view from './views';
@@ -39,6 +38,13 @@ const app = {
       return app.user;
     });
 
+    app.rootView = new view.RootView();
+    /* reply rootView */
+    Radio.channel('app').reply('rootView', function getRootView() {
+      return app.rootView;
+    });
+    app.rootView.render();
+
     Promise.all([
       /* get userinfo */
       $.ajax({
@@ -49,22 +55,31 @@ const app = {
         },
       }),
     ]).finally(function then() {
-      app.router = new Router();
       /* reply rootView */
       app.rootView = new view.RootView();
       Radio.channel('app').reply('rootView', function getRootView() {
         return app.rootView;
       });
       app.rootView.render();
-      if (!Backbone.History.started) Backbone.history.start();
-      Backbone.history.loadUrl(Backbone.history.fragment);
-      app.router.navigate(Backbone.history.fragment, { trigger: true });
-
+      app.router = new Router();
       /* only when logged in */
       if (app.user) {
         /* init routines after login is finished */
         app.initBlacklist();
+        app.initChatRoomList();
       }
+    });
+  },
+  initChatRoomList() {
+    app.chatRoomList = new collection.ChatRoomCollection();
+    app.chatRoomList.url = function url() {
+      return '/api/my/chatrooms';
+    };
+
+    app.chatRoomList.fetch({ async: false });
+    Radio.channel('chatroom').reply('isJoined', function isJoined(chatRoomId) {
+      const found = app.chatRoomList.findWhere({ id: chatRoomId });
+      return found ? true : false;
     });
   },
   initBlacklist() {
@@ -89,14 +104,17 @@ const app = {
       return found ? true : false;
     });
 
-    Radio.channel('blacklist').reply('block', function block(block_user_id) {
-      app.blacklist.create({ block_user_id, user_id: app.user.id });
+    Radio.channel('blacklist').reply('block', function block(blocked_user_id) {
+      app.blacklist.create({ blocked_user_id, user_id: app.user.get('id') });
     });
 
     Radio.channel('blacklist').reply('unblock', function unblock(id) {
       const blocked = app.blacklist.findWhere({ id });
       app.blacklist.remove(blocked);
-      blocked.destroy();
+      $.ajax({
+        type: 'DELETE',
+        url: `/api/users/${app.user.get('id')}/blocks/${id}`,
+      });
     });
   },
 };

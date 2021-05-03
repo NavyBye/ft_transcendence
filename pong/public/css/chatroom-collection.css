@@ -23,3 +23,7 @@
   padding: 0;
   margin: auto auto;
 }
+
+#chatroom-collection .not-joined .chatroom {
+  background-color: gray !important;
+}
