@@ -49,13 +49,13 @@
   height: 40px;
 } */
 
-#user-rank .rank-text {
+#content .rank-text {
   height: 30px;
   margin-bottom: 5px;
   margin-left: 0px;
 }
 
-#user-rank .rank-text .ranking {
+#content .rank-text .ranking {
   background-image: url('../images/normal.png');
   background-size: 24px;
   background-position: center;
@@ -66,24 +66,24 @@
   width: 33%;
 }
 
-#user-rank .rank-text .nickname {
+#content .rank-text .nickname {
   float: left;
   width: 33%;
 }
 
-#user-rank .rank-text .rating {
+#content .rank-text .rating {
   float: left;
   width: 33%;
 }
 
-#user-rank .rank-text .rank-1 {
+#content .rank-text .rank-1 {
   background-image: url('../images/gold.png');
 }
 
-#user-rank .rank-text .rank-2 {
+#content .rank-text .rank-2 {
   background-image: url('../images/silver.png');
 }
 
-#user-rank .rank-text .rank-3 {
+#content .rank-text .rank-3 {
   background-image: url('../images/bronze.png');
 }
