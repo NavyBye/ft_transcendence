@@ -23,4 +23,12 @@ class ApplicationController < ActionController::Base
   def error_permission_denied(_exception)
     render json: { message: "Permssion denied" }, status: :forbidden
   end
+
+  def need_second_authenticate(exception)
+    render json: { type: 'redirect', redirect: 'auth' }, status: :unauthorized
+  end
+
+  def need_first_update(exception)
+    render json: { type: 'redirect', redirect: 'mypage' }, status: :unauthorized
+  end
 end
