@@ -12,8 +12,8 @@ module Users
 
     # POST /resource/sign_in
     def create
-	  self.resource = warden.authenticate!(auth_options)
-	  sign_in(resource_name, resource)
+      self.resource = warden.authenticate!(auth_options)
+      sign_in(resource_name, resource)
       render json: resource, status: :ok
     end
 
