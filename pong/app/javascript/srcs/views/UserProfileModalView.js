@@ -36,7 +36,7 @@ const UserProfileModalView = common.View.extend({
   onDestroy() {},
   addFriend() {
     console.log('add_friend btn');
-    const login = Radio.channel('app').request('login');
+    const login = Radio.channel('login').request('get');
     $.ajax({
       type: 'POST',
       url: `/api/users/${login.get('id')}/friends`,

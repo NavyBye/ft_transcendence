@@ -15,7 +15,7 @@ const ChatRoomView = common.View.extend({
     const view = this;
     const chatRoomId = this.model.get('id');
     const isJoined = Radio.channel('chatroom').request('isJoined', chatRoomId);
-    const userId = Radio.channel('app').request('login').id;
+    const userId = Radio.channel('login').request('get').id;
     this.isJoined = isJoined;
     if (!this.isJoined) {
       $(this.el).addClass('not-joined');
