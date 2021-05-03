@@ -16,17 +16,19 @@
     rgba(255, 255, 255, 0.1) 0px 0px 0px 1px inset;
   overflow-y: scroll;
   margin-top: 10px;
-  /* min-width: 350px; */
   float: left;
   width: calc(49% - 40px);
 }
 
 @media screen and (max-width: 1200px) {
   #content > div > div > div:nth-child(2) {
-    display: none;
+    height: calc(50% - 44px) !important;
+    width: 90% !important;
+    /* display: none; */
   }
 
   #content > div > div > div:nth-child(1) {
+    height: calc(50% - 44px) !important;
     width: 90% !important;
   }
 }
@@ -38,6 +40,10 @@
   color: black;
 }
 
+/* #content #user-rank #user-ranking-collection{
+  overflow-y: scroll;
+  height: calc(100% - 35px - 35px -30px - 30px);
+} */
 /* #user-rank {
   padding: 0 10px;
   height: 40px;
