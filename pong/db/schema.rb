@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_03_054716) do
+ActiveRecord::Schema.define(version: 2021_05_03_065157) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(version: 2021_05_03_054716) do
     t.boolean "is_email_auth", default: false
     t.string "image"
     t.string "unique_session_id"
+    t.integer "role", default: 0
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "index_users_on_name", unique: true
     t.index ["provider"], name: "index_users_on_provider"
