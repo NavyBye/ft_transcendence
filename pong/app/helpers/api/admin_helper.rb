@@ -1,2 +1,4 @@
-module Api::AdminHelper
+module Api
+  module AdminHelper
+  end
 end
