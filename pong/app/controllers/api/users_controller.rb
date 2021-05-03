@@ -6,7 +6,7 @@ module Api
     end
 
     def rank
-      render json: User.all.order(rating: :desc).page(params[:page]), status: :ok
+      render json: User.all.order(rating: :desc), status: :ok
     end
 
     def show
@@ -21,6 +21,8 @@ module Api
 
     def update
       @user = User.find(params[:id])
+      raise User::PermissionDenied unless current_user.id == @user.id
+
       @user.update!(update_params)
       @user.save!
       render json: @user, status: :ok

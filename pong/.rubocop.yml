@@ -32,6 +32,10 @@ Metrics/BlockLength:
         - 'config/*.rb'
         - 'config/**/*.rb'
 
+Naming/FileName:
+    Exclude:
+        - 'config/initializers/*.rb'
+
 Rails/RedundantForeignKey:
     Exclude:
         - 'app/models/*.rb'
