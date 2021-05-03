@@ -4,11 +4,7 @@ module Api
     before_action :authenticate_user!
 
     def index
-      render json: serialize(ChatRoom.all)
-    end
-
-    def index_my_chat_rooms
-      render json: serialize(current_user.chat_rooms)
+      render json: serialize_with_joined(ChatRoom.all)
     end
 
     def update
@@ -41,6 +37,14 @@ module Api
 
     def serialize(chat_room)
       chat_room.as_json only: %i[id name], methods: :public
+    end
+
+    def serialize_with_joined(chat_rooms)
+      chat_rooms.each do |chat_room|
+        chat_room.joined = chat_room.members.exists? current_user.id
+      end
+      chat_rooms = chat_rooms.sort_by { |chat_room| chat_room.joined ? 0 : 1 }
+      chat_rooms.as_json only: %i[id name], methods: %i[public joined]
     end
   end
 end
