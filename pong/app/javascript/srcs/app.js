@@ -32,7 +32,7 @@ const app = {
     });
 
     /* reply user */
-    Radio.channel('app').reply('login', function getUser() {
+    Radio.channel('login').reply('get', function getUser() {
       return app.user;
     });
 

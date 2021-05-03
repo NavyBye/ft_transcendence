@@ -29,7 +29,7 @@ const Router = Backbone.Router.extend({
   },
   home() {
     const rootView = Radio.channel('app').request('rootView');
-    const login = Radio.channel('app').request('login');
+    const login = Radio.channel('login').request('get');
     if (!login) {
       Radio.channel('route').trigger('route', 'login');
     } else {
@@ -38,7 +38,7 @@ const Router = Backbone.Router.extend({
   },
   login() {
     const rootView = Radio.channel('app').request('rootView');
-    const login = Radio.channel('app').request('login');
+    const login = Radio.channel('login').request('get');
     if (login) {
       Radio.channel('route').trigger('route', 'home');
     } else {
@@ -47,7 +47,7 @@ const Router = Backbone.Router.extend({
   },
   rankPage() {
     const rootView = Radio.channel('app').request('rootView');
-    const login = Radio.channel('app').request('login');
+    const login = Radio.channel('login').request('get');
     if (!login) {
       Radio.channel('route').trigger('route', 'login');
     } else {
@@ -60,7 +60,7 @@ const Router = Backbone.Router.extend({
   },
   myPage() {
     const rootView = Radio.channel('app').request('rootView');
-    const login = Radio.channel('app').request('login');
+    const login = Radio.channel('login').request('get');
     if (!login) {
       Radio.channel('route').trigger('route', 'login');
     } else {

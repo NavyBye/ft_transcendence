@@ -12,7 +12,7 @@ const LoginView = common.View.extend({
     'click #signup-button': 'signup',
   },
   onRender() {
-    const user = Radio.channel('app').request('login');
+    const user = Radio.channel('login').request('get');
     if (user) {
       Radio.channel('route').trigger('route', 'home');
     }

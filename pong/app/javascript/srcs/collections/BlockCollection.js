@@ -5,7 +5,7 @@ import model from '../models';
 const BlockCollection = Backbone.Collection.extend({
   model: model.UserModel,
   initialize() {
-    const login = Radio.channel('app').request('login');
+    const login = Radio.channel('login').request('get');
     this.userId = login.get('id');
   },
   url() {

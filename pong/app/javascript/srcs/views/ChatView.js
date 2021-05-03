@@ -16,7 +16,7 @@ const ChatView = common.View.extend({
     'click img': 'showProfile',
   },
   onInitialize() {
-    const me = Radio.channel('app').request('login');
+    const me = Radio.channel('login').request('get');
     const userId = this.model.get('user').id;
     if (userId === me.get('id')) {
       this.template = sendTemplate;
@@ -28,7 +28,7 @@ const ChatView = common.View.extend({
             /* TODO: add should be in profile, it's for testing */
             name: 'add friend',
             onClick() {
-              const login = Radio.channel('app').request('login');
+              const login = Radio.channel('login').request('get');
               $.ajax({
                 type: 'POST',
                 url: `/api/users/${login.get('id')}/friends`,
