@@ -77,6 +77,19 @@ class User < ApplicationRecord
     nickname == 'newcomer'
   end
 
+  def email_auth?
+    is_email_auth
+  end
+
+  def issue_auth_code
+    auth&.destroy
+    random_code = (0..6).map { ('0'..'9').to_a[rand(10)] }.join
+    EmailAuth.create!(user_id: id, code: random_code, confirm: false)
+  end
+
+  def auth_not_confirmed?
+    email_auth? && !auth.confirm
+  end
   private
 
   def second_initialize

@@ -6,8 +6,15 @@ class ApplicationController < ActionController::Base
   rescue_from Friend::PermissionDenied, with: :error_permission_denied
   rescue_from Block::PermissionDenied, with: :error_permission_denied
   rescue_from User::PermissionDenied, with: :error_permission_denied
+  rescue_from EmailAuth::AuthenticationNotFinished, with: :need_second_authenticate
 
   protect_from_forgery with: :null_session
+
+  def check_second_auth
+    if current_user.email_auth? && current_user.auth_not_confirmed?
+      raise EmailAuth::AuthenticationNotFinished
+    end
+  end
 
   private
 
