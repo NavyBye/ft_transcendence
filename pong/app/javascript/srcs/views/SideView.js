@@ -11,7 +11,8 @@ const SideView = common.View.extend({
   },
   onInitialize() {
     const channel = Radio.channel('side');
-    this.listenTo(channel, 'enter-chatroom', this.enterRoom);
+    this.listenTo(channel, 'enter-chatroom', this.enterChatRoom);
+    this.listenTo(channel, 'enter-dmroom', this.enterDmRoom);
     this.addRegion('content', '#side .content');
     const self = this;
 
@@ -45,8 +46,11 @@ const SideView = common.View.extend({
     Radio.channel('side').request('changeTab', target);
     this.currentTab = target;
   },
-  enterRoom(chatRoomId) {
+  enterChatRoom(chatRoomId) {
     this.getRegion('content').show(new view.ChatCollectionView(chatRoomId));
+  },
+  enterDmRoom(dmRoomId) {
+    this.getRegion('content').show(new view.DmRoomCollectionView(dmRoomId));
   },
 });
 
