@@ -1,6 +1,7 @@
 module Api
   class UsersController < ApplicationController
     before_action :authenticate_user!
+
     def index
       render json: User.all, status: :ok
     end
@@ -29,15 +30,15 @@ module Api
     end
 
     def challenge
-      render json: { error: 'not implemented yet!' }, status: :not_implemented
+      render json: { type: "message", message: 'not implemented yet!' }, status: :not_implemented
     end
 
     def game
-      render json: { error: 'not implemented yet!' }, status: :not_implemented
+      render json: { type: "message", message: 'not implemented yet!' }, status: :not_implemented
     end
 
     def history
-      render json: { error: 'not implemented yet!' }, status: :not_implemented
+      render json: { type: "message", message: 'not implemented yet!' }, status: :not_implemented
     end
 
     private

@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
 
   namespace :api, defaults: { format: :json } do
+    post 'auth', to: 'auth#match'
     resources :users, only: %i[index show update] do
       collection do
         get 'rank'
@@ -22,8 +23,8 @@ Rails.application.routes.draw do
         post 'designate', controller: 'admin'
         post 'ban', controller: 'admin'
       end
-      resources :friends, only: %i[index create destroy], param: :follow_id
-      resources :blocks, only: %i[index create destroy], param: :blocked_user_id
+      resources :friends, only: %i[index create destroy], param: :id
+      resources :blocks, only: %i[index create destroy], param: :id
       resources :invites, only: %i[index create update destroy]
     end
     resources :guilds, only: %i[index show create destroy] do
