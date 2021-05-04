@@ -17,7 +17,7 @@ module Api
     def destroy
       result = Friend.find_by(friendship_params)
       result.destroy!
-      render json: { message: 'successfully deleted.' }, status: :no_content
+      render json: { type: "message", message: 'successfully deleted.' }, status: :no_content
     end
 
     private

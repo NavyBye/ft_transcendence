@@ -13,7 +13,7 @@ module Api
 
     def my
       if current_user.guild.nil?
-        render json: { message: "You have no guild." }, status: :not_found
+        render json: { type: "message", message: "You have no guild." }, status: :not_found
       else
         @guild = current_user.guild
         render json: @guild, status: :ok
@@ -33,7 +33,7 @@ module Api
         @master.invitations.destroy_all
         render json: @guild, status: :created
       else
-        render json: { message: "You already have a guild." }, status: :bad_request
+        render json: { type: "message", message: "You already have a guild." }, status: :bad_request
       end
     end
 
@@ -43,7 +43,7 @@ module Api
         @guild.destroy!
         render json: {}, status: :no_content
       else
-        render json: { message: "You have no right to destroy this guild." }, status: :forbidden
+        render json: { type: "message", message: "You have no right to destroy this guild." }, status: :forbidden
       end
     end
   end
