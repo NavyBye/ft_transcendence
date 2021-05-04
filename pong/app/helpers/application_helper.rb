@@ -5,4 +5,8 @@ module ApplicationHelper
       csrf_token: form_authenticity_token
     }
   end
+
+  def check_first_update
+    raise User::NeedFirstUpdate if current_user.nickname == 'newcomer'
+  end
 end

@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   class PermissionDenied < StandardError; end
 
+  class NeedFirstUpdate < StandardError; end
+
   mount_uploader :image, UserImageUploader
 
   # constants & enums
