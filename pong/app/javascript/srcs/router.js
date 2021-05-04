@@ -33,7 +33,12 @@ const Router = Backbone.Router.extend({
     if (!login) {
       Radio.channel('route').trigger('route', 'login');
     } else {
-      rootView.show('content', new view.MainView());
+      if (!rootView.getRegion('content').getView())
+        rootView.show('content', new view.MainView());
+      rootView
+        .getRegion('content')
+        .getView()
+        .show('content', new view.HomeView());
     }
   },
   login() {
@@ -51,7 +56,8 @@ const Router = Backbone.Router.extend({
     if (!login) {
       Radio.channel('route').trigger('route', 'login');
     } else {
-      rootView.show('content', new view.MainView());
+      if (!rootView.getRegion('content').getView())
+        rootView.show('content', new view.MainView());
       rootView
         .getRegion('content')
         .getView()
@@ -64,7 +70,8 @@ const Router = Backbone.Router.extend({
     if (!login) {
       Radio.channel('route').trigger('route', 'login');
     } else {
-      rootView.show('content', new view.MainView());
+      if (!rootView.getRegion('content').getView())
+        rootView.show('content', new view.MainView());
       rootView
         .getRegion('content')
         .getView()

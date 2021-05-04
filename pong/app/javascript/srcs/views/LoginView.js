@@ -25,12 +25,15 @@ const LoginView = common.View.extend({
     return data;
   },
   login() {
+    const rootView = Radio.channel('app').request('rootView');
     $.ajax({
       type: 'POST',
       url: '/users/sign_in',
       headers: auth.getTokenHeader(),
       data: this.serializeForm(),
       success(res) {
+        rootView.getRegion('content').getView().destroy();
+        rootView.getRegion('content').view = null;
         $('meta[name="csrf-param"]').attr('content', res.csrf_param);
         $('meta[name="csrf-token"]').attr('content', res.csrf_token);
         Radio.channel('login').request('fetch');
