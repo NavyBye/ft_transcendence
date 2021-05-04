@@ -40,9 +40,11 @@ const app = {
       $.ajax({
         type: 'GET',
         url: '/api/users/me',
+        headers: auth.getTokenHeader(),
         success(data) {
           app.user = new model.UserModel(data);
         },
+        async: false,
       });
     });
 
