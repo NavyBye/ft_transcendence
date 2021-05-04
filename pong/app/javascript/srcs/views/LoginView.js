@@ -44,7 +44,9 @@ const LoginView = common.View.extend({
       url: '/users',
       headers: auth.getTokenHeader(),
       data: this.serializeForm(),
-      success() {
+      success(res) {
+        $('meta[name="csrf-param"]').attr('content', res.csrf_param);
+        $('meta[name="csrf-token"]').attr('content', res.csrf_token);
         Radio.channel('login').request('fetch');
         Radio.channel('route').trigger('route', 'home');
       },
