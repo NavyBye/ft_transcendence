@@ -3,6 +3,7 @@ import BootstrapMenu from 'bootstrap-menu';
 import $ from 'jquery/src/jquery';
 import common from '../common';
 import template from '../templates/FriendView.html';
+import auth from '../utils/auth';
 
 const FriendView = common.View.extend({
   template,
@@ -17,6 +18,7 @@ const FriendView = common.View.extend({
             $.ajax({
               type: 'DELETE',
               url: `/api/users/${login.get('id')}/friends/${id}`,
+              headers: auth.getTokenHeader(),
             });
           },
           classNames: 'dropdown-item',

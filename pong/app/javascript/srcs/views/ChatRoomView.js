@@ -5,6 +5,7 @@ import Radio from 'backbone.radio';
 import common from '../common';
 import OkModalView from './OkModalView';
 import template from '../templates/ChatRoomView.html';
+import auth from '../utils/auth';
 
 const ChatRoomView = common.View.extend({
   template,
@@ -27,6 +28,7 @@ const ChatRoomView = common.View.extend({
             $.ajax({
               type: 'DELETE',
               url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
+              headers: auth.getTokenHeader(),
               success() {
                 view.render();
               },
@@ -40,6 +42,7 @@ const ChatRoomView = common.View.extend({
             $.ajax({
               type: 'POST',
               url: `/api/chatrooms/${chatRoomId}/members`,
+              headers: auth.getTokenHeader(),
               success() {
                 view.render();
               },
@@ -57,6 +60,7 @@ const ChatRoomView = common.View.extend({
             $.ajax({
               type: 'DELETE',
               url: `/api/chatrooms/${chatRoomId}`,
+              headers: auth.getTokenHeader(),
             });
           },
           classNames: 'dropdown-item',
