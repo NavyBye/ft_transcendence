@@ -25,6 +25,8 @@ const app = {
         type: 'DELETE',
         url: '/sign_out',
         success(res) {
+          console.log('logout....');
+          console.log(res);
           app.user = null;
           $('meta[name="csrf-param"]').attr('content', res.csrf_param);
           $('meta[name="csrf-token"]').attr('content', res.csrf_token);
@@ -45,6 +47,7 @@ const app = {
         success(data) {
           app.user = new model.UserModel(data);
         },
+        async: false,
       });
     });
 

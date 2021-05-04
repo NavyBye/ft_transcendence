@@ -29,7 +29,9 @@ const LoginView = common.View.extend({
       type: 'POST',
       url: '/users/sign_in',
       data: this.serializeForm(),
-      success() {
+      success(res) {
+        console.log(res);
+        Radio.channel('login').request('fetch');
         Radio.channel('route').trigger('route', 'home');
       },
     });
@@ -40,6 +42,7 @@ const LoginView = common.View.extend({
       url: '/users',
       data: this.serializeForm(),
       success() {
+        Radio.channel('login').request('fetch');
         Radio.channel('route').trigger('route', 'home');
       },
     });
