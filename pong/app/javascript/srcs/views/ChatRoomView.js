@@ -1,3 +1,4 @@
+/* eslint-disable no-new */
 /* eslint-disable prefer-destructuring */
 import $ from 'jquery/src/jquery';
 import BootstrapMenu from 'bootstrap-menu';
@@ -6,6 +7,7 @@ import common from '../common';
 import OkModalView from './OkModalView';
 import template from '../templates/ChatRoomView.html';
 import auth from '../utils/auth';
+import InputPasswordModalView from './InputPasswordModalView';
 
 const ChatRoomView = common.View.extend({
   template,
@@ -42,14 +44,19 @@ const ChatRoomView = common.View.extend({
       : {
           name: 'Join Room',
           onClick() {
-            $.ajax({
-              type: 'POST',
-              url: `/api/chatrooms/${chatRoomId}/members`,
-              headers: auth.getTokenHeader(),
-              success() {
-                view.model.set('joined', true);
-              },
-            });
+            /* protected by password */
+            if (view.model.get('public') === false) {
+              new InputPasswordModalView({ model: view.model });
+            } else {
+              $.ajax({
+                type: 'POST',
+                url: `/api/chatrooms/${chatRoomId}/members`,
+                headers: auth.getTokenHeader(),
+                success() {
+                  view.model.set('joined', true);
+                },
+              });
+            }
           },
           classNames: 'dropdown-item',
         };
