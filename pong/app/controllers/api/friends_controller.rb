@@ -23,7 +23,7 @@ module Api
     private
 
     def friendship_params
-      params.permit(:user_id, follow_id: params[:id])
+      { user_id: params[:user_id], follow_id: params[:id] }
     end
 
     def check_permission
