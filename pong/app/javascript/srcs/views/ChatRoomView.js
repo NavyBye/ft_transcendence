@@ -5,6 +5,7 @@ import Radio from 'backbone.radio';
 import common from '../common';
 import OkModalView from './OkModalView';
 import template from '../templates/ChatRoomView.html';
+import auth from '../utils/auth';
 
 const ChatRoomView = common.View.extend({
   template,
@@ -15,7 +16,7 @@ const ChatRoomView = common.View.extend({
     const view = this;
     const chatRoomId = this.model.get('id');
     const isJoined = Radio.channel('chatroom').request('isJoined', chatRoomId);
-    const userId = Radio.channel('app').request('login').id;
+    const userId = Radio.channel('login').request('get').id;
     this.isJoined = isJoined;
     if (!this.isJoined) {
       $(this.el).addClass('not-joined');
@@ -27,6 +28,7 @@ const ChatRoomView = common.View.extend({
             $.ajax({
               type: 'DELETE',
               url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
+              headers: auth.getTokenHeader(),
               success() {
                 view.render();
               },
@@ -40,6 +42,7 @@ const ChatRoomView = common.View.extend({
             $.ajax({
               type: 'POST',
               url: `/api/chatrooms/${chatRoomId}/members`,
+              headers: auth.getTokenHeader(),
               success() {
                 view.render();
               },
@@ -57,6 +60,7 @@ const ChatRoomView = common.View.extend({
             $.ajax({
               type: 'DELETE',
               url: `/api/chatrooms/${chatRoomId}`,
+              headers: auth.getTokenHeader(),
             });
           },
           classNames: 'dropdown-item',

@@ -37,7 +37,6 @@ Rails.application.routes.draw do
       end
       resources :members, only: %i[index update destroy], controller: 'guild_members', param: :user_id
     end
-    get 'my/chatrooms', to: 'chat_rooms#index_my_chat_rooms'
     resources :chat_rooms, path: 'chatrooms', only: %i[index update destroy create] do
       resources :chat_rooms_members, path: 'members', only: %i[index update destroy create]
       resources :chat_room_messages, path: 'messages', only: %i[index]
