@@ -22,24 +22,27 @@ const ChatView = common.View.extend({
       this.template = sendTemplate;
     } else {
       this.template = recvTemplate;
-      this.menu = new BootstrapMenu(this.el, {
-        actions: [
-          {
-            /* TODO: add should be in profile, it's for testing */
-            name: 'add friend',
-            onClick() {
-              const login = Radio.channel('login').request('get');
-              $.ajax({
-                type: 'POST',
-                url: `/api/users/${login.get('id')}/friends`,
-                headers: auth.getTokenHeader(),
-                data: { follow_id: userId },
-              });
+      this.menu = new BootstrapMenu(
+        `.recv-chat[chat-id=${this.model.get('id')}]`,
+        {
+          actions: [
+            {
+              /* TODO: add should be in profile, it's for testing */
+              name: 'add friend',
+              onClick() {
+                const login = Radio.channel('login').request('get');
+                $.ajax({
+                  type: 'POST',
+                  url: `/api/users/${login.get('id')}/friends`,
+                  headers: auth.getTokenHeader(),
+                  data: { follow_id: userId },
+                });
+              },
+              classNames: 'dropdown-item',
             },
-            classNames: 'dropdown-item',
-          },
-        ],
-      });
+          ],
+        },
+      );
     }
   },
   showProfile() {

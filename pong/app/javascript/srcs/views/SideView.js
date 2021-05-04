@@ -18,6 +18,9 @@ const SideView = common.View.extend({
     this.currentTab = 'chat-tab';
     this.getRegion('content').show(new view.ChatRoomCollectionView());
   },
+  onDestroy() {
+    this.getRegion('content').getView().destroy();
+  },
   showTab(event) {
     /* change tab */
     event.preventDefault();
