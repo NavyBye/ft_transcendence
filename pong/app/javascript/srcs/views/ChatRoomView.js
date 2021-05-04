@@ -52,22 +52,25 @@ const ChatRoomView = common.View.extend({
           classNames: 'dropdown-item',
         };
 
-    this.menu = new BootstrapMenu(this.el, {
-      actions: [
-        joinOrExit,
-        {
-          name: 'Destroy',
-          onClick() {
-            $.ajax({
-              type: 'DELETE',
-              url: `/api/chatrooms/${chatRoomId}`,
-              headers: auth.getTokenHeader(),
-            });
+    this.menu = new BootstrapMenu(
+      `.chatroom[chatroom-id=${this.model.get('id')}]`,
+      {
+        actions: [
+          joinOrExit,
+          {
+            name: 'Destroy',
+            onClick() {
+              $.ajax({
+                type: 'DELETE',
+                url: `/api/chatrooms/${chatRoomId}`,
+                headers: auth.getTokenHeader(),
+              });
+            },
+            classNames: 'dropdown-item',
           },
-          classNames: 'dropdown-item',
-        },
-      ],
-    });
+        ],
+      },
+    );
   },
   enterRoom() {
     if (this.model.get('joined')) {
