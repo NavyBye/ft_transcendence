@@ -4,6 +4,7 @@ import common from '../common';
 import UserInfoView from './UserInfoView';
 import UserHistoryCollectionView from './UserHistoryCollectionView';
 import model from '../models';
+import auth from '../utils/auth';
 
 const UserProfileModalView = common.View.extend({
   el: '#user-profile-modal',
@@ -36,10 +37,11 @@ const UserProfileModalView = common.View.extend({
   onDestroy() {},
   addFriend() {
     console.log('add_friend btn');
-    const login = Radio.channel('app').request('login');
+    const login = Radio.channel('login').request('get');
     $.ajax({
       type: 'POST',
       url: `/api/users/${login.get('id')}/friends`,
+      headers: auth.getTokenHeader(),
       data: { follow_id: this.userId },
     });
   },

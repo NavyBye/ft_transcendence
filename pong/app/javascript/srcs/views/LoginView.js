@@ -12,7 +12,7 @@ const LoginView = common.View.extend({
     'click #signup-button': 'signup',
   },
   onRender() {
-    const user = Radio.channel('app').request('login');
+    const user = Radio.channel('login').request('get');
     if (user) {
       Radio.channel('route').trigger('route', 'home');
     }
@@ -28,10 +28,13 @@ const LoginView = common.View.extend({
     $.ajax({
       type: 'POST',
       url: '/users/sign_in',
+      headers: auth.getTokenHeader(),
       data: this.serializeForm(),
-      success(dat) {
-        console.log(dat);
-        console.log('success!');
+      success(res) {
+        $('meta[name="csrf-param"]').attr('content', res.csrf_param);
+        $('meta[name="csrf-token"]').attr('content', res.csrf_token);
+        Radio.channel('login').request('fetch');
+        Radio.channel('route').trigger('route', 'home');
       },
     });
   },
@@ -39,9 +42,13 @@ const LoginView = common.View.extend({
     $.ajax({
       type: 'POST',
       url: '/users',
+      headers: auth.getTokenHeader(),
       data: this.serializeForm(),
-      success() {
-        console.log('success!');
+      success(res) {
+        $('meta[name="csrf-param"]').attr('content', res.csrf_param);
+        $('meta[name="csrf-token"]').attr('content', res.csrf_token);
+        Radio.channel('login').request('fetch');
+        Radio.channel('route').trigger('route', 'home');
       },
     });
   },

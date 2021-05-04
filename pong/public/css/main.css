@@ -11,6 +11,11 @@ main,
 
 #nav {
   height: 50px;
+  z-index: 99999;
+}
+
+#root {
+  overflow-x: hidden;
 }
 
 main {
@@ -34,4 +39,15 @@ main {
   left: 0;
   width: 100%;
   height: calc(100% - 50px);
+}
+
+@media (max-width: 576px) {
+  #collapsingNavbar {
+    background: #343a40;
+    position: relative;
+    right: -10rem;
+    width: 100%;
+    padding-left: 5px;
+    text-justify: auto;
+  }
 }
