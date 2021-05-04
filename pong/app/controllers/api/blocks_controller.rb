@@ -22,7 +22,7 @@ module Api
     private
 
     def block_params
-      params.permit(:user_id, :blocked_user_id)
+      params.permit(:user_id, blocked_user_id: params[:id])
     end
 
     def check_permission
