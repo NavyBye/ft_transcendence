@@ -28,9 +28,11 @@ const LoginView = common.View.extend({
     $.ajax({
       type: 'POST',
       url: '/users/sign_in',
+      headers: auth.getTokenHeader(),
       data: this.serializeForm(),
       success(res) {
-        console.log(res);
+        $('meta[name="csrf-param"]').attr('content', res.csrf_param);
+        $('meta[name="csrf-token"]').attr('content', res.csrf_token);
         Radio.channel('login').request('fetch');
         Radio.channel('route').trigger('route', 'home');
       },
@@ -40,6 +42,7 @@ const LoginView = common.View.extend({
     $.ajax({
       type: 'POST',
       url: '/users',
+      headers: auth.getTokenHeader(),
       data: this.serializeForm(),
       success() {
         Radio.channel('login').request('fetch');

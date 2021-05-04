@@ -7,6 +7,7 @@ import common from '../common';
 import recvTemplate from '../templates/RecvChatView.html';
 import sendTemplate from '../templates/SendChatView.html';
 import UserProfileModalView from './UserProfileModalView';
+import auth from '../utils/auth';
 
 const ChatView = common.View.extend({
   recvTemplate,
@@ -31,6 +32,7 @@ const ChatView = common.View.extend({
               $.ajax({
                 type: 'POST',
                 url: `/api/users/${login.get('id')}/friends`,
+                headers: auth.getTokenHeader(),
                 data: { follow_id: userId },
               });
             },

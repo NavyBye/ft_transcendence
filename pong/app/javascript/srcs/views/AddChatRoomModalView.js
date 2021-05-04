@@ -1,5 +1,6 @@
 import $ from 'jquery/src/jquery';
 import common from '../common';
+import auth from '../utils/auth';
 
 /* when to destroy? */
 const AddChatRoomModalView = common.View.extend({
@@ -30,6 +31,7 @@ const AddChatRoomModalView = common.View.extend({
     $.ajax({
       type: 'POST',
       url: '/api/chatrooms',
+      headers: auth.getTokenHeader(),
       data,
     });
 

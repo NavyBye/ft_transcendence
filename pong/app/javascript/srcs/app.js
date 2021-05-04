@@ -12,9 +12,6 @@ import model from './models';
 const app = {
   start() {
     $.ajaxSetup({
-      headers: {
-        X_CSRF_TOKEN: auth.getTokenValue(),
-      },
       error: function error(res) {
         new ErrorModalView().show('Error', res.responseText);
       },
@@ -24,9 +21,8 @@ const app = {
       $.ajax({
         type: 'DELETE',
         url: '/sign_out',
+        headers: auth.getTokenHeader(),
         success(res) {
-          console.log('logout....');
-          console.log(res);
           app.user = null;
           $('meta[name="csrf-param"]').attr('content', res.csrf_param);
           $('meta[name="csrf-token"]').attr('content', res.csrf_token);
@@ -44,6 +40,7 @@ const app = {
       $.ajax({
         type: 'GET',
         url: '/api/users/me',
+        headers: auth.getTokenHeader(),
         success(data) {
           app.user = new model.UserModel(data);
         },
@@ -63,6 +60,7 @@ const app = {
       $.ajax({
         type: 'GET',
         url: '/api/users/me',
+        headers: auth.getTokenHeader(),
         success(data) {
           app.user = new model.UserModel(data);
         },
@@ -127,6 +125,7 @@ const app = {
       $.ajax({
         type: 'DELETE',
         url: `/api/users/${app.user.get('id')}/blocks/${id}`,
+        headers: auth.getTokenHeader(),
       });
     });
   },

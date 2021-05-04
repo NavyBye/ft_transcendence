@@ -7,6 +7,11 @@ const auth = {
   getTokenValue() {
     return $('meta[name=csrf-token]').attr('content');
   },
+  getTokenHeader() {
+    return {
+      X_CSRF_TOKEN: auth.getTokenValue(),
+    };
+  },
 };
 
 export default auth;
