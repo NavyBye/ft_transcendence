@@ -1,8 +1,11 @@
 class User < ApplicationRecord
+  class PermissionDenied < StandardError; end
+
   mount_uploader :image, UserImageUploader
 
   # constants & enums
   enum status: { offline: 0, online: 1, game: 2, ready: 3 }
+  enum role: { user: 0, admin: 1, owner: 2 }
 
   # associations
   has_many :friendship_as_user, class_name: "Friend", inverse_of: :user,
@@ -28,8 +31,11 @@ class User < ApplicationRecord
   has_many :invitations, class_name: "Invite", inverse_of: :user, foreign_key: :user_id, dependent: :destroy
   has_many :invited_guilds, through: :invitations, source: :guild
 
+  has_one :auth, class_name: "EmailAuth", foreign_key: :user_id, inverse_of: :user, dependent: :destroy
+
   # validations
   validates :status, inclusion: { in: User.statuses.keys }
+  validates :role, inclusion: { in: User.roles.keys }
   validates :nickname, length: { in: 2..20 }
   validates :trophy, numericality: { greater_than: -1 }
   validates :nickname, uniqueness: true, unless: :newcommer?

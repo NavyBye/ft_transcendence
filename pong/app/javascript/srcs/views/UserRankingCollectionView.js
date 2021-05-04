@@ -8,10 +8,14 @@ const UserRankingCollectionView = common.CollectionView.extend({
   childContainer: '#user-ranking-collection',
   ViewType: UserRankingView,
   CollectionType: collection.UserRankingCollection,
+  onInitialize() {},
   onRender() {},
   afterAdd() {
-    this.collection.sort();
-    this.reRender();
+    let rank = 1;
+    this.collection.each(function setRank(model) {
+      model.set({ rating_rank: rank });
+      rank += 1;
+    });
   },
 });
 

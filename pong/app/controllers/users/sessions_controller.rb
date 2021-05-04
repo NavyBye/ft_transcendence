@@ -14,7 +14,10 @@ module Users
     def create
       self.resource = warden.authenticate!(auth_options)
       sign_in(resource_name, resource)
-      render json: resource, status: :ok
+      render json: {
+        csrf_param: request_forgery_protection_token,
+        csrf_token: form_authenticity_token
+      }, status: :ok
     end
 
     # DELETE /resource/sign_out
