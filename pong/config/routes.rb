@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
 
   namespace :api, defaults: { format: :json } do
+    post 'auth', to: 'auth#match'
     resources :users, only: %i[index show update] do
       collection do
         get 'rank'

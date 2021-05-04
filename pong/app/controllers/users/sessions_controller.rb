@@ -14,24 +14,19 @@ module Users
     def create
       self.resource = warden.authenticate!(auth_options)
       sign_in(resource_name, resource)
-      render json: {
-        csrf_param: request_forgery_protection_token,
-        csrf_token: form_authenticity_token
-      }, status: :ok
+      current_user.issue_auth_code if current_user.email_auth?
+      render json: token, status: :ok
     end
 
     # DELETE /resource/sign_out
     def destroy
-      # signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
+      current_user.auth&.destroy
       if Devise.sign_out_all_scopes
         sign_out
       else
         sign_out(resource_name)
       end
-      render json: {
-        csrf_param: request_forgery_protection_token,
-        csrf_token: form_authenticity_token
-      }, status: :ok
+      render json: token, status: :ok
     end
 
     protected

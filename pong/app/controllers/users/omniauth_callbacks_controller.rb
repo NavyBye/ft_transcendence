@@ -11,7 +11,6 @@ module Users
         session["devise.marvin_data"] = request.env["omniauth.auth"]
         redirect_to new_user_registration_url
       end
-      # render json: @user, status: :ok
     end
   end
 end

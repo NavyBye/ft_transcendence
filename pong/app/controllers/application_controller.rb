@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include ApplicationHelper
   rescue_from ActiveRecord::RecordNotFound, with: :error_not_found
   rescue_from ActiveRecord::RecordNotDestroyed, ActiveRecord::RecordInvalid, with: :error_invalid
   rescue_from ChatRoomsMember::PermissionDenied, with: :error_permission_denied
@@ -6,8 +7,14 @@ class ApplicationController < ActionController::Base
   rescue_from Friend::PermissionDenied, with: :error_permission_denied
   rescue_from Block::PermissionDenied, with: :error_permission_denied
   rescue_from User::PermissionDenied, with: :error_permission_denied
+  rescue_from EmailAuth::AuthenticationNotFinished, with: :need_second_authenticate
 
   protect_from_forgery with: :null_session
+
+  def check_second_auth
+    current_user.issue_auth_code if current_user.auth.nil?
+    raise EmailAuth::AuthenticationNotFinished unless current_user.auth_confirmed?
+  end
 
   private
 
