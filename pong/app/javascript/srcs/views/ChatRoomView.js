@@ -20,6 +20,8 @@ const ChatRoomView = common.View.extend({
 
     if (!joined) {
       $(this.el).addClass('not-joined');
+    } else if ($(this.el).hasClass('not-joined')) {
+      $(this.el).removeClass('not-joined');
     }
 
     const joinOrExit = joined
