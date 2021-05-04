@@ -36,7 +36,6 @@ const UserProfileModalView = common.View.extend({
   onRender() {},
   onDestroy() {},
   addFriend() {
-    console.log('add_friend btn');
     const login = Radio.channel('login').request('get');
     $.ajax({
       type: 'POST',
@@ -50,22 +49,22 @@ const UserProfileModalView = common.View.extend({
       'isBlocked',
       this.userId,
     );
+
     if (isBlocked) {
-      // Radio.channel('blacklist').request('unblock', this.userId);
-      this.getRegion('userinfo').render();
+      Radio.channel('blacklist').request('unblock', this.userId);
     } else {
-      // Radio.channel('blacklist').request('block', this.userId);
-      this.getRegion('userinfo').render();
+      Radio.channel('blacklist').request('block', this.userId);
     }
+
+    this.getRegion('userinfo').getView().render();
+    $(this.el).modal('hide');
   },
-  requestPong() {
-    console.log('아직 미구현!');
-  },
-  guildInvite() {
-    console.log('guild');
-  },
+  requestPong() {},
+  guildInvite() {},
   dm() {
-    console.log('dm');
+    Radio.channel('side').request('changeTab', 'dm-tab');
+    Radio.channel('dmroom').request('enter', this.userId);
+    $(this.el).modal('hide');
   },
 });
 

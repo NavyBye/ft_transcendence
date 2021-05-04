@@ -1,6 +1,8 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable camelcase */
 import $ from 'jquery/src/jquery';
+import Backbone from 'backbone';
 import Radio from 'backbone.radio';
 import view from './views';
 import Router from './router';
@@ -16,6 +18,12 @@ const app = {
         new ErrorModalView().show('Error', res.responseText);
       },
     });
+
+    const callback = Backbone.sync;
+    Backbone.sync = function sync(method, model_, options) {
+      options.headers = auth.getTokenHeader();
+      callback(method, model_, options);
+    };
 
     Radio.channel('app').reply('logout', function logout() {
       $.ajax({
@@ -102,8 +110,19 @@ const app = {
       return found ? true : false;
     });
 
-    Radio.channel('blacklist').reply('block', function block(blocked_user_id) {
-      app.blacklist.create({ blocked_user_id, user_id: app.user.get('id') });
+    Radio.channel('blacklist').reply('block', function block(userId) {
+      const login = Radio.channel('login').request('get');
+      $.ajax({
+        type: 'POST',
+        url: `/api/users/${login.get('id')}/blocks`,
+        headers: auth.getTokenHeader(),
+        data: { id: userId },
+        success() {
+          const blockedUser = new model.UserModel({ id: userId });
+          blockedUser.fetch({ async: false });
+          app.blacklist.add(blockedUser);
+        },
+      });
     });
 
     Radio.channel('blacklist').reply('unblock', function unblock(id) {
@@ -113,6 +132,9 @@ const app = {
         type: 'DELETE',
         url: `/api/users/${app.user.get('id')}/blocks/${id}`,
         headers: auth.getTokenHeader(),
+        success() {
+          app.blacklist.fetch();
+        },
       });
     });
   },
