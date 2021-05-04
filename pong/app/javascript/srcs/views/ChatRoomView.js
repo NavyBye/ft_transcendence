@@ -13,15 +13,16 @@ const ChatRoomView = common.View.extend({
     'click .enter-room': 'enterRoom',
   },
   onRender() {
-    const view = this;
     const chatRoomId = this.model.get('id');
-    const isJoined = Radio.channel('chatroom').request('isJoined', chatRoomId);
+    const joined = this.model.get('joined');
     const userId = Radio.channel('login').request('get').id;
-    this.isJoined = isJoined;
-    if (!this.isJoined) {
+    const view = this;
+
+    if (!joined) {
       $(this.el).addClass('not-joined');
     }
-    const joinOrExit = isJoined
+
+    const joinOrExit = joined
       ? {
           name: 'Exit Room',
           onClick() {
@@ -30,7 +31,7 @@ const ChatRoomView = common.View.extend({
               url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
               headers: auth.getTokenHeader(),
               success() {
-                view.render();
+                view.model.set('joined', false);
               },
             });
           },
@@ -44,7 +45,7 @@ const ChatRoomView = common.View.extend({
               url: `/api/chatrooms/${chatRoomId}/members`,
               headers: auth.getTokenHeader(),
               success() {
-                view.render();
+                view.model.set('joined', true);
               },
             });
           },
@@ -69,7 +70,7 @@ const ChatRoomView = common.View.extend({
     });
   },
   enterRoom() {
-    if (this.isJoined) {
+    if (this.model.get('joined')) {
       const chatRoomId = this.model.get('id');
       Radio.channel('side').trigger('enter-chatroom', chatRoomId);
     } else {
