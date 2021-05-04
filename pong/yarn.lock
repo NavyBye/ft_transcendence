@@ -7353,11 +7353,6 @@
   dependencies:
     "safe-buffer" "^5.0.1"
 
-"turbolinks@^5.2.0":
-  "integrity" "sha512-pMiez3tyBo6uRHFNNZoYMmrES/IaGgMhQQM+VFF36keryjb5ms0XkVpmKHkfW/4Vy96qiGW3K9bz0tF5sK9bBw=="
-  "resolved" "https://registry.npmjs.org/turbolinks/-/turbolinks-5.2.0.tgz"
-  "version" "5.2.0"
-
 "tweetnacl@^0.14.3", "tweetnacl@~0.14.0":
   "integrity" "sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q="
   "resolved" "https://registry.npmjs.org/tweetnacl/-/tweetnacl-0.14.5.tgz"
