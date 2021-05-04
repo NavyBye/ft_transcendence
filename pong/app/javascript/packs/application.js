@@ -4,7 +4,7 @@
 // that code so it'll be compiled.
 
 import Rails from '@rails/ujs';
-import Turbolinks from 'turbolinks';
+//import Turbolinks from 'turbolinks';
 import _ from 'underscore';
 import $ from 'jquery/src/jquery';
 import jquery from 'jquery';
@@ -17,8 +17,8 @@ window.$ = $;
 window.jquery = $;
 
 Rails.start();
-Turbolinks.start();
+//Turbolinks.start();
 
-$(document).on('turbolinks:load', function onLoad() {
+//$(document).on('turbolinks:load', function onLoad() {
   app.start();
-});
+//});

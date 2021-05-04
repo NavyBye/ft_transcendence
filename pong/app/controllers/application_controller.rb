@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include ApplicationHelper
   rescue_from ActiveRecord::RecordNotFound, with: :error_not_found
   rescue_from ActiveRecord::RecordNotDestroyed, ActiveRecord::RecordInvalid, with: :error_invalid
   rescue_from ChatRoomsMember::PermissionDenied, with: :error_permission_denied
@@ -11,9 +12,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   def check_second_auth
-    if current_user.email_auth? && current_user.auth_not_confirmed?
-      raise EmailAuth::AuthenticationNotFinished
-    end
+    current_user.issue_auth_code if current_user.auth.nil?
+    raise EmailAuth::AuthenticationNotFinished unless current_user.auth_confirmed?
   end
 
   private

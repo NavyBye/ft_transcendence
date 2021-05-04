@@ -83,13 +83,14 @@ class User < ApplicationRecord
 
   def issue_auth_code
     auth&.destroy
-    random_code = (0..6).map { ('0'..'9').to_a[rand(10)] }.join
+    random_code = (1..6).map { ('0'..'9').to_a[rand(10)] }.join
     EmailAuth.create!(user_id: id, code: random_code, confirm: false)
   end
 
-  def auth_not_confirmed?
-    email_auth? && !auth.confirm
+  def auth_confirmed?
+    EmailAuth.where(user_id: id).exists? && reload.auth.confirm
   end
+
   private
 
   def second_initialize
