@@ -1,6 +1,7 @@
 module Api
   class GuildsController < ApplicationController
     before_action :authenticate_user!
+    # before_action :check_second_auth, only: :show # for test mailer
 
     def index
       render json: Guild.all, status: :ok

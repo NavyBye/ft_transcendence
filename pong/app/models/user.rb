@@ -84,7 +84,9 @@ class User < ApplicationRecord
   def issue_auth_code
     auth&.destroy
     random_code = (1..6).map { ('0'..'9').to_a[rand(10)] }.join
-    EmailAuth.create!(user_id: id, code: random_code, confirm: false)
+    email_auth = EmailAuth.create!(user_id: id, code: random_code, confirm: false)
+    # send email
+    AuthMailer.with(auth: email_auth).auth_email.deliver
   end
 
   def auth_confirmed?
