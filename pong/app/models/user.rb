@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   class PermissionDenied < StandardError; end
 
+  class NeedFirstUpdate < StandardError; end
+
   mount_uploader :image, UserImageUploader
 
   # constants & enums
@@ -93,7 +95,23 @@ class User < ApplicationRecord
     EmailAuth.where(user_id: id).exists? && reload.auth.confirm
   end
 
+  def session_create
+    update!(status: 'online')
+    @user_current = User.find id
+    FriendChannel.broadcast_to @user_current, { data: serialize, status: :ok }
+  end
+
+  def session_destroy
+    update!(status: 'offline')
+    @user_current = User.find id
+    FriendChannel.broadcast_to @user_current, { data: serialize, status: :ok }
+  end
+
   private
+
+  def serialize
+    to_json only: %i[id name nickname status]
+  end
 
   def second_initialize
     self.status = 0

@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   rescue_from Block::PermissionDenied, with: :error_permission_denied
   rescue_from User::PermissionDenied, with: :error_permission_denied
   rescue_from EmailAuth::AuthenticationNotFinished, with: :need_second_authenticate
+  rescue_from User::NeedFirstUpdate, with: :need_first_update
 
   protect_from_forgery with: :null_session
 
@@ -20,15 +21,24 @@ class ApplicationController < ActionController::Base
 
   def error_not_found(exception)
     model_name = exception.model.humanize
-    render json: { message: "#{model_name} is not found!" }, status: :not_found
+    render json: {
+      type: "message",
+      message: "#{model_name} is not found!"
+    }, status: :not_found
   end
 
   def error_invalid(exception)
-    render json: { message: exception }, status: :bad_request
+    render json: {
+      type: "message",
+      message: exception
+    }, status: :bad_request
   end
 
   def error_permission_denied(_exception)
-    render json: { message: "Permssion denied" }, status: :forbidden
+    render json: {
+      type: "message",
+      message: "Permssion denied"
+    }, status: :forbidden
   end
 
   def need_second_authenticate(_exception)

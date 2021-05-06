@@ -14,15 +14,13 @@ module Api
         guild_member.update!(role: params[:role])
         render json: guild_member, status: :ok
       else
-        render json: { message: problem['message'] }, status: problem['status']
+        render json: { type: "message", message: problem['message'] }, status: problem['status']
       end
     end
 
     def destroy
       guild_member = GuildMember.find_by(user_id: params[:user_id])
-      unless GuildMember.can_destroy?(current_user, guild_member)
-        render json: { message: '' }, status: :forbidden and return
-      end
+      raise User::PermissionDenied unless GuildMember.can_destroy?(current_user, guild_member)
 
       if guild_member.role == 'master'
         guild_member.guild.destroy!
