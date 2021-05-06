@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_06_092944) do
+ActiveRecord::Schema.define(version: 2021_05_06_100230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 2021_05_06_092944) do
 
   create_table "game_queues", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.integer "type", default: 0, null: false
+    t.integer "game_type", default: 0, null: false
     t.boolean "addon", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -119,7 +119,7 @@ ActiveRecord::Schema.define(version: 2021_05_06_092944) do
   end
 
   create_table "games", force: :cascade do |t|
-    t.integer "type", default: 0, null: false
+    t.integer "game_type", default: 0, null: false
     t.boolean "addon", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
