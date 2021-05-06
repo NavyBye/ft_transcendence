@@ -95,7 +95,21 @@ class User < ApplicationRecord
     EmailAuth.where(user_id: id).exists? && reload.auth.confirm
   end
 
+  def session_create
+    update!(status: 'online')
+    FriendChannel.broadcast_to self, { data: serialize, status: :ok }
+  end
+
+  def session_destroy
+    update!(status: 'offline')
+    FriendChannel.broadcast_to self, { data: serialize, status: :ok }
+  end
+
   private
+
+  def serialize
+    self.to_json only: %i[id name nickname status]
+  end
 
   def second_initialize
     self.status = 0
