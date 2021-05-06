@@ -16,7 +16,7 @@ module Api
       login :hyeyoo
       to_block = users(:officer)
       assert_difference '@user.reload.blacklist.count', 1 do
-        post api_user_blocks_url(@user.id), params: { blocked_user_id: to_block.id }
+        post api_user_blocks_url(@user.id), params: { id: to_block.id }
         assert_response :created
         assert Block.where(user_id: @user.id, blocked_user_id: to_block.id).exists?
       end
@@ -27,7 +27,7 @@ module Api
       other_user = users(:hyeyoo)
       to_block = users(:officer)
       assert_no_difference 'other_user.reload.blacklist.count', 1 do
-        post api_user_blocks_url(other_user.id), params: { blocked_user_id: to_block.id }
+        post api_user_blocks_url(other_user.id), params: { id: to_block.id }
         assert_response :forbidden
       end
     end
