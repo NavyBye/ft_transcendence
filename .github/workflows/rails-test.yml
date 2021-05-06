@@ -13,4 +13,4 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: build rails and test
-      run: docker-compose run web rails test
+      run: docker-compose run --user="root" web rails test

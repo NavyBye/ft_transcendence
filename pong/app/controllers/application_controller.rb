@@ -42,10 +42,10 @@ class ApplicationController < ActionController::Base
   end
 
   def need_second_authenticate(_exception)
-    render json: { type: 'redirect', redirect: 'auth' }, status: :unauthorized
+    render json: { type: 'redirect', target: 'auth' }, status: :unauthorized
   end
 
   def need_first_update(_exception)
-    render json: { type: 'redirect', redirect: 'mypage' }, status: :unauthorized
+    render json: { type: 'redirect', target: 'mypage' }, status: :unauthorized
   end
 end
