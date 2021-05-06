@@ -77,6 +77,7 @@ const app = {
       if (app.user) {
         /* init routines after login is finished */
         app.initBlacklist();
+        app.initFriendlist();
       }
     });
   },
@@ -112,6 +113,33 @@ const app = {
       $.ajax({
         type: 'DELETE',
         url: `/api/users/${app.user.get('id')}/blocks/${id}`,
+        headers: auth.getTokenHeader(),
+      });
+    });
+  },
+  initFriendlist() {
+    app.friendlist = new collection.FriendCollection();
+    app.friendlist.fetch({ async: false });
+    Radio.channel('friendlist').reply('isFriend', function friendlist(userId) {
+      const found = app.friendlist.findWhere({
+        id: userId,
+      });
+      return found ? true : false;
+    });
+
+    Radio.channel('friendlist').reply(
+      'follow',
+      function follow(follow_user_id) {
+        app.friendlist.create({ follow_user_id, user_id: app.user.get('id') });
+      },
+    );
+
+    Radio.channel('friendlist').reply('unfollow', function unfollow(id) {
+      const followed = app.friendlist.findWhere({ id });
+      app.friendlist.remove(followed);
+      $.ajax({
+        type: 'DELETE',
+        url: `/api/users/${app.user.get('id')}/friends/${id}`,
         headers: auth.getTokenHeader(),
       });
     });

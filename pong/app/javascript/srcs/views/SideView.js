@@ -35,10 +35,7 @@ const SideView = common.View.extend({
     } else if (target === 'dm-tab') {
       this.getRegion('content').show(new view.DmRoomCollectionView());
     } else if (target === 'friend-tab') {
-      const login = Radio.channel('login').request('get');
-      this.getRegion('content').show(
-        new view.FriendCollectionView({ userId: login.get('id') }),
-      );
+      this.getRegion('content').show(new view.FriendCollectionView());
     }
   },
   enterRoom(chatRoomId) {
