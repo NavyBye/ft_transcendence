@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_06_091837) do
+ActiveRecord::Schema.define(version: 2021_05_06_092944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,6 +109,15 @@ ActiveRecord::Schema.define(version: 2021_05_06_091837) do
     t.index ["user_id"], name: "index_game_players_on_user_id", unique: true
   end
 
+  create_table "game_queues", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "type", default: 0, null: false
+    t.boolean "addon", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_game_queues_on_user_id", unique: true
+  end
+
   create_table "games", force: :cascade do |t|
     t.integer "type", default: 0, null: false
     t.boolean "addon", default: false, null: false
@@ -189,6 +198,7 @@ ActiveRecord::Schema.define(version: 2021_05_06_091837) do
   add_foreign_key "friends", "users", column: "follow_id"
   add_foreign_key "game_players", "games"
   add_foreign_key "game_players", "users"
+  add_foreign_key "game_queues", "users"
   add_foreign_key "guild_members", "guilds"
   add_foreign_key "guild_members", "users"
   add_foreign_key "invites", "guilds"
