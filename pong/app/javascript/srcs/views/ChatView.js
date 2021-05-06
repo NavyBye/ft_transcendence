@@ -18,6 +18,15 @@ const ChatView = common.View.extend({
   onInitialize() {
     const me = Radio.channel('login').request('get');
     const userId = this.model.get('user').id;
+    const isBlocked = Radio.channel('blacklist').request(
+      'isBlocked',
+      this.model.get('user').id,
+    );
+
+    if (isBlocked) {
+      this.model.set('body', '<strong>THIS USER IS BLOCKED</strong>');
+    }
+
     if (userId === me.get('id')) {
       this.template = sendTemplate;
     } else {
