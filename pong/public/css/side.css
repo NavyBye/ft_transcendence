@@ -37,7 +37,7 @@
 
   overflow-y: scroll;
   position: relative;
-  height: 100%;
+  height: calc(100% - 42px);
 }
 
 #side > .content > .container::-webkit-scrollbar {
