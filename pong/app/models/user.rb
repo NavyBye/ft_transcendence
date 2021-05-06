@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   class PermissionDenied < StandardError; end
 
+  class NeedFirstUpdate < StandardError; end
+
   mount_uploader :image, UserImageUploader
 
   # constants & enums
@@ -32,6 +34,9 @@ class User < ApplicationRecord
   has_many :invited_guilds, through: :invitations, source: :guild
 
   has_one :auth, class_name: "EmailAuth", foreign_key: :user_id, inverse_of: :user, dependent: :destroy
+
+  has_one :game_relation, class_name: "GamePlayer", inverse_of: :user, foreign_key: :user_id, dependent: :destroy
+  has_one :game, through: :game_relation, source: :game
 
   # validations
   validates :status, inclusion: { in: User.statuses.keys }
@@ -77,7 +82,39 @@ class User < ApplicationRecord
     nickname == 'newcomer'
   end
 
+  def email_auth?
+    is_email_auth
+  end
+
+  def issue_auth_code
+    auth&.destroy
+    random_code = (1..6).map { ('0'..'9').to_a[rand(10)] }.join
+    email_auth = EmailAuth.create!(user_id: id, code: random_code, confirm: false)
+    # send email
+    AuthMailer.with(auth: email_auth).auth_email.deliver
+  end
+
+  def auth_confirmed?
+    EmailAuth.where(user_id: id).exists? && reload.auth.confirm
+  end
+
+  def session_create
+    update!(status: 'online')
+    @user_current = User.find id
+    FriendChannel.broadcast_to @user_current, { data: serialize, status: :ok }
+  end
+
+  def session_destroy
+    update!(status: 'offline')
+    @user_current = User.find id
+    FriendChannel.broadcast_to @user_current, { data: serialize, status: :ok }
+  end
+
   private
+
+  def serialize
+    to_json only: %i[id name nickname status]
+  end
 
   def second_initialize
     self.status = 0

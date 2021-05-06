@@ -18,7 +18,7 @@ module Api
       login :hyeyoo
       follow_user = users(:master)
       assert_difference '@user.reload.followings.count', 1 do
-        post api_user_friends_url(@user.id), params: { follow_id: follow_user.id }
+        post api_user_friends_url(@user.id), params: { id: follow_user.id }
       end
       assert_response :created
       assert_equal result['follow_id'], follow_user.id
@@ -29,7 +29,7 @@ module Api
       other_user = users(:officer)
       follow_user = users(:master)
       assert_no_difference 'other_user.reload.followings.count' do
-        post api_user_friends_url(other_user.id), params: { follow_id: follow_user.id }
+        post api_user_friends_url(other_user.id), params: { id: follow_user.id }
       end
       assert_response :forbidden
     end

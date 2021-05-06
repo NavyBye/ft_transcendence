@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable camelcase */
 import $ from 'jquery/src/jquery';
@@ -11,9 +12,10 @@ import model from './models';
 
 const app = {
   start() {
+    app.initErrorHandler();
     $.ajaxSetup({
       error: function error(res) {
-        new ErrorModalView().show('Error', res.responseText);
+        Radio.channel('error').request('trigger', res.responseText);
       },
     });
 
@@ -77,20 +79,18 @@ const app = {
       if (app.user) {
         /* init routines after login is finished */
         app.initBlacklist();
-        app.initChatRoomList();
       }
     });
   },
-  initChatRoomList() {
-    app.chatRoomList = new collection.ChatRoomCollection();
-    app.chatRoomList.url = function url() {
-      return '/api/my/chatrooms';
-    };
+  initErrorHandler() {
+    Radio.channel('error').reply('trigger', function handler(json) {
+      if (typeof json === 'string') json = JSON.parse(json);
 
-    app.chatRoomList.fetch({ async: false });
-    Radio.channel('chatroom').reply('isJoined', function isJoined(chatRoomId) {
-      const found = app.chatRoomList.findWhere({ id: chatRoomId });
-      return found ? true : false;
+      if (json.type === 'message') {
+        new ErrorModalView().show('Error', json.message);
+      } else if (json.type === 'redirect') {
+        Radio.channel('route').trigger('route', json.target);
+      }
     });
   },
   initBlacklist() {
