@@ -94,10 +94,19 @@ const app = {
         connected() {},
         disconnected() {},
         received(data) {
-          Radio.channel('signal').request(data.type, data);
+          if (data && data.type) {
+            Radio.channel('signal').request(data.type, data);
+          }
         },
       },
     );
+
+    /* redirect fetch radio to actual handler */
+    Radio.channel('signal').reply('fetch', function fetch(data) {
+      if (data && data.element) {
+        Radio.channel(data.element).request(data.type, data);
+      }
+    });
   },
   initErrorHandler() {
     Radio.channel('error').reply('trigger', function handler(json) {
