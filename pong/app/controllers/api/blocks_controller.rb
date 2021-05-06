@@ -22,11 +22,11 @@ module Api
     private
 
     def block_params
-      params.permit(:user_id, :blocked_user_id)
+      { user_id: params[:user_id], blocked_user_id: params[:id] }
     end
 
     def check_permission
-      is_admin = false # TODO : admin/owner check.
+      is_admin = User.roles[current_user.role] > User.roles['user']
       raise Block::PermissionDenied if Integer(params[:user_id]) != Integer(current_user.id) && !is_admin
     end
   end

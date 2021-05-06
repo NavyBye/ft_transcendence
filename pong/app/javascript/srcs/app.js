@@ -12,9 +12,6 @@ import model from './models';
 const app = {
   start() {
     $.ajaxSetup({
-      headers: {
-        X_CSRF_TOKEN: auth.getTokenValue(),
-      },
       error: function error(res) {
         new ErrorModalView().show('Error', res.responseText);
       },
@@ -24,6 +21,7 @@ const app = {
       $.ajax({
         type: 'DELETE',
         url: '/sign_out',
+        headers: auth.getTokenHeader(),
         success(res) {
           app.user = null;
           $('meta[name="csrf-param"]').attr('content', res.csrf_param);
@@ -34,8 +32,20 @@ const app = {
     });
 
     /* reply user */
-    Radio.channel('app').reply('login', function getUser() {
+    Radio.channel('login').reply('get', function getUser() {
       return app.user;
+    });
+
+    Radio.channel('login').reply('fetch', function fetcg() {
+      $.ajax({
+        type: 'GET',
+        url: '/api/users/me',
+        headers: auth.getTokenHeader(),
+        success(data) {
+          app.user = new model.UserModel(data);
+        },
+        async: false,
+      });
     });
 
     app.rootView = new view.RootView();
@@ -50,6 +60,7 @@ const app = {
       $.ajax({
         type: 'GET',
         url: '/api/users/me',
+        headers: auth.getTokenHeader(),
         success(data) {
           app.user = new model.UserModel(data);
         },
@@ -66,20 +77,7 @@ const app = {
       if (app.user) {
         /* init routines after login is finished */
         app.initBlacklist();
-        app.initChatRoomList();
       }
-    });
-  },
-  initChatRoomList() {
-    app.chatRoomList = new collection.ChatRoomCollection();
-    app.chatRoomList.url = function url() {
-      return '/api/my/chatrooms';
-    };
-
-    app.chatRoomList.fetch({ async: false });
-    Radio.channel('chatroom').reply('isJoined', function isJoined(chatRoomId) {
-      const found = app.chatRoomList.findWhere({ id: chatRoomId });
-      return found ? true : false;
     });
   },
   initBlacklist() {
@@ -114,6 +112,7 @@ const app = {
       $.ajax({
         type: 'DELETE',
         url: `/api/users/${app.user.get('id')}/blocks/${id}`,
+        headers: auth.getTokenHeader(),
       });
     });
   },

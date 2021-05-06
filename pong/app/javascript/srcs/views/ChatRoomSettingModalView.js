@@ -1,5 +1,6 @@
 import $ from 'jquery/src/jquery';
 import common from '../common';
+import auth from '../utils/auth';
 
 const ChatRoomSettingModalView = common.View.extend({
   el: '#chatroom-setting-modal',
@@ -30,6 +31,7 @@ const ChatRoomSettingModalView = common.View.extend({
     $.ajax({
       type: 'PUT',
       url: `/api/chatrooms/${this.chatRoomId}`,
+      headers: auth.getTokenHeader(),
       data,
     });
     $(this.el).modal('hide');

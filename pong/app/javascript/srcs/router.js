@@ -29,16 +29,21 @@ const Router = Backbone.Router.extend({
   },
   home() {
     const rootView = Radio.channel('app').request('rootView');
-    const login = Radio.channel('app').request('login');
+    const login = Radio.channel('login').request('get');
     if (!login) {
       Radio.channel('route').trigger('route', 'login');
     } else {
-      rootView.show('content', new view.MainView());
+      if (!rootView.getRegion('content').getView())
+        rootView.show('content', new view.MainView());
+      rootView
+        .getRegion('content')
+        .getView()
+        .show('content', new view.HomeView());
     }
   },
   login() {
     const rootView = Radio.channel('app').request('rootView');
-    const login = Radio.channel('app').request('login');
+    const login = Radio.channel('login').request('get');
     if (login) {
       Radio.channel('route').trigger('route', 'home');
     } else {
@@ -47,11 +52,12 @@ const Router = Backbone.Router.extend({
   },
   rankPage() {
     const rootView = Radio.channel('app').request('rootView');
-    const login = Radio.channel('app').request('login');
+    const login = Radio.channel('login').request('get');
     if (!login) {
       Radio.channel('route').trigger('route', 'login');
     } else {
-      rootView.show('content', new view.MainView());
+      if (!rootView.getRegion('content').getView())
+        rootView.show('content', new view.MainView());
       rootView
         .getRegion('content')
         .getView()
@@ -60,11 +66,12 @@ const Router = Backbone.Router.extend({
   },
   myPage() {
     const rootView = Radio.channel('app').request('rootView');
-    const login = Radio.channel('app').request('login');
+    const login = Radio.channel('login').request('get');
     if (!login) {
       Radio.channel('route').trigger('route', 'login');
     } else {
-      rootView.show('content', new view.MainView());
+      if (!rootView.getRegion('content').getView())
+        rootView.show('content', new view.MainView());
       rootView
         .getRegion('content')
         .getView()

@@ -8,11 +8,13 @@ module Api
     end
 
     def create
-      render json: { message: 'you have no guild.' }, status: :not_found and return if current_user.guild.nil?
+      if current_user.guild.nil?
+        render json: { type: "message", message: 'you have no guild.' }, status: :not_found and return
+      end
 
       guild = current_user.guild
       unless Invite.invitable(current_user, guild)
-        render json: { message: 'you cannot invite someone!' }, status: :forbidden and return
+        render json: { type: "message", message: 'you cannot invite someone!' }, status: :forbidden and return
       end
 
       new_invitation = Invite.new(guild_id: guild.id, user_id: params[:user_id])

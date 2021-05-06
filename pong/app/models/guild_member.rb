@@ -26,7 +26,8 @@ class GuildMember < ApplicationRecord
   end
 
   def self.can_destroy?(user, member)
-    # TODO : if user is owner/admin, return false.
+    return true if User.roles[user.role] > User.roles['user']
+
     # only check guildmaster & myself.
     if user.guild.nil? || user.guild.id != member.guild.id
       false

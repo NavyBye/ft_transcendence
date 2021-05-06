@@ -4,6 +4,7 @@ import common from '../common';
 import template from '../templates/MyPageView.html';
 import ErrorModalView from './ErrorModalView';
 import OkModalView from './OkModalView';
+import auth from '../utils/auth';
 
 const MyPageView = common.View.extend({
   el: '#content',
@@ -39,6 +40,7 @@ const MyPageView = common.View.extend({
     $.ajax({
       type: 'PUT',
       url: `/api/users/${this.model.get('id')}`,
+      headers: auth.getTokenHeader(),
       data: formData,
       enctype: 'multipart/form-data',
       processData: false,
