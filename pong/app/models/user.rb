@@ -35,6 +35,9 @@ class User < ApplicationRecord
 
   has_one :auth, class_name: "EmailAuth", foreign_key: :user_id, inverse_of: :user, dependent: :destroy
 
+  has_one :game_relation, class_name: "GamePlayer", inverse_of: :user, foreign_key: :user_id, dependent: :destroy
+  has_one :game, through: :game_relation, source: :game
+
   # validations
   validates :status, inclusion: { in: User.statuses.keys }
   validates :role, inclusion: { in: User.roles.keys }
