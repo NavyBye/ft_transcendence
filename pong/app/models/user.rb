@@ -97,18 +97,20 @@ class User < ApplicationRecord
 
   def session_create
     update!(status: 'online')
-    FriendChannel.broadcast_to self, { data: serialize, status: :ok }
+    @user_current = User.find id
+    FriendChannel.broadcast_to @user_current, { data: serialize, status: :ok }
   end
 
   def session_destroy
     update!(status: 'offline')
-    FriendChannel.broadcast_to self, { data: serialize, status: :ok }
+    @user_current = User.find id
+    FriendChannel.broadcast_to @user_current, { data: serialize, status: :ok }
   end
 
   private
 
   def serialize
-    self.to_json only: %i[id name nickname status]
+    to_json only: %i[id name nickname status]
   end
 
   def second_initialize
