@@ -17,17 +17,17 @@ module Api
     def destroy
       result = Friend.find_by(friendship_params)
       result.destroy!
-      render json: { message: 'successfully deleted.' }, status: :no_content
+      render json: { type: "message", message: 'successfully deleted.' }, status: :no_content
     end
 
     private
 
     def friendship_params
-      params.permit(:user_id, :follow_id)
+      { user_id: params[:user_id], follow_id: params[:id] }
     end
 
     def check_permission
-      is_admin = false # TODO : admin/owner check.
+      is_admin = User.roles[current_user.role] > User.roles['user']
       raise Friend::PermissionDenied if Integer(params[:user_id]) != Integer(current_user.id) && !is_admin
     end
   end

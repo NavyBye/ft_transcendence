@@ -18,7 +18,8 @@ class Guild < ApplicationRecord
 
   # public methods
   def self.can_destroy?(user, guild)
-    # TODO : owner/admin check
+    return true if User.roles[user.role] > User.roles['user']
+
     role = GuildMember.find_by(user_id: user.id, guild_id: guild.id).role
     role == 'master'
   end

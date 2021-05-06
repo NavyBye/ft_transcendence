@@ -11,6 +11,8 @@ class ChatRoom < ApplicationRecord
 
   before_validation :strip_name, only: [:name]
 
+  attr_accessor :joined
+
   def password=(unencrypted_password)
     @password = unencrypted_password
     self.encrypted_password = @password && Password.create(unencrypted_password)

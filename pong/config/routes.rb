@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   end
 
   namespace :api, defaults: { format: :json } do
+    post 'auth', to: 'auth#match'
     resources :users, only: %i[index show update] do
       collection do
         get 'rank'
@@ -22,8 +23,8 @@ Rails.application.routes.draw do
         post 'designate', controller: 'admin'
         post 'ban', controller: 'admin'
       end
-      resources :friends, only: %i[index create destroy], param: :follow_id
-      resources :blocks, only: %i[index create destroy], param: :blocked_user_id
+      resources :friends, only: %i[index create destroy], param: :id
+      resources :blocks, only: %i[index create destroy], param: :id
       resources :invites, only: %i[index create update destroy]
     end
     resources :guilds, only: %i[index show create destroy] do
@@ -36,7 +37,6 @@ Rails.application.routes.draw do
       end
       resources :members, only: %i[index update destroy], controller: 'guild_members', param: :user_id
     end
-    get 'my/chatrooms', to: 'chat_rooms#index_my_chat_rooms'
     resources :chat_rooms, path: 'chatrooms', only: %i[index update destroy create] do
       resources :chat_rooms_members, path: 'members', only: %i[index update destroy create]
       resources :chat_room_messages, path: 'messages', only: %i[index]

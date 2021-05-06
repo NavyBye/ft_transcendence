@@ -35,7 +35,7 @@ const ChatCollectionView = common.CollectionView.extend({
         connected() {},
         disconnected() {},
         received(data) {
-          const newModel = new model.ChatModel(JSON.parse(data.data));
+          const newModel = new model.ChatModel(data.data);
           view.add(newModel);
         },
       },

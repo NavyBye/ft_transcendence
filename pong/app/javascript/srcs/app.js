@@ -79,7 +79,6 @@ const app = {
       if (app.user) {
         /* init routines after login is finished */
         app.initBlacklist();
-        app.initChatRoomList();
       }
     });
   },

@@ -5,6 +5,7 @@ const ChatRoomModel = Backbone.Model.extend({
     id: 0,
     name: '',
     public: false,
+    joined: false,
   },
 });
 
