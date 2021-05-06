@@ -9,6 +9,7 @@ import auth from './utils/auth';
 import ErrorModalView from './views/ErrorModalView';
 import collection from './collections';
 import model from './models';
+import consumer from '../channels/consumer';
 
 const app = {
   start() {
@@ -81,6 +82,22 @@ const app = {
         app.initBlacklist();
       }
     });
+  },
+  initSignalHandler() {
+    const login = Radio('login').request('get');
+    this.channel = consumer.subscriptions.create(
+      {
+        channel: 'SignalChannel',
+        id: login.get('id'),
+      },
+      {
+        connected() {},
+        disconnected() {},
+        received(data) {
+          Radio.channel('signal').request(data.type, data);
+        },
+      },
+    );
   },
   initErrorHandler() {
     Radio.channel('error').reply('trigger', function handler(json) {
