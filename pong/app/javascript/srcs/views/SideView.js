@@ -50,7 +50,7 @@ const SideView = common.View.extend({
     this.getRegion('content').show(new view.ChatCollectionView(chatRoomId));
   },
   enterDmRoom(dmRoomId) {
-    this.getRegion('content').show(new view.DmRoomCollectionView(dmRoomId));
+    this.getRegion('content').show(new view.DmCollectionView(dmRoomId));
   },
 });
 

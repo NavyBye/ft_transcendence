@@ -62,8 +62,19 @@ const UserProfileModalView = common.View.extend({
   requestPong() {},
   guildInvite() {},
   dm() {
-    Radio.channel('side').request('changeTab', 'dm-tab');
-    Radio.channel('dmroom').request('enter', this.userId);
+    /* create DM if not exists */
+    $.ajax({
+      type: 'POST',
+      url: '/api/dmrooms',
+      headers: auth.getTokenHeader(),
+      data: { user_id: this.userId },
+      success(created) {
+        Radio.channel('side').request('changeTab', 'dm-tab');
+        setTimeout(function enterDmRoom() {
+          Radio.channel('side').trigger('enter-dmroom', created.id);
+        }, 1);
+      },
+    });
     $(this.el).modal('hide');
   },
 });
