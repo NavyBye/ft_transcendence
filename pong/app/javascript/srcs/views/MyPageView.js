@@ -1,8 +1,8 @@
 /* eslint-disable prefer-destructuring */
 import $ from 'jquery/src/jquery';
+import { Radio } from 'backbone';
 import common from '../common';
 import template from '../templates/MyPageView.html';
-import ErrorModalView from './ErrorModalView';
 import OkModalView from './OkModalView';
 import auth from '../utils/auth';
 
@@ -50,10 +50,7 @@ const MyPageView = common.View.extend({
         new OkModalView().show('Success', 'Successfully saved user data');
       },
       error(res) {
-        new ErrorModalView().show(
-          'Error while saving user data',
-          res.responseText,
-        );
+        Radio.channel('error').request('trigger', res.responseText);
       },
     });
   },
