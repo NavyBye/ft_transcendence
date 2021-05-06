@@ -16,12 +16,10 @@ module Api
     protected
 
     def serialize(room, page)
-      a = {
+      {
         messages: room.messages.order(created_at: :asc).page(page).as_json(only: %i[id user body created_at],
                                                    include: { user: { only: %i[id nickname] } }), page: page.to_i
       }
-      puts a
-      a
     end
   end
 end
