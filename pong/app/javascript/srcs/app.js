@@ -97,16 +97,6 @@ const app = {
     /* reply blacklist */
     app.blacklist = new collection.BlockCollection();
     app.blacklist.fetch({ async: false });
-    Radio.channel('blacklist').reply(
-      'filter',
-      function blacklist(m, filterBy, replaceKey) {
-        if (app.blacklist.findWhere({ block_user_id: m.get(filterBy) })) {
-          m.set(replaceKey, 'blocked');
-          return m;
-        }
-        return m;
-      },
-    );
 
     Radio.channel('blacklist').reply('isBlocked', function blacklist(userId) {
       const found = app.blacklist.findWhere({
