@@ -168,6 +168,18 @@ const app = {
       },
     );
 
+    Radio.channel('friendlist').reply('follow', function follow(id) {
+      $.ajax({
+        type: 'POST',
+        url: `/api/users/${app.user.get('id')}/friends`,
+        headers: auth.getTokenHeader(),
+        data: { id },
+        success() {
+          app.friendlist.fetch();
+        },
+      });
+    });
+
     Radio.channel('friendlist').reply('unfollow', function unfollow(id) {
       const followed = app.friendlist.findWhere({ id });
       app.friendlist.remove(followed);

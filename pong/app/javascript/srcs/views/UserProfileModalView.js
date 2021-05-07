@@ -36,13 +36,17 @@ const UserProfileModalView = common.View.extend({
   onRender() {},
   onDestroy() {},
   addFriend() {
-    const login = Radio.channel('login').request('get');
-    $.ajax({
-      type: 'POST',
-      url: `/api/users/${login.get('id')}/friends`,
-      headers: auth.getTokenHeader(),
-      data: { id: this.userId },
-    });
+    const isFriend = Radio.channel('friendlist').request(
+      'isFriend',
+      this.userId,
+    );
+
+    if (isFriend) {
+      Radio.channel('friendlist').request('unfollow', this.userId);
+    } else {
+      Radio.channel('friendlist').request('follow', this.userId);
+    }
+    $(this.el).modal('hide');
   },
   block() {
     const isBlocked = Radio.channel('blacklist').request(
