@@ -57,6 +57,7 @@ const UserProfileModalView = common.View.extend({
     }
 
     this.getRegion('userinfo').getView().render();
+    Radio.channel('chat-collection').request('fetch');
     $(this.el).modal('hide');
   },
   requestPong() {},
