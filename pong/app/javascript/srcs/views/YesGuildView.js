@@ -1,3 +1,4 @@
+import Radio from 'backbone.radio';
 import common from '../common';
 import template from '../templates/YesGuildView.html';
 import GuildInfoView from './GuildInfoView';
@@ -10,7 +11,11 @@ const YesGuildView = common.View.extend({
     'click .nav-item': 'showTab',
   },
   onInitialize() {
+    const self = this;
     this.addRegion('guildContent', '#guild-content');
+    Radio.channel('guild').reply('id', function getter() {
+      return self.model.get('id');
+    });
   },
   onRender() {
     this.currentTab = 'info-tab';
