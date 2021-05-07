@@ -18,9 +18,9 @@ class GuildMember < ApplicationRecord
 
     user_member = GuildMember.find_by(user_id: user.id)
     if user_member.guild.id != member.guild.id || user_member.role != 'master'
-      result = set_result('you cannot change the role of other members.', :forbidden)
+      result = { 'message' => 'you cannot change the role of other members.', 'status' => :forbidden }
     elsif member.role == 'master' || target_role == 'master'
-      result = set_result('master is immutable role.', :bad_request)
+      result = { 'message' => 'master is immutable role.', 'status' => :bad_request }
     end
     result
   end
@@ -36,11 +36,5 @@ class GuildMember < ApplicationRecord
     else
       user.id == member.user_id
     end
-  end
-
-  private
-
-  def set_result(message, status)
-    { 'message' => message, 'status' => status }
   end
 end
