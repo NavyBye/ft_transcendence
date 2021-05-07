@@ -41,7 +41,7 @@ const UserProfileModalView = common.View.extend({
       type: 'POST',
       url: `/api/users/${login.get('id')}/friends`,
       headers: auth.getTokenHeader(),
-      data: { follow_id: this.userId },
+      data: { id: this.userId },
     });
   },
   block() {
