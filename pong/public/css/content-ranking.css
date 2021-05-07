@@ -1,9 +1,9 @@
-#content .inner-box .rankwrapper {
+#content .inner-box .content-wrapper {
   height: calc(100% - 35px - 30px - 30px);
   padding: 0 20px;
 }
 
-#content .inner-box .rankbody {
+#content .inner-box .sub-body {
   box-sizing: border-box;
   height: 100%;
   border: 1px solid white;
@@ -18,22 +18,23 @@
   margin-top: 10px;
   float: left;
   width: calc(49% - 40px);
+  min-height: 207px;
 }
 
 @media screen and (max-width: 1200px) {
-  #content > div > div > div:nth-child(2) {
+  #content > .inner-box > .content-wrapper > div:nth-child(2) {
     height: calc(50% - 44px) !important;
     width: 90% !important;
     /* display: none; */
   }
 
-  #content > div > div > div:nth-child(1) {
+  #content > .inner-box > .content-wrapper > div:nth-child(1) {
     height: calc(50% - 44px) !important;
     width: 90% !important;
   }
 }
 
-#content .inner-box .ranktitle {
+#content .inner-box .sub-title {
   height: 35px;
   text-align: center;
   font-family: sans-serif;
