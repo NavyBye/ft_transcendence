@@ -1,3 +1,50 @@
 #content .guild-create {
   overflow-y: hidden !important;
 }
+
+#guild-content {
+  height: calc(100% - 42px);
+  background-color: rgba(255, 255, 255, 0.7);
+  /* background-color: white; */
+}
+.yes-guild-body {
+  max-width: 600px;
+  margin: auto;
+}
+
+#content .guild-nav-tabs {
+  margin: 0;
+}
+
+#guild-body .guild-nav-tabs a {
+  color: white;
+}
+
+#guild-body .guild-nav-tabs .active {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: black;
+}
+
+#guild-body .guild-name,
+.guild-anagram {
+  text-align: center;
+  margin: 0;
+  font-family: sans-serif;
+  color: black;
+}
+
+.guild-text-wrapper {
+  margin-top: 50px;
+  margin-left: 50px;
+  font-size: larger;
+}
+
+#guild-member {
+  margin: 0 20px;
+  padding-top: 10px;
+  padding-left: 30px;
+  background-color: white;
+  display: block;
+  height: calc(100% - 210px);
+  overflow-y: scroll;
+}

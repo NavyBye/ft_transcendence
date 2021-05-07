@@ -22,16 +22,15 @@
 }
 
 @media screen and (max-width: 1200px) {
-  #content > .inner-box > .content-wrapper > div:nth-child(2) {
+  #content > .inner-box > .content-wrapper > .sub-body {
     height: calc(50% - 44px) !important;
     width: 90% !important;
-    /* display: none; */
   }
 
-  #content > .inner-box > .content-wrapper > div:nth-child(1) {
+  /* #content > .inner-box > .content-wrapper > .sub-body:nth-child(1) {
     height: calc(50% - 44px) !important;
     width: 90% !important;
-  }
+  } */
 }
 
 #content .inner-box .sub-title {
