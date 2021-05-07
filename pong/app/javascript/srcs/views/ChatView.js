@@ -18,6 +18,16 @@ const ChatView = common.View.extend({
   onInitialize() {
     const me = Radio.channel('login').request('get');
     const userId = this.model.get('user').id;
+    const isBlocked = Radio.channel('blacklist').request(
+      'isBlocked',
+      this.model.get('user').id,
+    );
+
+    /* no template if blocked */
+    if (isBlocked) {
+      return;
+    }
+
     if (userId === me.get('id')) {
       this.template = sendTemplate;
     } else {
@@ -35,7 +45,7 @@ const ChatView = common.View.extend({
                   type: 'POST',
                   url: `/api/users/${login.get('id')}/friends`,
                   headers: auth.getTokenHeader(),
-                  data: { follow_id: userId },
+                  data: { id: userId },
                 });
               },
               classNames: 'dropdown-item',

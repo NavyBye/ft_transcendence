@@ -2,6 +2,7 @@
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable camelcase */
 import $ from 'jquery/src/jquery';
+import Backbone from 'backbone';
 import Radio from 'backbone.radio';
 import view from './views';
 import Router from './router';
@@ -18,6 +19,12 @@ const app = {
         Radio.channel('error').request('trigger', res.responseText);
       },
     });
+
+    const callback = Backbone.sync;
+    Backbone.sync = function sync(method, model_, options) {
+      options.headers = auth.getTokenHeader();
+      callback(method, model_, options);
+    };
 
     Radio.channel('app').reply('logout', function logout() {
       $.ajax({
@@ -79,6 +86,7 @@ const app = {
       if (app.user) {
         /* init routines after login is finished */
         app.initBlacklist();
+        app.initFriendlist();
       }
     });
   },
@@ -115,8 +123,19 @@ const app = {
       return found ? true : false;
     });
 
-    Radio.channel('blacklist').reply('block', function block(blocked_user_id) {
-      app.blacklist.create({ blocked_user_id, user_id: app.user.get('id') });
+    Radio.channel('blacklist').reply('block', function block(userId) {
+      const login = Radio.channel('login').request('get');
+      $.ajax({
+        type: 'POST',
+        url: `/api/users/${login.get('id')}/blocks`,
+        headers: auth.getTokenHeader(),
+        data: { id: userId },
+        success() {
+          const blockedUser = new model.UserModel({ id: userId });
+          blockedUser.fetch({ async: false });
+          app.blacklist.add(blockedUser);
+        },
+      });
     });
 
     Radio.channel('blacklist').reply('unblock', function unblock(id) {
@@ -125,6 +144,48 @@ const app = {
       $.ajax({
         type: 'DELETE',
         url: `/api/users/${app.user.get('id')}/blocks/${id}`,
+        headers: auth.getTokenHeader(),
+        success() {
+          app.blacklist.fetch();
+        },
+      });
+    });
+  },
+  initFriendlist() {
+    app.friendlist = new collection.FriendCollection();
+    app.friendlist.fetch({ async: false });
+    Radio.channel('friendlist').reply('isFriend', function friendlist(userId) {
+      const found = app.friendlist.findWhere({
+        id: userId,
+      });
+      return found ? true : false;
+    });
+
+    Radio.channel('friendlist').reply(
+      'follow',
+      function follow(follow_user_id) {
+        app.friendlist.create({ follow_user_id, user_id: app.user.get('id') });
+      },
+    );
+
+    Radio.channel('friendlist').reply('follow', function follow(id) {
+      $.ajax({
+        type: 'POST',
+        url: `/api/users/${app.user.get('id')}/friends`,
+        headers: auth.getTokenHeader(),
+        data: { id },
+        success() {
+          app.friendlist.fetch();
+        },
+      });
+    });
+
+    Radio.channel('friendlist').reply('unfollow', function unfollow(id) {
+      const followed = app.friendlist.findWhere({ id });
+      app.friendlist.remove(followed);
+      $.ajax({
+        type: 'DELETE',
+        url: `/api/users/${app.user.get('id')}/friends/${id}`,
         headers: auth.getTokenHeader(),
       });
     });

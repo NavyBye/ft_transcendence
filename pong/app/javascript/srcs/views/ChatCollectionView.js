@@ -1,6 +1,7 @@
 /* eslint-disable for-direction */
 /* eslint-disable no-new */
 /* eslint-disable prefer-destructuring */
+import { Radio } from 'backbone';
 import $ from 'jquery/src/jquery';
 import collection from '../collections';
 import common from '../common';
@@ -40,6 +41,10 @@ const ChatCollectionView = common.CollectionView.extend({
         },
       },
     );
+
+    Radio.channel('chat-collection').reply('fetch', function fetch() {
+      Radio.channel('side').trigger('enter-chatroom', chatRoomId);
+    });
   },
   onRender() {
     const view = this;

@@ -32,9 +32,39 @@ class ChatRoomsMembersControllerTest < ActionDispatch::IntegrationTest
     chat_room = chat_rooms :chat_room1
     target = users(:user1)
     put api_chat_room_chat_rooms_member_path(chat_room.id, target.id),
-        params: { status: 1, duration: 3, role: "admin" }, as: :json
+        params: { role: "admin" }, as: :json
     assert_response :ok
-    assert ChatRoomsMember.find_by!(chat_room: chat_room, user: target).muted?
+    assert ChatRoomsMember.find_by!(chat_room: chat_room, user: target).admin?
+  end
+
+  test "ban" do
+    chat_room = chat_rooms :chat_room1
+    target = users(:user1)
+    post api_chat_room_chat_rooms_member_ban_path(chat_room.id, target.id),
+         params: { duration: 2 }, as: :json
+    assert_response :ok
+    assert_not_nil ChatRoomsMember.find_by!(chat_room: chat_room, user: target).ban_at
+  end
+
+  test "mute" do
+    chat_room = chat_rooms :chat_room1
+    target = users(:user1)
+    post api_chat_room_chat_rooms_member_mute_path(chat_room.id, target.id),
+         params: { duration: 2 }, as: :json
+    assert_response :ok
+    assert_not_nil ChatRoomsMember.find_by!(chat_room: chat_room, user: target).mute_at
+  end
+
+  test "free" do
+    chat_room = chat_rooms :chat_room1
+    target = users(:user1)
+    post api_chat_room_chat_rooms_member_ban_path(chat_room.id, target.id),
+         params: { duration: 2 }, as: :json
+    assert_response :ok
+    assert_not_nil ChatRoomsMember.find_by!(chat_room: chat_room, user: target).ban_at
+    post api_chat_room_chat_rooms_member_free_path(chat_room.id, target.id), as: :json
+    assert_response :ok
+    assert_nil ChatRoomsMember.find_by!(chat_room: chat_room, user: target).ban_at
   end
 
   test "delete" do
