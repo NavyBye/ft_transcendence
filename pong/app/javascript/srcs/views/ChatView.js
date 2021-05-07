@@ -45,7 +45,7 @@ const ChatView = common.View.extend({
                   type: 'POST',
                   url: `/api/users/${login.get('id')}/friends`,
                   headers: auth.getTokenHeader(),
-                  data: { follow_id: userId },
+                  data: { id: userId },
                 });
               },
               classNames: 'dropdown-item',
