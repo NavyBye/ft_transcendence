@@ -3,11 +3,17 @@ import model from '../models';
 
 const DmCollection = Backbone.Collection.extend({
   model: model.DmModel,
-  initialize(dmRoomId) {
+  initialize(dmRoomId, page) {
     this.dmRoomId = dmRoomId;
+    this.page = page;
   },
   url() {
-    return `/api/dmrooms/${this.dmRoomId}/messages`;
+    const page = this.page ? `page=${this.page}` : '';
+    return `/api/dmrooms/${this.dmRoomId}/messages?${page}`;
+  },
+  parse(response) {
+    this.page = response.page;
+    return response.messages;
   },
 });
 
