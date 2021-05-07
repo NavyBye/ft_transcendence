@@ -41,8 +41,11 @@ Rails.application.routes.draw do
     end
 
     # matchmaking & game
-    resources :games, only: %i[index create show]
-    resource :games, only: :destroy
+    resources :games, only: %i[index create show] do
+      collection do
+        delete 'cancel'
+      end
+    end
 
     resources :chat_rooms, path: 'chatrooms', only: %i[index update destroy create] do
       resources :chat_rooms_members, path: 'members', only: %i[index update destroy create]
