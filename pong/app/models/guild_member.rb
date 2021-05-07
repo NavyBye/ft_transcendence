@@ -13,15 +13,14 @@ class GuildMember < ApplicationRecord
 
   # methods
   def self.update_check(user, member, target_role)
-    return {} if User.roles[user.role].positive?
-    user_member = GuildMember.find_by(user_id: user.id)
     result = {}
+    return result if User.roles[user.role].positive?
+
+    user_member = GuildMember.find_by(user_id: user.id)
     if user_member.guild.id != member.guild.id || user_member.role != 'master'
-      result['message'] = 'you cannot change the role of other members.'
-      result['status'] = :forbidden
+      result = set_result('you cannot change the role of other members.', :forbidden)
     elsif member.role == 'master' || target_role == 'master'
-      result['message'] = 'master is immutable role.'
-      result['status'] = :bad_request
+      result = set_result('master is immutable role.', :bad_request)
     end
     result
   end
@@ -37,5 +36,11 @@ class GuildMember < ApplicationRecord
     else
       user.id == member.user_id
     end
+  end
+
+  private
+
+  def set_result(message, status)
+    { 'message' => message, 'status' => status }
   end
 end
