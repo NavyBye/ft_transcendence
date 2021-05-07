@@ -2,7 +2,7 @@
   <img
     class="profile-image"
     style="height: 200px; width: 200px"
-    src="/images/42.jpg"
+    src="<%= image.url ? image.url : '/images/default-profile.png' %>"
   />
   <div class="profile-string">
     <h2>name : <%= nickname %></h2>
