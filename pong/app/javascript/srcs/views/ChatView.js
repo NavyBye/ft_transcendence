@@ -23,8 +23,9 @@ const ChatView = common.View.extend({
       this.model.get('user').id,
     );
 
+    /* no template if blocked */
     if (isBlocked) {
-      this.model.set('body', '<strong>THIS USER IS BLOCKED</strong>');
+      return;
     }
 
     if (userId === me.get('id')) {
