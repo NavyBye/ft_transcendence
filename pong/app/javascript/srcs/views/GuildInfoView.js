@@ -8,7 +8,6 @@ const GuildInfoView = common.View.extend({
     this.addRegion('guild_member', '#guild-member');
   },
   onRender() {
-    console.log(this.model);
     this.show(
       'guild_member',
       new GuildMemberCollectionView({ model: this.model }),
