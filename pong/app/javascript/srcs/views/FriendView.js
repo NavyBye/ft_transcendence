@@ -37,6 +37,9 @@ const FriendView = common.View.extend({
               type: 'DELETE',
               url: `/api/users/${login.get('id')}/friends/${id}`,
               headers: auth.getTokenHeader(),
+              success() {
+                Radio.channel('side').request('changeTab', 'friend-tab');
+              },
             });
           },
           classNames: 'dropdown-item',
