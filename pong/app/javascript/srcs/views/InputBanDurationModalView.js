@@ -24,7 +24,8 @@ const InputBanDurationModalView = common.View.extend({
   ban() {
     const chatRoomId = Radio.channel('chat-collection').request('getId');
     const data = {};
-    data.duration = $('#ban-duration').val();
+    data.duration = parseInt($('#ban-duration').val(), 10);
+    console.log(data);
     $.ajax({
       type: 'POST',
       url: `/api/chatrooms/${chatRoomId}/members/${this.userId}/ban`,

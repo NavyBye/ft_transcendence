@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Radio } from 'backbone';
 import $ from 'jquery/src/jquery';
 import common from '../common';
@@ -24,7 +25,8 @@ const InputMuteDurationModalView = common.View.extend({
   mute() {
     const chatRoomId = Radio.channel('chat-collection').request('getId');
     const data = {};
-    data.duration = $('#ban-duration').val();
+    data.duration = parseInt($('#mute-duration').val(), 10);
+    console.log(data);
     $.ajax({
       type: 'POST',
       url: `/api/chatrooms/${chatRoomId}/members/${this.userId}/mute`,
