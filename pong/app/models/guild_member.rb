@@ -13,6 +13,7 @@ class GuildMember < ApplicationRecord
 
   # methods
   def self.update_check(user, member, target_role)
+    return {} if User.roles[user.role].positive?
     user_member = GuildMember.find_by(user_id: user.id)
     result = {}
     if user_member.guild.id != member.guild.id || user_member.role != 'master'

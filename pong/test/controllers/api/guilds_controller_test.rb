@@ -93,6 +93,24 @@ module Api
       assert_response :no_content
     end
 
+    test 'guild destroy with owner' do
+      login :owner
+      guild = guilds(:test)
+      assert_difference 'Guild.count', -1 do
+        delete "/api/guilds/#{guild.id}"
+      end
+      assert_response :no_content
+    end
+
+    test 'guild destroy with admin' do
+      login :owner
+      guild = guilds(:test)
+      assert_difference 'Guild.count', -1 do
+        delete "/api/guilds/#{guild.id}"
+      end
+      assert_response :no_content
+    end
+
     test 'guild destroy member_with_reload' do
       login :master
       guild = guilds(:test)
