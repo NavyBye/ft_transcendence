@@ -2,13 +2,15 @@ import { Radio } from 'backbone';
 import $ from 'jquery/src/jquery';
 import common from '../common';
 import auth from '../utils/auth';
+import OkModalView from './OkModalView';
 
-const InputPasswordModalView = common.View.extend({
-  el: '#input-password-modal',
+const InputMuteDurationModalView = common.View.extend({
+  el: '#input-mute-duration-modal',
   events: {
-    'click .enter-button': 'enterRoom',
+    'click .mute-button': 'mute',
   },
-  onInitialize() {
+  onInitialize(obj) {
+    this.userId = obj;
     $(this.el).modal('show');
 
     const view = this;
@@ -17,19 +19,19 @@ const InputPasswordModalView = common.View.extend({
     });
   },
   onDestroy() {
-    $('#input-password-modal input').val('');
+    $('#input-mute-duration-modal input').val('');
   },
-  enterRoom() {
-    const view = this;
+  mute() {
+    const chatRoomId = Radio.channel('chat-collection').request('getId');
     const data = {};
-    data.password = $('#chatroom-password').val();
+    data.duration = $('#ban-duration').val();
     $.ajax({
       type: 'POST',
-      url: `/api/chatrooms/${view.model.get('id')}/members`,
+      url: `/api/chatrooms/${chatRoomId}/members/${this.userId}/mute`,
       headers: auth.getTokenHeader(),
       data,
       success() {
-        view.model.set('joined', true);
+        new OkModalView().show('Title', 'Successfully muted!');
       },
       error(res) {
         Radio.channel('error').request('trigger', res.responseText);
@@ -39,4 +41,4 @@ const InputPasswordModalView = common.View.extend({
   },
 });
 
-export default InputPasswordModalView;
+export default InputMuteDurationModalView;
