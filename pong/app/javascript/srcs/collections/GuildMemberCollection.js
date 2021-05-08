@@ -2,7 +2,7 @@ import Backbone from 'backbone';
 import model from '../models';
 
 const GuildMemberCollection = Backbone.Collection.extend({
-  model: model.UserModel,
+  model: model.GuildMemberModel,
   initialize(obj) {
     this.guildId = obj.model.get('id');
   },
