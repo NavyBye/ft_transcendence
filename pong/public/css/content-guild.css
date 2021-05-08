@@ -45,6 +45,11 @@
   padding-left: 30px;
   background-color: white;
   display: block;
-  height: calc(100% - 210px);
+  height: calc(100% - 270px);
   overflow-y: scroll;
+}
+
+#guild-out-btn {
+  max-width: 100px;
+  margin: 20px auto;
 }
