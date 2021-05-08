@@ -14,7 +14,7 @@ module Api
       get "/api/guilds/#{@guild.id}/members"
       assert_response :success
       result.each do |members|
-        assert @user.guild.members.where(id: members['id']).exists?
+        assert @user.guild.guild_member_relationship.where(id: members['id']).exists?
       end
     end
 
