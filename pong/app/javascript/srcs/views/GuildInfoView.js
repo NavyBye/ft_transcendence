@@ -23,7 +23,6 @@ const GuildInfoView = common.View.extend({
   },
   guildOut() {
     const userId = Radio.channel('login').request('get').id;
-    console.log('tt');
     $.ajax({
       type: 'DELETE',
       url: `/api/guilds/${this.model.get('id')}/members/${userId}`,
