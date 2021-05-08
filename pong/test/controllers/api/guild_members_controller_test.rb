@@ -14,12 +14,28 @@ module Api
       get "/api/guilds/#{@guild.id}/members"
       assert_response :success
       result.each do |members|
-        assert @user.guild.members.where(id: members['id']).exists?
+        assert @user.guild.guild_member_relationship.where(id: members['id']).exists?
       end
     end
 
     test "guild member update successfully" do
       login :master
+      member = users(:member)
+      put "/api/guilds/#{@guild.id}/members/#{member.id}", params: { role: 'officer' }
+      assert_response :success
+      assert_equal result['role'], 'officer'
+    end
+
+    test "guild member update successfully with admin" do
+      login :admin
+      member = users(:member)
+      put "/api/guilds/#{@guild.id}/members/#{member.id}", params: { role: 'officer' }
+      assert_response :success
+      assert_equal result['role'], 'officer'
+    end
+
+    test "guild member update successfully with owner" do
+      login :owner
       member = users(:member)
       put "/api/guilds/#{@guild.id}/members/#{member.id}", params: { role: 'officer' }
       assert_response :success
@@ -51,6 +67,24 @@ module Api
 
     test "guild normal member destroy by master" do
       login :master
+      member = users(:member)
+      assert_difference '@guild.members.count', -1 do
+        delete "/api/guilds/#{@guild.id}/members/#{member.id}"
+      end
+      assert_response :success
+    end
+
+    test "guild normal member destroy by owner" do
+      login :owner
+      member = users(:member)
+      assert_difference '@guild.members.count', -1 do
+        delete "/api/guilds/#{@guild.id}/members/#{member.id}"
+      end
+      assert_response :success
+    end
+
+    test "guild normal member destroy by admin" do
+      login :admin
       member = users(:member)
       assert_difference '@guild.members.count', -1 do
         delete "/api/guilds/#{@guild.id}/members/#{member.id}"
