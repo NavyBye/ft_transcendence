@@ -53,3 +53,36 @@
   max-width: 100px;
   margin: 20px auto;
 }
+
+#guild-war-declare {
+  max-width: 400px;
+  overflow-y: scroll;
+  height: calc(100% - 280px);
+  padding-top: 30px;
+  margin: auto;
+}
+
+.war-declare-form {
+  width: 100px;
+  display: inline-block;
+}
+
+#guild-war-invite {
+  height: calc(50% - 150px);
+  max-width: 400px;
+  margin: auto;
+  background-color: white;
+  overflow-y: scroll;
+}
+
+#guild-member::-webkit-scrollbar {
+  display: none;
+}
+
+#guild-war-declare::-webkit-scrollbar {
+  display: none;
+}
+
+#guild-war-invite::-webkit-scrollbar {
+  display: none;
+}
