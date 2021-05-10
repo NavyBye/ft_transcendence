@@ -86,3 +86,14 @@
 #guild-war-invite::-webkit-scrollbar {
   display: none;
 }
+
+.guild-invite-view {
+  max-width: 300px;
+  margin: 10px auto;
+}
+
+.guild-invite-name {
+  display: inline-block;
+  width: 120px;
+  margin-right: 50px;
+}
