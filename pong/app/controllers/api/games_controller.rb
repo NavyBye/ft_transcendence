@@ -18,7 +18,10 @@ module Api
     end
 
     def cancel
-      find_queue current_user.id
+      GameQueue.with_advisory_lock('queue') do
+        find_queue current_user.id
+        @queue.destroy
+      end
     end
 
     private
@@ -41,17 +44,40 @@ module Api
     end
 
     def match_make
-      game = nil
+      @game = nil
+      if params[:game_type] == 'duel' || params[:game_type] == 'ladder'
+        queue_based_matchmaking
+      elsif params[:game_type] == 'ladder_tournament' || params[:game_type] == 'friendly'
+        request_based_matchmaking
+      elsif params[:game_type] == 'tournament'
+        tournament_matchmaking
+      else
+        war_matchmaking
+      end
+      game_start(@game) unless @game.nil?
+    end
+
+    def queue_based_matchmaking
       GameQueue.transaction do
         GameQueue.with_advisory_lock('queue') do
           if GameQueue.queue_is_empty?(params[:game_type], params[:addon])
             GameQueue.push queue_params
           else
-            game = GameQueue.pop_and_match queue_params
+            @game = GameQueue.pop_and_match queue_params
           end
         end
       end
-      game_start(game) unless game.nil?
+    end
+
+    def request_based_matchmaking
+    end
+
+    def tournament_matchmaking
+      # TODO : Tournament.first
+    end
+
+    def war_matchmaking
+      # TODO : War.current
     end
 
     def find_queue(id)
