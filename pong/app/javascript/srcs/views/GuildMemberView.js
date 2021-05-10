@@ -8,6 +8,8 @@ import OkModalView from './OkModalView';
 
 const GuildMemberView = common.View.extend({
   template,
+  tagName: 'tr',
+  className: 'row',
   onInitialize() {
     this.guildId = Radio.channel('guild').request('id');
   },
