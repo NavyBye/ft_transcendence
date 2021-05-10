@@ -25,10 +25,10 @@ module Api
 
     def availability_check
       # if target is exist, check if target user is playable.
-      return GameQueue.playable?(User.find params[:target_id]) unless params[:target_id].nil?
+      return GameQueue.playable?(User.find(params[:target_id])) unless params[:target_id].nil?
 
       # self playable check
-      return GameQueue.playable?(current_user)
+      GameQueue.playable?(current_user)
     end
 
     def queue_params
