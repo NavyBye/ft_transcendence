@@ -27,14 +27,14 @@
   display: inline-block;
 }
 
-.status-0 {
+.status-offline {
   background-color: red;
 }
 
-.status-1 {
+.status-game {
   background-color: green;
 }
 
-.status-2 {
+.status-online {
   background-color: blue;
 }

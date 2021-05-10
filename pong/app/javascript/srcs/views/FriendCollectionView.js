@@ -8,6 +8,7 @@ const FriendCollectionView = common.CollectionView.extend({
   childContainer: '#friend-collection',
   ViewType: FriendView,
   CollectionType: collection.FriendCollection,
+  afterAdd() {},
   onRender() {},
 });
 
