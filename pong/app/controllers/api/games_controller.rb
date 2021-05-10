@@ -43,10 +43,12 @@ module Api
     def match_make
       game = nil
       GameQueue.transaction do
-        if GameQueue.queue_is_empty?(params[:game_type], params[:addon])
-          GameQueue.push params
-        else
-          game = GameQueue.pop_and_match params
+        GameQueue.with_advisory_lock('queue') do
+          if GameQueue.queue_is_empty?(params[:game_type], params[:addon])
+            GameQueue.push queue_params
+          else
+            game = GameQueue.pop_and_match queue_params
+          end
         end
       end
       game_start(game) unless game.nil?

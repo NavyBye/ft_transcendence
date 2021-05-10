@@ -16,7 +16,7 @@ class GameQueue < ApplicationRecord
   end
 
   def self.push(params)
-    create!(params)
+    GameQueue.create!(params)
     @user = User.find params[:user_id]
     @user.status_update('ready')
   end

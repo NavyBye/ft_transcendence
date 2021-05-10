@@ -110,6 +110,12 @@ class User < ApplicationRecord
     FriendChannel.broadcast_to @user_current, { data: serialize, status: :ok }
   end
 
+  def status_update(status)
+    @user = User.find id
+    update!(status: status)
+    FriendChannel.broadcast_to @user, { data: serialize, status: :ok }
+  end
+
   private
 
   def serialize

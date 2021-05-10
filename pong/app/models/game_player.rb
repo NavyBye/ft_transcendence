@@ -17,4 +17,10 @@ class GamePlayer < ApplicationRecord
     # @user = User.find user_id
     # TODO : send signal to start
   end
+
+  private
+
+  def serialize(user)
+    user.to_json only: %i[id name nickname status]
+  end
 end
