@@ -7,13 +7,11 @@ import template from '../templates/GuildMemberView.html';
 import OkModalView from './OkModalView';
 
 const GuildMemberView = common.View.extend({
-  el: '#guild-member-collection',
   template,
   onInitialize() {
     this.guildId = Radio.channel('guild').request('id');
   },
   onRender() {
-    // const self = this;
     const isOfficer =
       this.model.get('role') === 'member'
         ? {
