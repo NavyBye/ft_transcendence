@@ -5,4 +5,16 @@ class GamePlayer < ApplicationRecord
 
   # validations
   validates :user_id, uniqueness: true
+
+  # methods
+  def status_update(status)
+    @user = User.find user_id
+    @user.update!(status: status)
+    FriendChannel.broadcast_to @user, { data: serialize, status: :ok }
+  end
+
+  def send_start_signal
+    # @user = User.find user_id
+    # TODO : send signal to start
+  end
 end
