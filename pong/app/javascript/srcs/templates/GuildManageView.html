@@ -1,36 +1,67 @@
 <div id="guild-war-declare">
-  <h6 style="text-align: center">Guild War Declare</h6>
-  <label>
-    <span class="war-declare-form">name</span>
-    <input type="text" placeholder="name" /> </label
-  ><br />
-  <label>
-    <span class="war-declare-form">Start</span>
-    <input type="text" id="start-date-picker" /> </label
-  ><br />
-  <label>
-    <span class="war-declare-form">End</span>
-    <input type="text" id="end-date-picker" /> </label
-  ><br />
-  <label>
-    <span class="war-declare-form">War time</span>
-    <input type="text" placeholder="구현해야함" /> </label
-  ><br />
-  <label>
-    <span class="war-declare-form">Avoid Chance</span>
-    <input type="number" min="1" value="1" /> </label
-  ><br />
-  <label>
-    <span class="war-declare-form">Prize</span>
-    <input type="number" min="1" value="1" /> </label
-  ><br />
-  <label>
-    <span class="war-declare-form">Option</span>
-    <span>add on</span>
-    <input type="checkbox" />
-    <span>extend</span>
-    <input type="checkbox" /> </label
-  ><br />
+  <h4 style="text-align: center">Guild War Declare</h4>
+  <div class="form-group row">
+    <label for="guild-name" class="col-4 col-form-label">Name</label>
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="guild name"
+        id="guild-name"
+      />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="start-date" class="col-4 col-form-label">Start</label>
+    <div class="col-8">
+      <input class="form-control" type="date" id="end-date" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="start-date" class="col-4 col-form-label">End</label>
+    <div class="col-8">
+      <input class="form-control" type="date" id="start-date" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="war-time" class="col-4 col-form-label">War time</label>
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="Not implemented"
+        id="war-time"
+      />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="avoid-chance" class="col-4 col-form-label">Avoid Chance</label>
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="number"
+        min="1"
+        value="1"
+        id="avoid-chance"
+      />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="prize" class="col-4 col-form-label">Prize</label>
+    <div class="col-8">
+      <input class="form-control" type="number" min="1" value="1" id="prize" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="option" class="col-4 col-form-label">Option</label>
+    <div class="col-8">
+      <label for="is-add-on">add on</label>
+      <input type="checkbox" id="is-add-on" />
+      <label for="is-extended">extend</label>
+      <input type="checkbox" id="is-extended" />
+    </div>
+  </div>
+
   <button
     class="btn btn-primary btn-block"
     type="submit"
