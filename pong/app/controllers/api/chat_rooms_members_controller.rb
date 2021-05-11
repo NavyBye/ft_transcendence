@@ -31,6 +31,7 @@ module Api
 
     def ban
       duration = params[:duration].to_i
+      raise ActiveRecord::RecordInvalid if duration < 1
       @chat_rooms_member.ban_at = Time.zone.now
       @chat_rooms_member.save!
       ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
@@ -40,6 +41,7 @@ module Api
 
     def mute
       duration = params[:duration].to_i
+      raise ActiveRecord::RecordInvalid if duration < 1
       @chat_rooms_member.mute_at = Time.zone.now
       @chat_rooms_member.save!
       ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
