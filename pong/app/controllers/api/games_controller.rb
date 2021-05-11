@@ -48,9 +48,9 @@ module Api
       case params[:game_type]
       when 'duel', 'ladder', 'ladder_tournament', 'friendly'
         basic_matchmaking
-      when
+      when 'tournament'
         tournament_matchmaking
-      else
+      else # war
         war_matchmaking
       end
       game_start(@game) unless @game.nil?

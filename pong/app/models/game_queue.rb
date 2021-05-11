@@ -12,7 +12,7 @@ class GameQueue < ApplicationRecord
   end
 
   def self.queue_is_empty?(game_type, addon)
-    return where(game_type: game_type, addon: addon).empty? if game_type == 'duel' || game_type == 'ladder'
+    return where(game_type: game_type, addon: addon).empty? if %w[duel ladder].include?(game_type)
 
     where(game_type: game_type, addon: addon, target_id: current_user.id).empty?
   end
@@ -26,9 +26,14 @@ class GameQueue < ApplicationRecord
   def self.pop_and_match(params)
     # Queue-based games.
     game = Game.create!(game_type: params[:game_type], addon: params[:addon])
-    wait_queue = GameQueue.find_by(game_type: params[:game_type], addon: params[:addon])
+    wait_queue = if params[:game_type] == 'duel' || params[:game_type] == 'ladder'
+                   GameQueue.find_by(game_type: params[:game_type], addon: params[:addon])
+                 else
+                   GameQueue.find_by(game_type: params[:game_type], addon: params[:addon], target_id: current_user.id)
+                 end
     GamePlayer.create!(game_id: game.id, user_id: wait_queue.user_id)
     GamePlayer.create!(game_id: game.id, user_id: params[:user_id])
+    # pop
     wait_queue.destroy!
     game
   end
