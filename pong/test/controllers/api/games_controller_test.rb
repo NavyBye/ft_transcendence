@@ -11,5 +11,13 @@ module Api
         post api_games_url, params: { game_type: 'duel', addon: false }
       end
     end
+
+    test "accepted friendly but requester canceled" do
+      user = users(:game_test_user)
+      sign_in user
+      assert_no_changes 'GameQueue.count' do
+        post api_games_url, params: { game_type: 'friendly', addon: false }
+      end
+    end
   end
 end

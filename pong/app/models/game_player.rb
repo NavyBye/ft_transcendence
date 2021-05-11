@@ -14,8 +14,7 @@ class GamePlayer < ApplicationRecord
   end
 
   def send_start_signal
-    # @user = User.find user_id
-    # TODO : send signal to start
+    send_signal(user.id, { type: 'connect', game_id: game_id })
   end
 
   private

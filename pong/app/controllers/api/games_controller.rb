@@ -59,10 +59,10 @@ module Api
     def basic_matchmaking
       GameQueue.transaction do
         GameQueue.with_advisory_lock('queue') do
-          if GameQueue.queue_is_empty?(params[:game_type], params[:addon])
+          if GameQueue.queue_is_empty?(params[:game_type], params[:addon], current_user.id)
             GameQueue.push queue_params
           else
-            @game = GameQueue.pop_and_match queue_params
+            @game = GameQueue.pop_and_match queue_params, current_user.id
           end
         end
       end
@@ -83,7 +83,7 @@ module Api
     def game_start(game)
       game.players.each do |player|
         player.status_update 'game'
-        # TODO : player.send_start_signal
+        player.send_start_signal
       end
     end
   end
