@@ -20,9 +20,6 @@ const GuildInviteView = common.View.extend({
       success() {
         Radio.channel('guild').request('reRender');
       },
-      error(res) {
-        Radio.channel('error').request('trigger', res.responseText);
-      },
     });
   },
   inviteRefuse() {
@@ -33,9 +30,6 @@ const GuildInviteView = common.View.extend({
       headers: auth.getTokenHeader(),
       success() {
         Radio.channel('guild').request('reRender');
-      },
-      error(res) {
-        Radio.channel('error').request('trigger', res.responseText);
       },
     });
   },

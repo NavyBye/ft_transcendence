@@ -31,9 +31,6 @@ const NoGuildView = common.View.extend({
         new OkModalView().show('Success', 'Successfully create guild');
         Radio.channel('guild').request('reRender');
       },
-      error(res) {
-        Radio.channel('error').request('trigger', res.responseText);
-      },
     });
   },
 });

@@ -31,9 +31,6 @@ const GuildMemberView = common.View.extend({
                   new OkModalView().show('Success', 'Successfully change role');
                   Radio.channel('guild').request('reRender');
                 },
-                error(res) {
-                  Radio.channel('error').request('trigger', res.responseText);
-                },
               });
             },
             classNames: 'dropdown-item',
@@ -51,9 +48,6 @@ const GuildMemberView = common.View.extend({
                 success() {
                   new OkModalView().show('Success', 'Successfully change role');
                   Radio.channel('guild').request('reRender');
-                },
-                error(res) {
-                  Radio.channel('error').request('trigger', res.responseText);
                 },
               });
             },
@@ -78,9 +72,6 @@ const GuildMemberView = common.View.extend({
                 success() {
                   new OkModalView().show('Success', 'Successfully kick member');
                   Radio.channel('guild').request('reRender');
-                },
-                error(res) {
-                  Radio.channel('error').request('trigger', res.responseText);
                 },
               });
             },
