@@ -4,7 +4,8 @@ module Api
 
     def index
       guild = Guild.find(params[:guild_id])
-      render json: guild.members, status: :ok
+      @members = guild.guild_member_relationship
+      render status: :ok
     end
 
     def update

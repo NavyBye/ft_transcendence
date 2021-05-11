@@ -16,7 +16,6 @@
 
 #my-page form {
   position: relative;
-  border: 1px solid black;
   /* 100% - image (200) - margin (10) - button (38) - margin (10) */
   height: calc(100% - 200px - 10px - 38px - 10px);
 }
@@ -31,4 +30,16 @@
   display: block;
   width: 100px;
   margin: 0 auto;
+}
+
+#my-page .body {
+  min-width: 760px;
+}
+
+#my-page label {
+  min-width: 150px;
+}
+
+#my-page input {
+  min-width: 150px;
 }
