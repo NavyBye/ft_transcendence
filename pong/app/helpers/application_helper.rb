@@ -7,6 +7,7 @@ module ApplicationHelper
   end
 
   def check_first_update
+    return unless user_signed_in?
     raise User::NeedFirstUpdate if current_user.nickname == 'newcomer'
   end
 

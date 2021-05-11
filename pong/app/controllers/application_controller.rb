@@ -13,7 +13,14 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :null_session
 
+  before_action :check_first_update
+  before_action :check_second_auth
+
   def check_second_auth
+    return unless user_signed_in?
+
+    return unless current_user.is_email_auth
+
     current_user.issue_auth_code if current_user.auth.nil?
     raise EmailAuth::AuthenticationNotFinished unless current_user.auth_confirmed?
   end

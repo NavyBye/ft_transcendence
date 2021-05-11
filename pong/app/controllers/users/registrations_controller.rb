@@ -2,6 +2,8 @@
 
 module Users
   class RegistrationsController < Devise::RegistrationsController
+    skip_before_action :check_first_update
+    skip_before_action :check_second_auth
     before_action :configure_sign_up_params, only: [:create]
     # before_action :configure_account_update_params, only: [:update]
 
@@ -17,7 +19,7 @@ module Users
       if resource.save
         sign_up(resource_name, resource)
         # respond_with resource, location: after_sign_up_path_for(resource)
-        current_user.session_create
+        current_user.status_update('online')
         render json: token, status: :created
       else
         expire_data_after_sign_in!

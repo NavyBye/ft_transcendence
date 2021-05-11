@@ -1,5 +1,7 @@
 module Api
   class AuthController < ApplicationController
+    skip_before_action :check_first_update
+    skip_before_action :check_second_auth
     before_action :authenticate_user!
 
     def match
