@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable camelcase */
@@ -18,6 +19,12 @@ const app = {
       error: function error(res) {
         Radio.channel('error').request('trigger', res.responseText);
       },
+    });
+
+    $(document).ajaxError(function error(_event, res, _settings, _exception) {
+      if (res.status === 401) {
+        Radio.channel('error').request('trigger', res.responseText);
+      }
     });
 
     const callback = Backbone.sync;
