@@ -18,9 +18,6 @@ module Api
     end
 
     def update
-      if params[:role].is_a? String
-        params[:role] = params[:role].to_i(base = 10) 
-      end
       @chat_rooms_member.role = params[:role]
       @chat_rooms_member.save!
       render json: {}, status: :ok
@@ -33,24 +30,20 @@ module Api
     end
 
     def ban
-      if params[:duration].is_a? String
-        params[:duration] = params[:duration].to_i(base = 10) 
-      end
+      duration = params[:duration].to_i
       @chat_rooms_member.ban_at = Time.zone.now
       @chat_rooms_member.save!
-      ChatRoomsMemberBanRecoveryJob.set(wait: params[:duration].minutes).perform_later @chat_rooms_member.id,
-                                                                                       @chat_rooms_member.ban_at
+      ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
+                                                                              @chat_rooms_member.ban_at
       render json: {}, status: :ok
     end
 
     def mute
-      if params[:duration].is_a? String
-        params[:duration] = params[:duration].to_i(base = 10) 
-      end
+      duration = params[:duration].to_i
       @chat_rooms_member.mute_at = Time.zone.now
       @chat_rooms_member.save!
-      ChatRoomsMemberBanRecoveryJob.set(wait: params[:duration].minutes).perform_later @chat_rooms_member.id,
-                                                                                       @chat_rooms_member.mute_at
+      ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
+                                                                              @chat_rooms_member.mute_at
       render json: {}, status: :ok
     end
 
