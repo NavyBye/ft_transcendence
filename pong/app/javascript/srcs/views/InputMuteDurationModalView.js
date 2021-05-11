@@ -34,9 +34,6 @@ const InputMuteDurationModalView = common.View.extend({
       success() {
         new OkModalView().show('Title', 'Successfully muted!');
       },
-      error(res) {
-        Radio.channel('error').request('trigger', res.responseText);
-      },
     });
     $(this.el).modal('hide');
   },

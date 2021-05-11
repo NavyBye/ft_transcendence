@@ -10,6 +10,7 @@ const Router = Backbone.Router.extend({
     ranking: 'rankPage',
     mypage: 'myPage',
     guild: 'guild',
+    auth: 'auth',
   },
   initialize() {
     const channel = Radio.channel('route');
@@ -77,6 +78,20 @@ const Router = Backbone.Router.extend({
         .getRegion('content')
         .getView()
         .show('content', new view.MyPageView({ model: login }));
+    }
+  },
+  auth() {
+    const rootView = Radio.channel('app').request('rootView');
+    const login = Radio.channel('login').request('get');
+    if (!login) {
+      Radio.channel('route').trigger('route', 'login');
+    } else {
+      if (!rootView.getRegion('content').getView())
+        rootView.show('content', new view.MainView());
+      rootView
+        .getRegion('content')
+        .getView()
+        .show('content', new view.AuthView({ model: login }));
     }
   },
   guild() {
