@@ -14,7 +14,7 @@ module Users
     def create
       self.resource = warden.authenticate!(auth_options)
       sign_in(resource_name, resource)
-      current_user.issue_auth_code if current_user.email_auth?
+      current_user.issue_auth_code if current_user.is_email_auth
       current_user.status_update('online')
       render json: token, status: :ok
     end
@@ -23,6 +23,7 @@ module Users
     def destroy
       current_user.auth&.destroy
       current_user.status_update('offline')
+
       if Devise.sign_out_all_scopes
         sign_out
       else
