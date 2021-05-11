@@ -34,6 +34,7 @@ const GuildMemberView = common.View.extend({
                 },
               });
             },
+            classNames: 'dropdown-item',
           }
         : {
             name: 'Get Officer',
