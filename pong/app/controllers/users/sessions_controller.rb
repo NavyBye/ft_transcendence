@@ -3,6 +3,8 @@
 module Users
   class SessionsController < Devise::SessionsController
     before_action :configure_sign_in_params
+    skip_before_action :check_first_update
+    skip_before_action :check_second_auth
     # before_action :configure_sign_in_params, only: [:create]
 
     # GET /resource/sign_in
