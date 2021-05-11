@@ -27,9 +27,6 @@ const AuthView = common.View.extend({
         new OkModalView().show('Success', 'Successfully verified email auth!');
         Radio.channel('route').trigger('route', 'home');
       },
-      error(res) {
-        Radio.channel('error').request('trigger', res.responseText);
-      },
     });
     $('#auth-code').val('');
   },

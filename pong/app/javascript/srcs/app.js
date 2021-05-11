@@ -15,14 +15,8 @@ import model from './models';
 const app = {
   start() {
     app.initErrorHandler();
-    $.ajaxSetup({
-      error: function error(res) {
-        Radio.channel('error').request('trigger', res.responseText);
-      },
-    });
-
     $(document).ajaxError(function error(_event, res, _settings, _exception) {
-      if (res.status === 401) {
+      if (res.status / 100 !== 2) {
         Radio.channel('error').request('trigger', res.responseText);
       }
     });
@@ -99,12 +93,13 @@ const app = {
   },
   initErrorHandler() {
     Radio.channel('error').reply('trigger', function handler(json) {
-      if (typeof json === 'string') json = JSON.parse(json);
-
-      if (json.type === 'message') {
-        new ErrorModalView().show('Error', json.message);
-      } else if (json.type === 'redirect') {
-        Radio.channel('route').trigger('route', json.target);
+      const parsed = typeof json === 'string' ? JSON.parse(json) : json;
+      if (parsed.type === 'message') {
+        new ErrorModalView().show('Error', parsed.message);
+      } else if (parsed.type === 'redirect') {
+        Radio.channel('route').trigger('route', parsed.target);
+      } else {
+        new ErrorModalView().show('Unknown Error', json);
       }
     });
   },

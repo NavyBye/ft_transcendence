@@ -33,9 +33,6 @@ const InputBanDurationModalView = common.View.extend({
       success() {
         new OkModalView().show('Title', 'Successfully banned!');
       },
-      error(res) {
-        Radio.channel('error').request('trigger', res.responseText);
-      },
     });
     $(this.el).modal('hide');
   },
