@@ -42,7 +42,7 @@ module Api
 
     test 'guild show' do
       login :hyekim
-      guild = guilds(:two)
+      guild = guilds(:one)
       get "/api/guilds/#{guild.id}"
       assert_response :success
       result

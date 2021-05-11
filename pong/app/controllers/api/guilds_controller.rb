@@ -5,7 +5,8 @@ module Api
     # before_action :check_first_update, only: :my
 
     def index
-      render json: Guild.all, status: :ok
+      @guilds = Guild.all
+      render json: @guilds, status: :ok
     end
 
     def rank
@@ -23,7 +24,8 @@ module Api
 
     def show
       @guild = Guild.find(params[:id])
-      render json: @guild, status: :ok
+      @master = GuildMember.find_by(guild_id: @guild.id, role: 'master').user
+      render status: :ok
     end
 
     def create
