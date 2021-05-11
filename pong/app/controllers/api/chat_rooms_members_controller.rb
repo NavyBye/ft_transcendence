@@ -18,6 +18,9 @@ module Api
     end
 
     def update
+      if params[:role].is_a? String
+        params[:role] = params[:role].to_i(base = 10) 
+      end
       @chat_rooms_member.role = params[:role]
       @chat_rooms_member.save!
       render json: {}, status: :ok
