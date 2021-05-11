@@ -25,19 +25,22 @@ const YesGuildView = common.View.extend({
   },
   showTab(event) {
     event.preventDefault();
-    const target = event.target.getAttribute('id');
-    this.$(`#${this.currentTab}`).removeClass('active');
-    this.$(`#${target}`).addClass('active');
-    this.currentTab = target;
+    const user = Radio.channel('login').request('get');
+    if (user.id === this.model.get('master').id) {
+      const target = event.target.getAttribute('id');
+      this.$(`#${this.currentTab}`).removeClass('active');
+      this.$(`#${target}`).addClass('active');
+      this.currentTab = target;
 
-    if (target === 'info-tab') {
-      this.getRegion('guildContent').show(
-        new GuildInfoView({ model: this.model }),
-      );
-    } else if (target === 'manage-tab') {
-      this.getRegion('guildContent').show(
-        new GuildManageView({ model: this.model }),
-      );
+      if (target === 'info-tab') {
+        this.getRegion('guildContent').show(
+          new GuildInfoView({ model: this.model }),
+        );
+      } else if (target === 'manage-tab') {
+        this.getRegion('guildContent').show(
+          new GuildManageView({ model: this.model }),
+        );
+      }
     }
   },
 });
