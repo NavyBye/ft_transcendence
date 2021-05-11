@@ -26,6 +26,11 @@ module Api
       @user = User.find(params[:id])
       raise User::PermissionDenied unless current_user.id == @user.id
 
+      if @user.is_email_auth && !@user.auth_confirmed? && params[:is_email_auth] == false
+        error_msg = { type: "message", message: 'you cannot disable 2FA when have to do secondary authenticate.' }
+        render json: error_msg, status: :unauthorized and return
+      end
+
       @user.update!(update_params)
       @user.save!
       render json: @user, status: :ok
