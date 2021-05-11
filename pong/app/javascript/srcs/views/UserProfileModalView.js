@@ -65,7 +65,16 @@ const UserProfileModalView = common.View.extend({
     $(this.el).modal('hide');
   },
   requestPong() {},
-  guildInvite() {},
+  guildInvite() {
+    $.ajax({
+      type: 'POST',
+      url: `/api/users/${this.userId}/invites`,
+      headers: auth.getTokenHeader(),
+      error(res) {
+        Radio.channel('error').request('trigger', res.responseText);
+      },
+    });
+  },
   dm() {
     /* create DM if not exists */
     $.ajax({
