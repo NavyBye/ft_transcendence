@@ -14,6 +14,7 @@ const GuildMemberView = common.View.extend({
     this.guildId = Radio.channel('guild').request('id');
   },
   onRender() {
+    const self = this;
     const isOfficer =
       this.model.get('role') === 'member'
         ? {
@@ -21,13 +22,14 @@ const GuildMemberView = common.View.extend({
             onClick() {
               $.ajax({
                 type: 'PUT',
-                url: `/api/guilds/${this.guildId}/members/${this.model.get(
-                  'id',
-                )}`,
+                url: `/api/guilds/${self.guildId}/members/${
+                  self.model.get('user').id
+                }`,
                 headers: auth.getTokenHeader(),
                 data: { role: 'officer' },
                 success() {
                   new OkModalView().show('Success', 'Successfully change role');
+                  Radio.channel('guild').request('reRender');
                 },
                 error(res) {
                   Radio.channel('error').request('trigger', res.responseText);
@@ -41,13 +43,14 @@ const GuildMemberView = common.View.extend({
             onClick() {
               $.ajax({
                 type: 'PUT',
-                url: `/api/guilds/${this.guildId}/members/${this.model.get(
-                  'id',
-                )}`,
+                url: `/api/guilds/${self.guildId}/members/${
+                  self.model.get('user').id
+                }`,
                 headers: auth.getTokenHeader(),
                 data: { role: 'member' },
                 success() {
                   new OkModalView().show('Success', 'Successfully change role');
+                  Radio.channel('guild').request('reRender');
                 },
                 error(res) {
                   Radio.channel('error').request('trigger', res.responseText);
@@ -68,12 +71,13 @@ const GuildMemberView = common.View.extend({
             onClick() {
               $.ajax({
                 type: 'DELETE',
-                url: `/api/guilds/${this.guildId}/members/${this.model.get(
-                  'id',
-                )}`,
+                url: `/api/guilds/${self.guildId}/members/${
+                  self.model.get('user').id
+                }`,
                 headers: auth.getTokenHeader(),
                 success() {
                   new OkModalView().show('Success', 'Successfully kick member');
+                  Radio.channel('guild').request('reRender');
                 },
                 error(res) {
                   Radio.channel('error').request('trigger', res.responseText);
