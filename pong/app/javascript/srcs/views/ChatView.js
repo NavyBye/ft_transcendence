@@ -67,6 +67,36 @@ const ChatView = common.View.extend({
               },
               classNames: 'dropdown-item',
             },
+            {
+              name: 'give admin',
+              onClick() {
+                const chatRoomId = Radio.channel('chat-collection').request(
+                  'getId',
+                );
+                $.ajax({
+                  type: 'PUT',
+                  url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
+                  headers: auth.getTokenHeader(),
+                  data: { role: 1 },
+                });
+              },
+              classNames: 'dropdown-item',
+            },
+            {
+              name: 'take admin',
+              onClick() {
+                const chatRoomId = Radio.channel('chat-collection').request(
+                  'getId',
+                );
+                $.ajax({
+                  type: 'PUT',
+                  url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
+                  headers: auth.getTokenHeader(),
+                  data: { role: 0 },
+                });
+              },
+              classNames: 'dropdown-item',
+            },
           ],
         },
       );
