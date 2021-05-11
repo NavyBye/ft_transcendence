@@ -11,6 +11,7 @@ const Router = Backbone.Router.extend({
     mypage: 'myPage',
     guild: 'guild',
     auth: 'auth',
+    admin: 'admin',
   },
   initialize() {
     const channel = Radio.channel('route');
@@ -105,6 +106,26 @@ const Router = Backbone.Router.extend({
         .getRegion('content')
         .getView()
         .show('content', new view.GuildView());
+    }
+  },
+  admin() {
+    const rootView = Radio.channel('app').request('rootView');
+    const login = Radio.channel('login').request('get');
+    if (!login) {
+      Radio.channel('route').trigger('route', 'login');
+    } else if (login.get('role') !== 'admin' && login.get('role') !== 'owner') {
+      Radio.channel('error').request('trigger', {
+        type: 'message',
+        message: 'You are have no permission.',
+      });
+      Radio.channel('route').trigger('route', 'home');
+    } else {
+      if (!rootView.getRegion('content').getView())
+        rootView.show('content', new view.MainView());
+      rootView
+        .getRegion('content')
+        .getView()
+        .show('content', new view.AdminView({ model: login }));
     }
   },
 });
