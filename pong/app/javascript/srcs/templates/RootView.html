@@ -190,7 +190,7 @@
               id="chatroom-password"
               type="password"
               name="chatroom-password"
-              placeholder="chatroom password"
+              placeholder="10"
             />
           </div>
         </form>
@@ -199,6 +199,112 @@
         <button
           type="button"
           class="enter-button btn btn-primary"
+          data-dismiss="modal"
+        >
+          Enter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- InputBanDurationModalView -->
+<div
+  class="modal fade"
+  id="input-ban-duration-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="input-ban-duration-modal-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="input-ban-duration-modal-title">
+          How long the user will be banned? (in minutes)
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label for="ban-duration" class="col-form-label col-3"
+              >Duration:
+            </label>
+            <input
+              class="form-control col-6"
+              id="ban-duration"
+              type="number"
+              name="ban-duration"
+              placeholder="in minutes"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="ban-button btn btn-primary"
+          data-dismiss="modal"
+        >
+          Enter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- InputMuteDurationModalView -->
+<div
+  class="modal fade"
+  id="input-mute-duration-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="input-mute-duration-modal-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="input-mute-duration-modal-title">
+          How long the user will be muted? (in minutes)
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label for="mute-duration" class="col-form-label col-3"
+              >Duration:
+            </label>
+            <input
+              class="form-control col-6"
+              id="mute-duration"
+              type="number"
+              name="mute-duration"
+              placeholder="in minutes"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="mute-button btn btn-primary"
           data-dismiss="modal"
         >
           Enter
