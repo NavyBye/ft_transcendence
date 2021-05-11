@@ -30,6 +30,9 @@ module Api
     end
 
     def ban
+      if params[:duration].is_a? String
+        params[:duration] = params[:duration].to_i(base = 10) 
+      end
       @chat_rooms_member.ban_at = Time.zone.now
       @chat_rooms_member.save!
       ChatRoomsMemberBanRecoveryJob.set(wait: params[:duration].minutes).perform_later @chat_rooms_member.id,
@@ -38,6 +41,9 @@ module Api
     end
 
     def mute
+      if params[:duration].is_a? String
+        params[:duration] = params[:duration].to_i(base = 10) 
+      end
       @chat_rooms_member.mute_at = Time.zone.now
       @chat_rooms_member.save!
       ChatRoomsMemberBanRecoveryJob.set(wait: params[:duration].minutes).perform_later @chat_rooms_member.id,
