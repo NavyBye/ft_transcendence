@@ -11,10 +11,5 @@ module Api
         post api_games_url, params: { game_type: 'duel', addon: false }
       end
     end
-    # test "the truth" do
-    #   assert true
-    # end
-
-
   end
 end

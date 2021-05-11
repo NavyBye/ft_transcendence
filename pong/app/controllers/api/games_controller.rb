@@ -45,11 +45,10 @@ module Api
 
     def match_make
       @game = nil
-      if params[:game_type] == 'duel' || params[:game_type] == 'ladder'
-        queue_based_matchmaking
-      elsif params[:game_type] == 'ladder_tournament' || params[:game_type] == 'friendly'
-        request_based_matchmaking
-      elsif params[:game_type] == 'tournament'
+      case params[:game_type]
+      when 'duel', 'ladder', 'ladder_tournament', 'friendly'
+        basic_matchmaking
+      when
         tournament_matchmaking
       else
         war_matchmaking
@@ -57,7 +56,7 @@ module Api
       game_start(@game) unless @game.nil?
     end
 
-    def queue_based_matchmaking
+    def basic_matchmaking
       GameQueue.transaction do
         GameQueue.with_advisory_lock('queue') do
           if GameQueue.queue_is_empty?(params[:game_type], params[:addon])
@@ -67,9 +66,6 @@ module Api
           end
         end
       end
-    end
-
-    def request_based_matchmaking
     end
 
     def tournament_matchmaking
