@@ -54,8 +54,7 @@ class User < ApplicationRecord
   # devise
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :rememberable, :validatable, :session_limitable,
+  devise :database_authenticatable, :registerable, :rememberable, :validatable, :session_limitable,
          :omniauthable, omniauth_providers: [:marvin]
 
   def self.from_omniauth(auth)
@@ -71,11 +70,8 @@ class User < ApplicationRecord
 
     maximum_rank = User.maximum(:rank)
     maximum_rank_people = User.where(rank: maximum_rank).count
-    if maximum_rank_people == maximum_rank
-      maximum_rank + 1
-    else
-      maximum_rank
-    end
+    maximum_rank += 1 if maximum_rank_people == maximum_rank
+    maximum_rank
   end
 
   def newcommer?
@@ -98,23 +94,14 @@ class User < ApplicationRecord
     EmailAuth.where(user_id: id).exists? && reload.auth.confirm
   end
 
-  def session_create
-    update!(status: 'online')
-    @user_current = User.find id
-    FriendChannel.broadcast_to @user_current, { data: serialize, status: :ok }
-  end
-
-  def session_destroy
-    update!(status: 'offline')
-    @user_current = User.find id
-    FriendChannel.broadcast_to @user_current, { data: serialize, status: :ok }
+  def status_update(status)
+    @user = User.find id
+    update!(status: status)
+    data = to_json only: %i[id name nickname status]
+    FriendChannel.broadcast_to @user, { data: data, status: :ok }
   end
 
   private
-
-  def serialize
-    to_json only: %i[id name nickname status]
-  end
 
   def second_initialize
     self.status = 0

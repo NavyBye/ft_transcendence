@@ -14,6 +14,11 @@ dummy_member_in_testguild:
     guild: one
     role: 0
 
+sth_in_two:
+    user: admin_user
+    guild: two
+    role: 2
+
 master_in_tguild:
     user: master
     guild: test

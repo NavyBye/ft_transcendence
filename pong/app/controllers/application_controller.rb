@@ -9,10 +9,18 @@ class ApplicationController < ActionController::Base
   rescue_from User::PermissionDenied, with: :error_permission_denied
   rescue_from EmailAuth::AuthenticationNotFinished, with: :need_second_authenticate
   rescue_from User::NeedFirstUpdate, with: :need_first_update
+  rescue_from SignalChannel::InvalidFormat, with: :error_invalid
 
   protect_from_forgery with: :null_session
 
+  before_action :check_first_update
+  before_action :check_second_auth
+
   def check_second_auth
+    return unless user_signed_in?
+
+    return unless current_user.is_email_auth
+
     current_user.issue_auth_code if current_user.auth.nil?
     raise EmailAuth::AuthenticationNotFinished unless current_user.auth_confirmed?
   end
