@@ -77,7 +77,7 @@ const ChatView = common.View.extend({
                   type: 'PUT',
                   url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
                   headers: auth.getTokenHeader(),
-                  data: { role: 1 },
+                  data: { role: 'admin' },
                 });
               },
               classNames: 'dropdown-item',
@@ -92,7 +92,7 @@ const ChatView = common.View.extend({
                   type: 'PUT',
                   url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
                   headers: auth.getTokenHeader(),
-                  data: { role: 0 },
+                  data: { role: 'user' },
                 });
               },
               classNames: 'dropdown-item',
