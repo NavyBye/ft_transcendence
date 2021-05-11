@@ -2,7 +2,6 @@
 import $ from 'jquery/src/jquery';
 import common from '../common';
 import template from '../templates/MyPageView.html';
-import ErrorModalView from './ErrorModalView';
 import OkModalView from './OkModalView';
 import auth from '../utils/auth';
 
@@ -48,12 +47,6 @@ const MyPageView = common.View.extend({
       success() {
         self.model.fetch();
         new OkModalView().show('Success', 'Successfully saved user data');
-      },
-      error(res) {
-        new ErrorModalView().show(
-          'Error while saving user data',
-          res.responseText,
-        );
       },
     });
   },
