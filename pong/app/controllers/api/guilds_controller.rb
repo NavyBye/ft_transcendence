@@ -1,8 +1,6 @@
 module Api
   class GuildsController < ApplicationController
     before_action :authenticate_user!
-    # before_action :check_second_auth, only: :show # for test mailer
-    # before_action :check_first_update, only: :my
 
     def index
       @guilds = Guild.all
@@ -18,7 +16,8 @@ module Api
         render json: { type: "message", message: "You have no guild." }, status: :not_found
       else
         @guild = current_user.guild
-        render json: @guild, status: :ok
+        @master = GuildMember.find_by(guild_id: @guild.id, role: 'master').user
+        render status: :ok
       end
     end
 
