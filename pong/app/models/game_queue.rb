@@ -26,6 +26,7 @@ class GameQueue < ApplicationRecord
       raise RequestedUserCanceled
     end
 
+    # TODO : MAKE JOB FOR AUTO_REMOVE THIS
     GameQueue.create!(params)
     @user = User.find params[:user_id]
     @user.status_update('ready')
