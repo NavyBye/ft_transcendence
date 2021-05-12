@@ -70,10 +70,12 @@ module Api
 
     def tournament_matchmaking
       # TODO : Tournament.first
+      render json: {}, status: :not_implemented
     end
 
     def war_matchmaking
       # TODO : War.current
+      render json: {}, status: :not_implemented
     end
 
     def find_queue(id)

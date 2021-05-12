@@ -26,8 +26,9 @@ class GameQueue < ApplicationRecord
       raise RequestedUserCanceled
     end
 
-    # TODO : MAKE JOB FOR AUTO_REMOVE THIS
-    GameQueue.create!(params)
+    queue = GameQueue.create!(params)
+    # TODO : request queue time out duration to variable or const.
+    QueueTimeoverJob.set(wait: 30).perform_later queue.id
     @user = User.find params[:user_id]
     @user.status_update('ready')
   end
