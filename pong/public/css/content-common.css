@@ -13,6 +13,7 @@
   width: calc(100% - 400px);
   height: 100%;
   padding: 0 20px;
+  overflow-y: hidden;
 }
 
 @media screen and (max-width: 900px) {
