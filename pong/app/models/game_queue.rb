@@ -29,8 +29,8 @@ class GameQueue < ApplicationRecord
     queue = GameQueue.create!(params)
     # TODO : request queue time out duration to variable or const.
     QueueTimeoverJob.set(wait: 30).perform_later queue.id if %w[ladder_tournament friendly].include?(params[:game_type])
-    @user = User.find params[:user_id]
-    @user.status_update('ready')
+    User.find(params[:user_id]).status_update('ready')
+    User.find(params[:target_id]).status_update('ready') if %w[ladder_tournament friendly].include?(params[:game_type])
   end
 
   def self.pop_and_match(params, cur_user_id)

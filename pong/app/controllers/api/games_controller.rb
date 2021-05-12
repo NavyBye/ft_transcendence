@@ -3,12 +3,12 @@ module Api
     before_action :authenticate_user!
 
     def index
-      render json: Game.all
+      render json: Game.all, status: :ok
     end
 
     def show
       @game = Game.find params[:id]
-      render json: @game
+      render json: @game, status: :ok
     end
 
     def create
@@ -20,11 +20,23 @@ module Api
     def cancel
       GameQueue.with_advisory_lock('queue') do
         find_queue current_user.id
+        unless @queue.target_id.nil?
+          match_refuse(@queue.user_id, @queue.target_id)
+          send_signal(@user.id, { type: 'refuse' })
+        end
         @queue.destroy
       end
+      render json: {}, status: :no_content
     end
 
     private
+
+    def match_refuse(user_id, target_id)
+      @target = User.find target_id
+      @user = User.find user_id
+      @target.status_update('online') if @target.status != 'offline'
+      @user.status_update('online') if @user.status != 'offline'
+    end
 
     def availability_check
       # if target is exist, check if target user is playable.
@@ -79,7 +91,11 @@ module Api
     end
 
     def find_queue(id)
-      @queue = GameQueue.find_by user_id: id
+      @queue = if GameQueue.where(user_id: id).exists?
+                 GameQueue.where(user_id: id).first!
+               else
+                 GameQueue.where(target_id: id).first!
+               end
     end
 
     def game_start(game)
