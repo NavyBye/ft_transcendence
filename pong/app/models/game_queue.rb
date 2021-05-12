@@ -28,7 +28,7 @@ class GameQueue < ApplicationRecord
 
     queue = GameQueue.create!(params)
     # TODO : request queue time out duration to variable or const.
-    QueueTimeoverJob.set(wait: 30).perform_later queue.id
+    QueueTimeoverJob.set(wait: 30).perform_later queue.id if %w[ladder_tournament friendly].include?(params[:game_type])
     @user = User.find params[:user_id]
     @user.status_update('ready')
   end

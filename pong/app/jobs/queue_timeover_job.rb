@@ -8,6 +8,7 @@ class QueueTimeoverJob < ApplicationJob
     requested_user = GameQueue.user_id
     queue.destroy!
 
+    requested_user.status_update('online') if requested_user.reload.status != 'offline'
     send_signal(requested_user.id, { type: 'refuse' })
   end
 end
