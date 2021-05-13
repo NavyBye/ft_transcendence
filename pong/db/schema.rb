@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_06_100230) do
+ActiveRecord::Schema.define(version: 2021_05_07_120649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,9 +47,10 @@ ActiveRecord::Schema.define(version: 2021_05_06_100230) do
     t.bigint "chat_room_id", null: false
     t.bigint "user_id", null: false
     t.integer "role", default: 0
-    t.integer "status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "ban_at"
+    t.datetime "mute_at"
     t.index ["chat_room_id"], name: "index_chat_rooms_members_on_chat_room_id"
     t.index ["user_id", "chat_room_id"], name: "index_chat_rooms_members_on_user_id_and_chat_room_id", unique: true
     t.index ["user_id"], name: "index_chat_rooms_members_on_user_id"
@@ -115,6 +116,8 @@ ActiveRecord::Schema.define(version: 2021_05_06_100230) do
     t.boolean "addon", default: false, null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "target_id"
+    t.index ["target_id"], name: "index_game_queues_on_target_id"
     t.index ["user_id"], name: "index_game_queues_on_user_id", unique: true
   end
 
@@ -199,6 +202,7 @@ ActiveRecord::Schema.define(version: 2021_05_06_100230) do
   add_foreign_key "game_players", "games"
   add_foreign_key "game_players", "users"
   add_foreign_key "game_queues", "users"
+  add_foreign_key "game_queues", "users", column: "target_id"
   add_foreign_key "guild_members", "guilds"
   add_foreign_key "guild_members", "users"
   add_foreign_key "invites", "guilds"

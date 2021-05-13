@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable camelcase */
@@ -15,10 +16,10 @@ import consumer from '../channels/consumer';
 const app = {
   start() {
     app.initErrorHandler();
-    $.ajaxSetup({
-      error: function error(res) {
+    $(document).ajaxError(function error(_event, res, _settings, _exception) {
+      if (res.status / 100 !== 2) {
         Radio.channel('error').request('trigger', res.responseText);
-      },
+      }
     });
 
     const callback = Backbone.sync;
@@ -93,12 +94,13 @@ const app = {
   },
   initErrorHandler() {
     Radio.channel('error').reply('trigger', function handler(json) {
-      if (typeof json === 'string') json = JSON.parse(json);
-
-      if (json.type === 'message') {
-        new ErrorModalView().show('Error', json.message);
-      } else if (json.type === 'redirect') {
-        Radio.channel('route').trigger('route', json.target);
+      const parsed = typeof json === 'string' ? JSON.parse(json) : json;
+      if (parsed.type === 'message') {
+        new ErrorModalView().show('Error', parsed.message);
+      } else if (parsed.type === 'redirect') {
+        Radio.channel('route').trigger('route', parsed.target);
+      } else {
+        new ErrorModalView().show('Unknown Error', json);
       }
     });
   },
