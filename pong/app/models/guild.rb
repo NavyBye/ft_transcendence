@@ -12,6 +12,9 @@ class Guild < ApplicationRecord
   has_many :declaration_received, class_name: "Declaration", inverse_of: :to,
                                   foreign_key: :to_id, dependent: :destroy
 
+  has_one :war_relation, class_name: "WarGuild", inverse_of: :guild, foreign_key: :guild_id, dependent: :destroy
+  has_one :war, through: :war_relation, source: :war
+
   # validations
   validates :name, length: { in: 4..10 }
   validates :anagram, length: { is: 4 }
