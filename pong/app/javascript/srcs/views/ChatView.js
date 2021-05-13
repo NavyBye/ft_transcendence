@@ -6,6 +6,7 @@ import $ from 'jquery/src/jquery';
 import common from '../common';
 import recvTemplate from '../templates/RecvChatView.html';
 import sendTemplate from '../templates/SendChatView.html';
+import servTemplate from '../templates/ServChatView.html';
 import UserProfileModalView from './UserProfileModalView';
 import auth from '../utils/auth';
 import InputBanDurationModalView from './InputBanDurationModalView';
@@ -14,10 +15,38 @@ import InputMuteDurationModalView from './InputMuteDurationModalView';
 const ChatView = common.View.extend({
   recvTemplate,
   sendTemplate,
+  servTemplate,
   events: {
     'click img': 'showProfile',
   },
   onInitialize() {
+    this.template = servTemplate;
+
+    if (this.model.get('type') === 'kick') {
+      return;
+    }
+
+    if (this.model.get('type') === 'ban') {
+      return;
+    }
+
+    if (this.model.get('type') === 'mute') {
+      return;
+    }
+
+    if (this.model.get('type') === 'free') {
+      return;
+    }
+
+    if (this.model.get('type') === 'admin') {
+      return;
+    }
+
+    if (this.model.get('type') === 'unadmin') {
+      return;
+    }
+
+    /* message from user */
     const me = Radio.channel('login').request('get');
     const userId = this.model.get('user').id;
 
