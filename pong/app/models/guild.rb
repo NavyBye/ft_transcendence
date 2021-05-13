@@ -10,7 +10,7 @@ class Guild < ApplicationRecord
   has_many :declaration_sent, class_name: "Declaration", inverse_of: :from,
                               foreign_key: :from_id, dependent: :destroy
   has_many :declaration_received, class_name: "Declaration", inverse_of: :to,
-                              foreign_key: :to_id, dependent: :destroy
+                                  foreign_key: :to_id, dependent: :destroy
 
   # validations
   validates :name, length: { in: 4..10 }

@@ -1,0 +1,2 @@
+class WarGuild < ApplicationRecord
+end

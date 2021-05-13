@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_13_032711) do
+ActiveRecord::Schema.define(version: 2021_05_13_051105) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -202,6 +202,27 @@ ActiveRecord::Schema.define(version: 2021_05_13_032711) do
     t.index ["uid"], name: "index_users_on_uid"
   end
 
+  create_table "war_guilds", force: :cascade do |t|
+    t.bigint "war_id", null: false
+    t.bigint "guild_id", null: false
+    t.integer "war_point", default: 0
+    t.integer "avoid_chance"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["guild_id"], name: "index_war_guilds_on_guild_id", unique: true
+    t.index ["war_id"], name: "index_war_guilds_on_war_id"
+  end
+
+  create_table "wars", force: :cascade do |t|
+    t.datetime "end_at", null: false
+    t.integer "war_time"
+    t.integer "prize_point"
+    t.boolean "is_extended"
+    t.boolean "is_addon"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   add_foreign_key "blocks", "users"
   add_foreign_key "blocks", "users", column: "blocked_user_id"
   add_foreign_key "chat_room_messages", "chat_rooms", on_delete: :cascade
@@ -225,4 +246,6 @@ ActiveRecord::Schema.define(version: 2021_05_13_032711) do
   add_foreign_key "guild_members", "users"
   add_foreign_key "invites", "guilds"
   add_foreign_key "invites", "users"
+  add_foreign_key "war_guilds", "guilds"
+  add_foreign_key "war_guilds", "wars"
 end
