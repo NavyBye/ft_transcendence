@@ -1,8 +1,35 @@
 <div id="admin" class="inner-box background-dark">
   <h3 class="title">Admin</h3>
   <div class="body">
-    <p>You are an admin!</p>
-
-    TODOS: - give admin or take admin - tournament - ban
+    <form>
+      <div class="inner-box">
+        <div class="form-group row">
+          <label class="col-2 col-form-label">Nickname</label>
+          <div class="col-10 row">
+            <input type="text" name="nickname" />
+            <button
+              type="submit"
+              id="give-admin-button"
+              class="btn btn-primary"
+            >
+              admin
+            </button>
+            <button
+              type="submit"
+              id="take-admin-button"
+              class="btn btn-primary"
+            >
+              unadmin
+            </button>
+            <button type="submit" id="ban-button" class="btn btn-primary">
+              ban
+            </button>
+          </div>
+        </div>
+        <div class="form-group row">
+          <p>Tournament. to be implemented</p>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
