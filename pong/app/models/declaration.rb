@@ -1,0 +1,2 @@
+class Declaration < ApplicationRecord
+end

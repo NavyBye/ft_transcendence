@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_07_120649) do
+ActiveRecord::Schema.define(version: 2021_05_13_032711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,22 @@ ActiveRecord::Schema.define(version: 2021_05_07_120649) do
     t.index ["chat_room_id"], name: "index_chat_rooms_members_on_chat_room_id"
     t.index ["user_id", "chat_room_id"], name: "index_chat_rooms_members_on_user_id_and_chat_room_id", unique: true
     t.index ["user_id"], name: "index_chat_rooms_members_on_user_id"
+  end
+
+  create_table "declarations", force: :cascade do |t|
+    t.bigint "from_id", null: false
+    t.bigint "to_id", null: false
+    t.datetime "end_at", null: false
+    t.integer "war_time", default: 0
+    t.integer "avoid_chance", default: 5
+    t.integer "prize_point", default: 420
+    t.boolean "is_extended", default: false
+    t.boolean "is_addon", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["from_id", "to_id"], name: "index_declarations_on_from_id_and_to_id", unique: true
+    t.index ["from_id"], name: "index_declarations_on_from_id"
+    t.index ["to_id"], name: "index_declarations_on_to_id"
   end
 
   create_table "dm_room_messages", force: :cascade do |t|
@@ -192,6 +208,8 @@ ActiveRecord::Schema.define(version: 2021_05_07_120649) do
   add_foreign_key "chat_room_messages", "users", on_delete: :cascade
   add_foreign_key "chat_rooms_members", "chat_rooms", on_delete: :cascade
   add_foreign_key "chat_rooms_members", "users", on_delete: :cascade
+  add_foreign_key "declarations", "guilds", column: "from_id"
+  add_foreign_key "declarations", "guilds", column: "to_id"
   add_foreign_key "dm_room_messages", "dm_rooms", on_delete: :cascade
   add_foreign_key "dm_room_messages", "users", on_delete: :cascade
   add_foreign_key "dm_rooms_members", "dm_rooms", on_delete: :cascade
