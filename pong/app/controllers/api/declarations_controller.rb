@@ -9,7 +9,7 @@ module Api
 
     def create
       new_declaration = Declaration.create!(create_params)
-      # TODO : declaration auto-remove JOB
+      DeclarationExpireJob.set(wait_until: params[:end_at]).perform_later new_declaration.id
       render json: new_declaration, status: :ok
     end
 
@@ -20,7 +20,7 @@ module Api
 
       # TODO : declaration -> war
       new_war = declaration.accept
-      # TODO : WAR END JOB
+      WarEndJob.set(wait_until: new_war.end_at).perform_later new_war.id
       render json: {}, status: :no_content
     end
 
