@@ -10,6 +10,7 @@ import auth from './utils/auth';
 import ErrorModalView from './views/ErrorModalView';
 import collection from './collections';
 import model from './models';
+import consumer from '../channels/consumer';
 
 const app = {
   start() {
@@ -152,6 +153,21 @@ const app = {
     });
   },
   initFriendlist() {
+    /* subscribe my friend channel */
+    const login = Radio.channel('login').request('get');
+    this.channel = consumer.subscriptions.create(
+      {
+        channel: 'FriendChannel',
+        id: login.get('id'),
+      },
+      {
+        connected() {},
+        disconnected() {},
+        received() {},
+      },
+    );
+
+    /* make friend list */
     app.friendlist = new collection.FriendCollection();
     app.friendlist.fetch({ async: false });
     Radio.channel('friendlist').reply('isFriend', function friendlist(userId) {
