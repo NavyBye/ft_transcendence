@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         get 'rank'
         get 'challenge'
         get 'me'
+        get 'who'
       end
       member do
         get 'game'

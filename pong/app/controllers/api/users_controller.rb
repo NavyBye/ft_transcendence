@@ -48,6 +48,11 @@ module Api
       render json: { type: "message", message: 'not implemented yet!' }, status: :not_implemented
     end
 
+    def who
+      user = User.where(nickname: params[:nickname]).first!
+      render json: user, status: :ok
+    end
+
     private
 
     def update_params
