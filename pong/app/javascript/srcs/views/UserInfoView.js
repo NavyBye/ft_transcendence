@@ -11,10 +11,19 @@ const UserInfoView = common.View.extend({
       'isBlocked',
       this.model.get('id'),
     );
+
+    const isFriend = Radio.channel('friendlist').request(
+      'isFriend',
+      this.model.get('id'),
+    );
+
     if (isBlocked) {
-      $('#block-button').html('unblock');
+      $('#block-button').html('Unblock');
     }
-    $('#add-friend-button').html('Add Friend');
+
+    if (isFriend) {
+      $('#add-friend-button').html('Unfollow');
+    }
     $('#guild-invite-button').html('길드초대');
   },
 });

@@ -8,6 +8,8 @@ import recvTemplate from '../templates/RecvChatView.html';
 import sendTemplate from '../templates/SendChatView.html';
 import UserProfileModalView from './UserProfileModalView';
 import auth from '../utils/auth';
+import InputBanDurationModalView from './InputBanDurationModalView';
+import InputMuteDurationModalView from './InputMuteDurationModalView';
 
 const ChatView = common.View.extend({
   recvTemplate,
@@ -18,6 +20,17 @@ const ChatView = common.View.extend({
   onInitialize() {
     const me = Radio.channel('login').request('get');
     const userId = this.model.get('user').id;
+
+    const isBlocked = Radio.channel('blacklist').request(
+      'isBlocked',
+      this.model.get('user').id,
+    );
+
+    /* no template if blocked */
+    if (isBlocked) {
+      return;
+    }
+
     if (userId === me.get('id')) {
       this.template = sendTemplate;
     } else {
@@ -27,15 +40,59 @@ const ChatView = common.View.extend({
         {
           actions: [
             {
-              /* TODO: add should be in profile, it's for testing */
-              name: 'add friend',
+              name: 'ban',
               onClick() {
-                const login = Radio.channel('login').request('get');
+                new InputBanDurationModalView(userId);
+              },
+              classNames: 'dropdown-item',
+            },
+            {
+              name: 'mute',
+              onClick() {
+                new InputMuteDurationModalView(userId);
+              },
+              classNames: 'dropdown-item',
+            },
+            {
+              name: 'free',
+              onClick() {
+                const chatRoomId = Radio.channel('chat-collection').request(
+                  'getId',
+                );
                 $.ajax({
                   type: 'POST',
-                  url: `/api/users/${login.get('id')}/friends`,
+                  url: `/api/chatrooms/${chatRoomId}/members/${userId}/free`,
                   headers: auth.getTokenHeader(),
-                  data: { follow_id: userId },
+                });
+              },
+              classNames: 'dropdown-item',
+            },
+            {
+              name: 'give admin',
+              onClick() {
+                const chatRoomId = Radio.channel('chat-collection').request(
+                  'getId',
+                );
+                $.ajax({
+                  type: 'PUT',
+                  url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
+                  headers: auth.getTokenHeader(),
+                  data: { role: 1 },
+                });
+              },
+              classNames: 'dropdown-item',
+            },
+            {
+              name: 'take admin',
+              onClick() {
+                const chatRoomId = Radio.channel('chat-collection').request(
+                  'getId',
+                );
+                $.ajax({
+                  type: 'PUT',
+                  url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
+                  headers: auth.getTokenHeader(),
+                  data: { role: 0 },
                 });
               },
               classNames: 'dropdown-item',
