@@ -1,10 +1,10 @@
 import common from '../common';
 import template from '../templates/GamePageView.html';
-import DuelView from './DuelView';
-import GuildWarView from './GuildWarView';
-import LadderView from './LadderView';
-import LadderTournamentView from './LadderTournamentView';
-import TournamentView from './TournamentView';
+import DuelCardView from './DuelCardView';
+import GuildWarCardView from './GuildWarCardView';
+import LadderCardView from './LadderCardView';
+import LadderTournamentCardView from './LadderTournamentCardView';
+import TournamentCardView from './TournamentCardView';
 
 const GamePageView = common.View.extend({
   el: '#content',
@@ -15,11 +15,11 @@ const GamePageView = common.View.extend({
   },
   onInitialize() {
     this.arr = [
-      DuelView,
-      LadderView,
-      LadderTournamentView,
-      TournamentView,
-      GuildWarView,
+      DuelCardView,
+      LadderCardView,
+      LadderTournamentCardView,
+      TournamentCardView,
+      GuildWarCardView,
     ];
     this.addRegion('box1', '#box1');
     this.addRegion('box2', '#box2');
