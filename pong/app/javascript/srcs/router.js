@@ -13,6 +13,7 @@ const Router = Backbone.Router.extend({
     auth: 'auth',
     admin: 'admin',
     game: 'gamePage',
+    play: 'play',
   },
   initialize() {
     const channel = Radio.channel('route');
@@ -127,6 +128,20 @@ const Router = Backbone.Router.extend({
         .getRegion('content')
         .getView()
         .show('content', new view.AdminView({ model: login }));
+    }
+  },
+  play() {
+    const rootView = Radio.channel('app').request('rootView');
+    const login = Radio.channel('login').request('get');
+    if (!login) {
+      Radio.channel('route').trigger('route', 'login');
+    } else {
+      if (!rootView.getRegion('content').getView())
+        rootView.show('content', new view.MainView());
+      rootView
+        .getRegion('content')
+        .getView()
+        .show('content', new view.GamePlayView());
     }
   },
   gamePage() {
