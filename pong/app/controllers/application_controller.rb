@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
   rescue_from EmailAuth::AuthenticationNotFinished, with: :need_second_authenticate
   rescue_from User::NeedFirstUpdate, with: :need_first_update
   rescue_from SignalChannel::InvalidFormat, with: :error_invalid
+  # TODO : fit to valid error type.
+  rescue_from GameQueue::RequestedUserCanceled, with: :error_invalid
 
   protect_from_forgery with: :null_session
 
