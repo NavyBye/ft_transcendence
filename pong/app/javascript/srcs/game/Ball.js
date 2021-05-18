@@ -10,7 +10,8 @@ function randomRange(min, max) {
 class Ball extends Entity {
   constructor() {
     const randVy = randomRange(-50, 50);
-    const randSign = randomRange(-1, 1);
+    const randSign = randomRange(1, 2) === 1 ? 1 : -1;
+
     const circle = new fabric.Circle({
       radius: 10.0,
       fill: 'red',

@@ -83,14 +83,16 @@ class Game {
 
   checkGoal() {
     if (this.ball.x < MIN_X) {
-      this.ball = new Ball();
       this.score2 += 1;
-      this.bars = [new Bar(true), new Bar(false)];
     } else if (this.ball.x > MAX_X) {
-      this.ball = new Ball();
       this.score1 += 1;
-      this.bars = [new Bar(true), new Bar(false)];
+    } else {
+      return;
     }
+
+    this.ball.reset();
+    this.bars[0].reset();
+    this.bars[1].reset();
   }
 
   checkEnd() {
