@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
+import $ from 'jquery/src/jquery';
 import { fabric } from 'fabric';
 import Ball from './Ball';
 import Bar from './Bar';
@@ -16,8 +17,6 @@ class Game {
 
     /* canvas related stuffs */
     this.canvas = new fabric.Canvas(canvasId);
-    this.canvas.setWidth(MAX_X);
-    this.canvas.setHeight(MAX_Y);
     this.canvas.add(this.ball.fabricObj);
     this.canvas.add(this.bars[0].fabricObj);
     this.canvas.add(this.bars[1].fabricObj);
@@ -28,6 +27,11 @@ class Game {
     this.ball.move(dt);
     this.bars[0].move(dt);
     this.bars[1].move(dt);
+
+    const isDiplayNone = $('#side').css('display') === 'none';
+    if (isDiplayNone) this.canvas.setWidth($('body').width());
+    else this.canvas.setWidth($('body').width() - $('#side').width());
+    this.canvas.setHeight($('body').height() - $('#nav').height());
 
     this.checkWallConflictWithBall();
     this.checkBarConflictWithBall(this.bars[0]);

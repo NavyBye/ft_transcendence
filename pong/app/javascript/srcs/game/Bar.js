@@ -32,6 +32,7 @@ class Bar extends Entity {
 
   move(dt) {
     this.vy += (this.ay - this.vy * 1.5) * dt;
+    this.render();
   }
 }
 

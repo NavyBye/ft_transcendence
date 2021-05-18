@@ -1,3 +1,6 @@
+import $ from 'jquery/src/jquery';
+import { MAX_X, MAX_Y } from './constant';
+
 function randomRange(min, max) {
   const val = Math.floor(Math.random() * (max - min + 1)) + min;
   return val;
@@ -25,14 +28,13 @@ class Entity {
   }
 
   render() {
-    this.fabricObj.set('left', this.x);
-    this.fabricObj.set('top', this.y);
-  }
+    /* convert x, y to fit current canvas */
+    const selector = '#game-play';
+    const x = ($(selector).width() * this.x) / MAX_X;
+    const y = ($(selector).height() * this.y) / MAX_Y;
 
-  move(dt) {
-    this.x += this.vx * dt;
-    this.y += this.vy * dt;
-    this.render();
+    this.fabricObj.set('left', x);
+    this.fabricObj.set('top', y);
   }
 
   toH() {

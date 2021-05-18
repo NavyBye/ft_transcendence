@@ -27,6 +27,12 @@ class Ball extends Entity {
     );
     this.r = 10.0;
   }
+
+  move(dt) {
+    this.x += this.vx * dt;
+    this.y += this.vy * dt;
+    this.render();
+  }
 }
 
 export default Ball;
