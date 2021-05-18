@@ -52,11 +52,8 @@ class User < ApplicationRecord
   before_validation :second_initialize, on: :create
 
   # devise
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :rememberable, :validatable, :session_limitable,
          :omniauthable, omniauth_providers: [:marvin]
-
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
