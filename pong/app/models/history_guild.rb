@@ -1,0 +1,2 @@
+class HistoryGuild < ApplicationRecord
+end

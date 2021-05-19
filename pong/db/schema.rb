@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_19_045200) do
+ActiveRecord::Schema.define(version: 2021_05_19_070405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,17 @@ ActiveRecord::Schema.define(version: 2021_05_19_045200) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "history_guilds", force: :cascade do |t|
+    t.bigint "guild_id", null: false
+    t.bigint "war_history_id", null: false
+    t.integer "result", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["guild_id", "war_history_id"], name: "index_history_guilds_on_guild_id_and_war_history_id", unique: true
+    t.index ["guild_id"], name: "index_history_guilds_on_guild_id"
+    t.index ["war_history_id"], name: "index_history_guilds_on_war_history_id"
+  end
+
   create_table "history_users", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "history_id", null: false
@@ -231,6 +242,14 @@ ActiveRecord::Schema.define(version: 2021_05_19_045200) do
     t.index ["war_id"], name: "index_war_guilds_on_war_id"
   end
 
+  create_table "war_histories", force: :cascade do |t|
+    t.boolean "is_extended", default: false, null: false
+    t.boolean "is_addon", default: false, null: false
+    t.integer "prize_point", default: 420, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "wars", force: :cascade do |t|
     t.datetime "end_at", null: false
     t.integer "war_time"
@@ -262,6 +281,8 @@ ActiveRecord::Schema.define(version: 2021_05_19_045200) do
   add_foreign_key "game_queues", "users", column: "target_id"
   add_foreign_key "guild_members", "guilds"
   add_foreign_key "guild_members", "users"
+  add_foreign_key "history_guilds", "guilds"
+  add_foreign_key "history_guilds", "war_histories"
   add_foreign_key "history_users", "histories"
   add_foreign_key "history_users", "users"
   add_foreign_key "invites", "guilds"

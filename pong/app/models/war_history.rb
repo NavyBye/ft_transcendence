@@ -1,0 +1,2 @@
+class WarHistory < ApplicationRecord
+end
