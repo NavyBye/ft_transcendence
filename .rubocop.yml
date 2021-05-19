@@ -1,5 +1,9 @@
 require: rubocop-rails
 
+AllCops:
+    Exclude:
+        - 'pong/db/schema.rb'
+
 Style/FrozenStringLiteralComment:
         Enabled: false
 
