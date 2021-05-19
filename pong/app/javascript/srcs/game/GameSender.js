@@ -29,15 +29,19 @@ class GameSender {
     this.score2 = 0;
     this.ball = new Ball();
     this.bars = [new Bar(true), new Bar(false)];
-    this.connection = consumer.subscription.create({
-      channel: 'GameChannel',
-      id: channelId,
-      subscribed() {},
-      disconnected() {},
-      received() {
-        /* TODO: parse input here */
+    this.connection = consumer.subscriptions.create(
+      {
+        channel: 'GameChannel',
+        id: channelId,
       },
-    });
+      {
+        subscribed() {},
+        disconnected() {},
+        received() {
+          /* TODO: parse input here */
+        },
+      },
+    );
   }
 
   simulate(dt) {
@@ -52,8 +56,7 @@ class GameSender {
     this.checkWallConflictWithBar(this.bars[1]);
     this.checkGoal();
 
-    this.canvas.renderAll();
-    this.channel.send(this.toHash());
+    this.connection.send(this.toHash());
     return this.checkEnd();
   }
 
@@ -122,6 +125,7 @@ class GameSender {
 
   toHash() {
     return {
+      type: 'frame',
       ball: this.ball.toHash(),
       bars: [this.bars[0].toHash(), this.bars[1].toHash()],
       scores: [this.score1, this.score2],

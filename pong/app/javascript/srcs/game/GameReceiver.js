@@ -21,18 +21,6 @@ class GameReceiver {
     this.ball = new Ball();
     this.bars = [new Bar(true), new Bar(false)];
     const self = this;
-    this.connection = consumer.subscriptions.create({
-      channel: 'GameChannel',
-      id: channelId,
-      subscribed() {},
-      disconnected() {},
-      received(data) {
-        if (!data) return;
-        self.ball.fromHash(data.ball);
-        self.bars[0].fromHash(data.bars[0]);
-        self.bars[1].fromHash(data.bars[1]);
-      },
-    });
 
     /* canvas related stuffs */
     this.canvas = new fabric.Canvas(canvasId);
@@ -40,6 +28,31 @@ class GameReceiver {
     this.canvas.add(this.bars[0].fabricObj);
     this.canvas.add(this.bars[1].fabricObj);
     this.canvas.renderAll();
+
+    this.connection = consumer.subscriptions.create(
+      {
+        channel: 'GameChannel',
+        id: channelId,
+      },
+      {
+        subscribed() {},
+        disconnected() {},
+        received(data) {
+          if (!data) return;
+          self.ball.fromHash(data.ball);
+          self.bars[0].fromHash(data.bars[0]);
+          self.bars[1].fromHash(data.bars[1]);
+          self.winner = data.winner;
+          self.score1 = data.score1;
+          self.score2 = data.score2;
+          self.isStarted = data.isStarted;
+          self.ball.update();
+          self.bars[0].update();
+          self.bars[1].update();
+          self.simulate();
+        },
+      },
+    );
   }
 
   simulate() {
@@ -47,6 +60,10 @@ class GameReceiver {
     if (isDiplayNone) this.canvas.setWidth($('body').width());
     else this.canvas.setWidth($('body').width() - $('#side').width());
     this.canvas.setHeight($('body').height() - $('#nav').height());
+
+    this.ball.render();
+    this.bars[0].render();
+    this.bars[1].render();
     this.canvas.renderAll();
     return this.checkEnd();
   }
