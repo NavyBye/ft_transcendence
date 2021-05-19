@@ -16,7 +16,7 @@ class GuildMember < ApplicationRecord
     result = {}
     return result if User.roles[user.role].positive?
 
-    user_member = GuildMember.find_by(user_id: user.id)
+    user_member = GuildMember.where(user_id: user.id).first!
     if user_member.guild.id != member.guild.id || user_member.role != 'master'
       result = { 'message' => 'you cannot change the role of other members.', 'status' => :forbidden }
     elsif member.role == 'master' || target_role == 'master'

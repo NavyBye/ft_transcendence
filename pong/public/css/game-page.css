@@ -1,0 +1,54 @@
+.game-card {
+  min-width: 15rem !important;
+  max-width: 18rem;
+  height: calc(100%);
+}
+
+.card-header {
+  text-align: center;
+}
+
+#game-body {
+  height: calc(100% - 100px);
+}
+
+#left-button {
+  width: 50px;
+  height: calc(100% - 100px);
+  background-image: url(/images/plus-icon.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 50px;
+}
+
+#right-button {
+  width: 50px;
+  height: calc(100% - 100px);
+  background-image: url(/images/plus-icon.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 50px;
+}
+
+.box-wrapper {
+  width: calc(100% - 150px);
+  height: calc(100% - 100px);
+}
+
+.game-box {
+  padding: 0 20px !important;
+}
+
+.card-body {
+  background-repeat: no-repeat;
+  padding: 0 !important;
+}
+
+@media (max-width: 1400px) {
+  #box1 {
+    display: none;
+  }
+  #box3 {
+    display: none;
+  }
+}
