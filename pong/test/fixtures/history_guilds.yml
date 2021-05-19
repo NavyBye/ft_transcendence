@@ -13,3 +13,19 @@ two_test:
     guild: two
     war_history: test
     result: 2
+
+<% 20.times do |n| %>
+one_<%= n %>:
+    war_history: war_history_<%= n %>
+    guild: one
+    result: <%= n % 3 %>
+    created_at: <%= DateTime.new(2021, 4, 10 + n) %>
+<% end %>
+
+<% 20.times do |n| %>
+opposite_<%= n %>:
+    war_history: war_history_<%= n %>
+    guild: guild_<%= n % 10 %>
+    result: <%= 2 - (n % 3) %>
+    created_at: <%= DateTime.new(2021, 4, 10 + n) %>
+<% end %>

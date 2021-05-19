@@ -6,3 +6,9 @@
 #
 test:
     prize_point: 422
+
+<% 20.times do |n| %>
+war_history_<%= n %>:
+    prize_point: <%= n %>
+    created_at: <%= DateTime.new(2021, 4, 10 + n) %>
+<% end %>

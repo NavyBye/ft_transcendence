@@ -8,5 +8,5 @@ json.array! @history_relations do |hr|
     json.nickname hr.opposite.user.nickname
   end
   json.opposite_score hr.opposite.score
-  json.when hr.created_at
+  json.when hr.history.created_at
 end

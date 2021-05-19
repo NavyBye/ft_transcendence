@@ -7,3 +7,10 @@
 first:
     game_type: 0
     is_addon: false
+
+<% 20.times do |n| %>
+history_<%= n %>:
+    game_type: <%= n % 3 %>
+    is_addon: false
+    created_at: <%= DateTime.new(2021, 4, 10 + n) %>
+<% end %>

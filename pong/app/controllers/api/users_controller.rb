@@ -45,7 +45,7 @@ module Api
     end
 
     def histories
-      @history_relations = User.find(params[:id]).history_relations.last(10)
+      @history_relations = User.find(params[:id]).history_relations.order(created_at: :asc).last(10)
       render status: :ok
     end
 

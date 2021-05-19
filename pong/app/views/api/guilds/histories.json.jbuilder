@@ -1,4 +1,4 @@
-json.array! @guild.war_history_relations.last(10) do |wh|
+json.array! @guild.war_history_relations.order(created_at: :asc).last(10) do |wh|
   json.is_addon wh.war_history.is_addon
   json.is_extended wh.war_history.is_extended
   json.prize_point wh.war_history.prize_point
