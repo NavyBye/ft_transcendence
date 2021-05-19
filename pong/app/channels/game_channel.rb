@@ -36,6 +36,6 @@ class GameChannel < ApplicationCable::Channel
   def receive_end(data); end
 
   def spectator?
-    is_spectator
+    @is_spectator
   end
 end
