@@ -23,28 +23,11 @@ class Game {
     this.ball = new Ball();
     this.bars = [new Bar(true), new Bar(false)];
 
-    const rect = new fabric.Rect({
-      left: 0,
-      top: 0,
-      width: 10,
-      height: 10,
-      fill: 'red',
-    });
-
-    const circ = new fabric.Circle({
-      left: 0,
-      top: 0,
-      radius: 10,
-      fill: 'red',
-    });
-
     /* canvas related stuffs */
     this.canvas = new fabric.Canvas(canvasId);
     this.canvas.add(this.ball.fabricObj);
     this.canvas.add(this.bars[0].fabricObj);
     this.canvas.add(this.bars[1].fabricObj);
-    this.canvas.add(rect);
-    this.canvas.add(circ);
     this.canvas.renderAll();
   }
 
