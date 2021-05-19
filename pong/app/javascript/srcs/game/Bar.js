@@ -37,8 +37,13 @@ class Bar extends Entity {
     }
   }
 
+  /* used in GameSender */
   move(dt) {
     this.vy += (this.ay - this.vy * 1.5) * dt;
+  }
+
+  /* used in GameReceiver */
+  update() {
     const width = (BAR_WIDTH * $('#game-play').width()) / MAX_X;
     const height = (BAR_HEIGHT * $('#game-play').height()) / MAX_Y;
     this.fabricObj.set('width', width);
