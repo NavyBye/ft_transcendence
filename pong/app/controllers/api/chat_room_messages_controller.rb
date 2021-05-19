@@ -5,7 +5,8 @@ module Api
     end
 
     def check_permission!
-      raise ChatRoomsMember::PermissionDenied unless @room.members.exists? id: current_user.id
+      member = @room.chat_rooms_members.where(user_id: current_user.id).first
+      raise ChatRoomsMember::PermissionDenied if member.nil? || !member.ban_at.nil?
     end
   end
 end
