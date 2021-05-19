@@ -1,7 +1,5 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
-import $ from 'jquery/src/jquery';
-import { fabric } from 'fabric';
 import Ball from './Ball';
 import Bar from './Bar';
 import consumer from '../../channels/consumer';
@@ -24,7 +22,7 @@ import {
 /* This is for Moderator of the game */
 
 class GameSender {
-  constructor(canvasId, channelId) {
+  constructor(channelId) {
     this.isStarted = true;
     this.winner = null;
     this.score1 = 0;
@@ -36,25 +34,16 @@ class GameSender {
       id: channelId,
       subscribed() {},
       disconnected() {},
-      received() {},
+      received() {
+        /* TODO: parse input here */
+      },
     });
-    /* canvas related stuffs */
-    this.canvas = new fabric.Canvas(canvasId);
-    this.canvas.add(this.ball.fabricObj);
-    this.canvas.add(this.bars[0].fabricObj);
-    this.canvas.add(this.bars[1].fabricObj);
-    this.canvas.renderAll();
   }
 
   simulate(dt) {
     this.ball.move(dt);
     this.bars[0].move(dt);
     this.bars[1].move(dt);
-
-    const isDiplayNone = $('#side').css('display') === 'none';
-    if (isDiplayNone) this.canvas.setWidth($('body').width());
-    else this.canvas.setWidth($('body').width() - $('#side').width());
-    this.canvas.setHeight($('body').height() - $('#nav').height());
 
     this.checkWallConflictWithBall();
     this.checkBarConflictWithBall(this.bars[0]);
