@@ -4,3 +4,6 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
+first:
+    game_type: 0
+    is_addon: false
