@@ -11,11 +11,11 @@ class Declaration < ApplicationRecord
 
   def accept
     WarGuild.transaction do
-      new_war = War.create!(war_params)
+      @new_war = War.create!(war_params)
       WarGuild.create!(guild_id: from_id, war_id: new_war.id)
       WarGuild.create!(guild_id: to_id, war_id: new_war.id)
     end
-    new_war
+    @new_war
   end
 
   private
