@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_13_051105) do
+ActiveRecord::Schema.define(version: 2021_05_19_042929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -162,6 +162,13 @@ ActiveRecord::Schema.define(version: 2021_05_13_051105) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["anagram"], name: "index_guilds_on_anagram", unique: true
     t.index ["name"], name: "index_guilds_on_name", unique: true
+  end
+
+  create_table "histories", force: :cascade do |t|
+    t.integer "game_type", default: 0, null: false
+    t.boolean "is_addon", default: false, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "invites", force: :cascade do |t|
