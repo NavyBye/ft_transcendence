@@ -67,14 +67,6 @@
   display: inline-block;
 }
 
-#guild-war-invite {
-  height: calc(50% - 150px);
-  max-width: 400px;
-  margin: auto;
-  background-color: white;
-  overflow-y: scroll;
-}
-
 #guild-member::-webkit-scrollbar {
   display: none;
 }
@@ -96,4 +88,9 @@
   display: inline-block;
   width: 120px;
   margin-right: 50px;
+}
+
+.wartime {
+  font-size: small;
+  width: 14%;
 }
