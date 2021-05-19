@@ -6,4 +6,9 @@ class HistoryUser < ApplicationRecord
   # validations
   validates :user_id, uniqueness: { scope: :history_id }
   validates :score, inclusion: { in: 0..3 }
+
+  # methods
+  def opposite
+    HistoryUser.where('history_id = ? AND user_id != ?', history.id, user.id).first!
+  end
 end
