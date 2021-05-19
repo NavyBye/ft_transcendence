@@ -9,7 +9,7 @@ module Api
 
     def create
       new_declaration = Declaration.create!(create_params)
-      DeclarationExpireJob.set(wait_until: params[:end_at]).perform_later new_declaration.id
+      DeclarationExpireJob.set(wait_until: params[:end_at].to_datetime).perform_later new_declaration.id
       render json: new_declaration, status: :ok
     end
 
