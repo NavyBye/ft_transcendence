@@ -14,6 +14,12 @@ import {
   BALL_RADIUS,
 } from './constant';
 
+/*
+ * This code was originally written in April 2020 by hyekim, written in python.
+ * And translated into C, Ruby, ... and Javascript now. leave comment if you
+ * port this to another language.
+ */
+
 class Game {
   constructor(canvasId) {
     this.isStarted = true;
