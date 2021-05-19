@@ -20,7 +20,9 @@ import {
  * port this to another language.
  */
 
-class Game {
+/* This is for Moderator of the game */
+
+class GameSender {
   constructor(canvasId) {
     this.isStarted = true;
     this.winner = null;
@@ -121,10 +123,10 @@ class Game {
     }
   }
 
-  toH() {
+  toHash() {
     return {
-      ball: this.ball.toH(),
-      bars: [this.bars[0].toH(), this.bars[1].toH()],
+      ball: this.ball.toHash(),
+      bars: [this.bars[0].toHash(), this.bars[1].toHash()],
       scores: [this.score1, this.score2],
       winner: this.winner,
     };
@@ -143,4 +145,4 @@ class Game {
   }
 }
 
-export default Game;
+export default GameSender;
