@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_19_042929) do
+ActiveRecord::Schema.define(version: 2021_05_19_045200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,17 @@ ActiveRecord::Schema.define(version: 2021_05_19_042929) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "history_users", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "history_id", null: false
+    t.integer "score", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["history_id"], name: "index_history_users_on_history_id"
+    t.index ["user_id", "history_id"], name: "index_history_users_on_user_id_and_history_id", unique: true
+    t.index ["user_id"], name: "index_history_users_on_user_id"
+  end
+
   create_table "invites", force: :cascade do |t|
     t.bigint "guild_id", null: false
     t.bigint "user_id", null: false
@@ -251,6 +262,8 @@ ActiveRecord::Schema.define(version: 2021_05_19_042929) do
   add_foreign_key "game_queues", "users", column: "target_id"
   add_foreign_key "guild_members", "guilds"
   add_foreign_key "guild_members", "users"
+  add_foreign_key "history_users", "histories"
+  add_foreign_key "history_users", "users"
   add_foreign_key "invites", "guilds"
   add_foreign_key "invites", "users"
   add_foreign_key "war_guilds", "guilds"
