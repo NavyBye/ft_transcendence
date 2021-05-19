@@ -4,3 +4,12 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
+one_test:
+    guild: one
+    war_history: test
+    result: 0
+
+two_test:
+    guild: two
+    war_history: test
+    result: 2
