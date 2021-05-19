@@ -8,4 +8,9 @@ class HistoryGuild < ApplicationRecord
   # validations
   validates :guild_id, uniqueness: { scope: :war_history_id }
   validates :result, inclusion: { in: HistoryGuild.results.keys }
+
+  # methods
+  def opposite
+    HistoryGuild.where('war_history_id = ? AND guild_id != ?', war_history.id, guild.id).first!
+  end
 end

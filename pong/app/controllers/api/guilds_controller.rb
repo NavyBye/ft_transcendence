@@ -27,6 +27,11 @@ module Api
       render status: :ok
     end
 
+    def histories
+      @guild = Guild.find(params[:id])
+      render status: :ok
+    end
+
     def create
       @master = current_user
       if @master.guild.nil?
