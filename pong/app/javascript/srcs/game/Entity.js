@@ -37,13 +37,16 @@ class Entity {
     this.fabricObj.set('top', y);
   }
 
-  toH() {
+  toHash() {
     return {
       x: this.x,
       y: this.y,
-      vx: this.vx,
-      vy: this.vy,
     };
+  }
+
+  fromHash(hash) {
+    this.x = hash.x;
+    this.y = hash.y;
   }
 }
 
