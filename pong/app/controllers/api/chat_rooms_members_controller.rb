@@ -30,18 +30,24 @@ module Api
     end
 
     def ban
+      duration = params[:duration].to_i
+      raise ActiveRecord::RecordInvalid if duration < 1
+
       @chat_rooms_member.ban_at = Time.zone.now
       @chat_rooms_member.save!
-      ChatRoomsMemberBanRecoveryJob.set(wait: params[:duration].minutes).perform_later @chat_rooms_member.id,
-                                                                                       @chat_rooms_member.ban_at
+      ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
+                                                                              @chat_rooms_member.ban_at
       render json: {}, status: :ok
     end
 
     def mute
+      duration = params[:duration].to_i
+      raise ActiveRecord::RecordInvalid if duration < 1
+
       @chat_rooms_member.mute_at = Time.zone.now
       @chat_rooms_member.save!
-      ChatRoomsMemberBanRecoveryJob.set(wait: params[:duration].minutes).perform_later @chat_rooms_member.id,
-                                                                                       @chat_rooms_member.mute_at
+      ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
+                                                                              @chat_rooms_member.mute_at
       render json: {}, status: :ok
     end
 

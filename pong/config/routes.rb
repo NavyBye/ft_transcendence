@@ -47,6 +47,11 @@ Rails.application.routes.draw do
       end
     end
 
+    # (war) declaration
+    resources :declarations, only: %i[index create update destroy]
+    get 'wartimes', to: 'wars#timetable'
+    get 'warmatch', to: 'wars#warmatch'
+
     resources :chat_rooms, path: 'chatrooms', only: %i[index update destroy create] do
       resources :chat_rooms_members, path: 'members', only: %i[index update destroy create] do
         post 'ban'
