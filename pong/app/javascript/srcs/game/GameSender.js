@@ -4,6 +4,7 @@ import $ from 'jquery/src/jquery';
 import { fabric } from 'fabric';
 import Ball from './Ball';
 import Bar from './Bar';
+import consumer from '../../channels/consumer';
 import {
   MIN_X,
   MAX_X,
@@ -23,14 +24,20 @@ import {
 /* This is for Moderator of the game */
 
 class GameSender {
-  constructor(canvasId) {
+  constructor(canvasId, channelId) {
     this.isStarted = true;
     this.winner = null;
     this.score1 = 0;
     this.score2 = 0;
     this.ball = new Ball();
     this.bars = [new Bar(true), new Bar(false)];
-
+    this.connection = consumer.subscription.create({
+      channel: 'GameChannel',
+      id: channelId,
+      subscribed() {},
+      disconnected() {},
+      received() {},
+    });
     /* canvas related stuffs */
     this.canvas = new fabric.Canvas(canvasId);
     this.canvas.add(this.ball.fabricObj);
@@ -57,6 +64,7 @@ class GameSender {
     this.checkGoal();
 
     this.canvas.renderAll();
+    this.channel.send(this.toHash());
     return this.checkEnd();
   }
 
