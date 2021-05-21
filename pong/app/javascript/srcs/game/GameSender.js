@@ -77,9 +77,11 @@ class GameSender {
 
   checkBarConflictWithBall(bar) {
     if (
+      /* below two lines mean: is y of ball between bar's start and end?  */
       this.ball.y + 2 * BALL_RADIUS >= bar.y &&
       this.ball.y <= bar.y + BAR_HEIGHT &&
-      BAR_WIDTH / 2 + BALL_RADIUS > Math.abs(this.ball.x - bar.x)
+      /* is ball's x is greater than bar's x? (conflict with bar) */
+      BAR_WIDTH + BALL_RADIUS > Math.abs(this.ball.x - bar.x) /* */
     ) {
       if (this.ball.vx < 0) {
         this.ball.x +=
@@ -95,12 +97,14 @@ class GameSender {
   }
 
   checkWallConflictWithBar(bar) {
-    if (bar.y + BAR_HEIGHT / 2 > MAX_Y) {
-      bar.y = MAX_Y - BAR_HEIGHT / 2;
+    if (bar.y + BAR_HEIGHT > MAX_Y) {
+      /* lower side wall */
+      bar.y = MAX_Y - BAR_HEIGHT;
       bar.vy = 0;
       bar.ay = 0;
-    } else if (bar.y - BAR_HEIGHT / 2 < MIN_Y) {
-      bar.y = MIN_Y + BAR_HEIGHT / 2;
+    } else if (bar.y < MIN_Y) {
+      /* upper side wall */
+      bar.y = MAX_Y;
       bar.vy = 0;
       bar.ay = 0;
     }
