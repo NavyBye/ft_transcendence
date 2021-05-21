@@ -92,6 +92,31 @@ const app = {
       }
     });
   },
+  initSignalHandler() {
+    const login = Radio('login').request('get');
+    this.channel = consumer.subscriptions.create(
+      {
+        channel: 'SignalChannel',
+        id: login.get('id'),
+      },
+      {
+        connected() {},
+        disconnected() {},
+        received(data) {
+          if (data && data.type) {
+            Radio.channel('signal').request(data.type, data);
+          }
+        },
+      },
+    );
+
+    /* redirect fetch radio to actual handler */
+    Radio.channel('signal').reply('fetch', function fetch(data) {
+      if (data && data.element) {
+        Radio.channel(data.element).request(data.type, data);
+      }
+    });
+  },
   initErrorHandler() {
     Radio.channel('error').reply('trigger', function handler(json) {
       const parsed = typeof json === 'string' ? JSON.parse(json) : json;
