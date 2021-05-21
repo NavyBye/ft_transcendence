@@ -1,0 +1,2 @@
+# ft_transcendence
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/63c9342a2f2f46feaf374d85840a1747)](https://app.codacy.com/gh/NavyBye/ft_transcendence?utm_source=github.com&utm_medium=referral&utm_content=NavyBye/ft_transcendence&utm_campaign=Badge_Grade_Settings)

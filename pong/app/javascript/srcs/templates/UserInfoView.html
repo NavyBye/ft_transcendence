@@ -2,7 +2,7 @@
   <img
     class="profile-image"
     style="height: 200px; width: 200px"
-    src="/images/42.jpg"
+    src="<%= image.url ? image.url : '/images/default-profile.png' %>"
   />
   <div class="profile-string">
     <h2>name : <%= nickname %></h2>
@@ -16,7 +16,7 @@
     style="width: 105px !important"
     id="add-friend-button"
   >
-    Add Friend
+    Follow
   </button>
   <button
     type="button"
@@ -24,7 +24,7 @@
     style="width: 105px !important"
     id="block-button"
   >
-    Block User
+    Block
   </button>
   <button
     type="button"
