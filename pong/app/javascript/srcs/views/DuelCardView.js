@@ -14,7 +14,8 @@ const DuelCardView = common.View.extend({
       url: '/api/games',
       headers: auth.getTokenHeader(),
       data: {
-        type: 'duel',
+        game_type: 'duel',
+        addon: false,
       },
       success() {
         Radio.channel('route').trigger('route', 'loading');

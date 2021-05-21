@@ -15,7 +15,8 @@ const LadderTournamentCardView = common.View.extend({
       url: '/api/games',
       headers: auth.getTokenHeader(),
       data: {
-        type: 'ladder_tournament',
+        game_type: 'ladder_tournament',
+        addon: false,
       },
       success() {
         Radio.channel('route').trigger('route', 'loading');
