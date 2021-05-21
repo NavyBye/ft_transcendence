@@ -33,7 +33,9 @@ class GameChannel < ApplicationCable::Channel
     GameChannel.broadcast_to @host, data unless spectator?
   end
 
-  def receive_end(data); end
+  def receive_end(data)
+    @game.to_history data["scores"]
+  end
 
   def spectator?
     @is_spectator
