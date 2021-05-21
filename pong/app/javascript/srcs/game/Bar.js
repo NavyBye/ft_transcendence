@@ -21,9 +21,9 @@ class Bar extends Entity {
 
   push(input) {
     if (input === 'up') {
-      this.ay = 500.0;
-    } else if (input === 'down') {
       this.ay = -500.0;
+    } else if (input === 'down') {
+      this.ay = +500.0;
     } else if (input === 'neutral') {
       this.ay = 0.0;
     }
