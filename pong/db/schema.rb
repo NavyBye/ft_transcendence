@@ -122,6 +122,7 @@ ActiveRecord::Schema.define(version: 2021_05_19_070405) do
     t.bigint "game_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "is_host", default: false
     t.index ["game_id"], name: "index_game_players_on_game_id"
     t.index ["user_id"], name: "index_game_players_on_user_id", unique: true
   end

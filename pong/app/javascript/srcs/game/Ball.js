@@ -29,9 +29,19 @@ class Ball extends Entity {
     );
   }
 
+  /* used in GameSender */
   move(dt) {
     this.x += this.vx * dt;
     this.y += this.vy * dt;
+    const rx = (BALL_RADIUS * $('#game-play').width()) / MAX_X;
+    const ry = (BALL_RADIUS * $('#game-play').height()) / MAX_Y;
+    this.fabricObj.set('rx', rx);
+    this.fabricObj.set('ry', ry);
+    this.render();
+  }
+
+  /* used in GameReceiver */
+  update() {
     const rx = (BALL_RADIUS * $('#game-play').width()) / MAX_X;
     const ry = (BALL_RADIUS * $('#game-play').height()) / MAX_Y;
     this.fabricObj.set('rx', rx);
