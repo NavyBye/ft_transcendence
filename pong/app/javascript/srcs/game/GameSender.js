@@ -29,6 +29,7 @@ class GameSender {
     this.score2 = 0;
     this.ball = new Ball();
     this.bars = [new Bar(true), new Bar(false)];
+    const self = this;
     this.connection = consumer.subscriptions.create(
       {
         channel: 'GameChannel',
@@ -37,8 +38,12 @@ class GameSender {
       {
         subscribed() {},
         disconnected() {},
-        received() {
-          /* TODO: parse input here */
+        received(data) {
+          if (!data) return;
+          if (data.type === 'input') {
+            /* TODO: server doesn't send it */
+            self.pushBar(data.is_host ? 0 : 1, data.input);
+          }
         },
       },
     );

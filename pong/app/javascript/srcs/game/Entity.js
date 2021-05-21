@@ -48,6 +48,8 @@ class Entity {
     this.x = hash.x;
     this.y = hash.y;
   }
+
+  /* TODO: move should be here */
 }
 
 export default Entity;

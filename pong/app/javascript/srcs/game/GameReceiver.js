@@ -38,7 +38,7 @@ class GameReceiver {
         subscribed() {},
         disconnected() {},
         received(data) {
-          if (!data) return;
+          if (!data || data.type !== 'frame') return;
           self.ball.fromHash(data.ball);
           self.bars[0].fromHash(data.bars[0]);
           self.bars[1].fromHash(data.bars[1]);
@@ -53,6 +53,20 @@ class GameReceiver {
         },
       },
     );
+
+    function key(event) {
+      const data = { type: 'input' };
+      if (event.key === 'ArrowUp') {
+        data.input = 'up';
+      } else if (event.key === 'ArrowDown') {
+        data.input = 'down';
+      } else {
+        return;
+      }
+      self.connection.send(data);
+    }
+    $(document).keydown(key);
+    $(document).keyup(key);
   }
 
   simulate() {
