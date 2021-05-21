@@ -104,7 +104,7 @@ class GameSender {
       bar.ay = 0;
     } else if (bar.y < MIN_Y) {
       /* upper side wall */
-      bar.y = MAX_Y;
+      bar.y = MIN_Y;
       bar.vy = 0;
       bar.ay = 0;
     }
