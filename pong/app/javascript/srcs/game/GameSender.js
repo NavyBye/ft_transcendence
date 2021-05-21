@@ -1,9 +1,8 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
-import $ from 'jquery/src/jquery';
-import { fabric } from 'fabric';
 import Ball from './Ball';
 import Bar from './Bar';
+import consumer from '../../channels/consumer';
 import {
   MIN_X,
   MAX_X,
@@ -20,32 +19,40 @@ import {
  * port this to another language.
  */
 
-class Game {
-  constructor(canvasId) {
+/* This is for Moderator of the game */
+
+class GameSender {
+  constructor(channelId) {
     this.isStarted = true;
     this.winner = null;
     this.score1 = 0;
     this.score2 = 0;
     this.ball = new Ball();
     this.bars = [new Bar(true), new Bar(false)];
-
-    /* canvas related stuffs */
-    this.canvas = new fabric.Canvas(canvasId);
-    this.canvas.add(this.ball.fabricObj);
-    this.canvas.add(this.bars[0].fabricObj);
-    this.canvas.add(this.bars[1].fabricObj);
-    this.canvas.renderAll();
+    const self = this;
+    this.connection = consumer.subscriptions.create(
+      {
+        channel: 'GameChannel',
+        id: channelId,
+      },
+      {
+        subscribed() {},
+        disconnected() {},
+        received(data) {
+          if (!data) return;
+          if (data.type === 'input') {
+            /* TODO: server doesn't send it */
+            self.pushBar(data.is_host ? 0 : 1, data.input);
+          }
+        },
+      },
+    );
   }
 
   simulate(dt) {
     this.ball.move(dt);
     this.bars[0].move(dt);
     this.bars[1].move(dt);
-
-    const isDiplayNone = $('#side').css('display') === 'none';
-    if (isDiplayNone) this.canvas.setWidth($('body').width());
-    else this.canvas.setWidth($('body').width() - $('#side').width());
-    this.canvas.setHeight($('body').height() - $('#nav').height());
 
     this.checkWallConflictWithBall();
     this.checkBarConflictWithBall(this.bars[0]);
@@ -54,7 +61,7 @@ class Game {
     this.checkWallConflictWithBar(this.bars[1]);
     this.checkGoal();
 
-    this.canvas.renderAll();
+    this.connection.send(this.toHash());
     return this.checkEnd();
   }
 
@@ -70,9 +77,11 @@ class Game {
 
   checkBarConflictWithBall(bar) {
     if (
+      /* below two lines mean: is y of ball between bar's start and end?  */
       this.ball.y + 2 * BALL_RADIUS >= bar.y &&
       this.ball.y <= bar.y + BAR_HEIGHT &&
-      BAR_WIDTH / 2 + BALL_RADIUS > Math.abs(this.ball.x - bar.x)
+      /* is ball's x is greater than bar's x? (conflict with bar) */
+      BAR_WIDTH + BALL_RADIUS > Math.abs(this.ball.x - bar.x) /* */
     ) {
       if (this.ball.vx < 0) {
         this.ball.x +=
@@ -88,12 +97,14 @@ class Game {
   }
 
   checkWallConflictWithBar(bar) {
-    if (bar.y + BAR_HEIGHT / 2 > MAX_Y) {
-      bar.y = MAX_Y - BAR_HEIGHT / 2;
+    if (bar.y + BAR_HEIGHT > MAX_Y) {
+      /* lower side wall */
+      bar.y = MAX_Y - BAR_HEIGHT;
       bar.vy = 0;
       bar.ay = 0;
-    } else if (bar.y - BAR_HEIGHT / 2 < MIN_Y) {
-      bar.y = MIN_Y + BAR_HEIGHT / 2;
+    } else if (bar.y < MIN_Y) {
+      /* upper side wall */
+      bar.y = MIN_Y;
       bar.vy = 0;
       bar.ay = 0;
     }
@@ -121,10 +132,11 @@ class Game {
     }
   }
 
-  toH() {
+  toHash() {
     return {
-      ball: this.ball.toH(),
-      bars: [this.bars[0].toH(), this.bars[1].toH()],
+      type: 'frame',
+      ball: this.ball.toHash(),
+      bars: [this.bars[0].toHash(), this.bars[1].toHash()],
       scores: [this.score1, this.score2],
       winner: this.winner,
     };
@@ -143,4 +155,4 @@ class Game {
   }
 }
 
-export default Game;
+export default GameSender;
