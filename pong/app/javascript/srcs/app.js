@@ -12,6 +12,7 @@ import ErrorModalView from './views/ErrorModalView';
 import collection from './collections';
 import model from './models';
 import consumer from '../channels/consumer';
+import OkModalView from './views/OkModalView';
 
 const app = {
   start() {
@@ -122,6 +123,14 @@ const app = {
     /* game connect signal (when match making was successful) */
     Radio.channel('signal').reply('connect', function gameConnect(data) {
       Radio.channel('route').trigger('route', `play?id=${data.game_id}`);
+    });
+
+    /* game match making refused */
+    Radio.channel('signal').reply('refuse', function requestRefused(data) {
+      new OkModalView().show(
+        'Match Request Refused',
+        'Your game request was refused.',
+      );
     });
   },
   initErrorHandler() {
