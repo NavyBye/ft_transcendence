@@ -4,12 +4,12 @@ module Api
     before_action :check_guild
 
     def index
-      render json: @guild.declaration_received, status: :ok
+      render status: :ok
     end
 
     def create
       new_declaration = Declaration.create!(create_params)
-      DeclarationExpireJob.set(wait_until: params[:end_at]).perform_later new_declaration.id
+      DeclarationExpireJob.set(wait_until: params[:end_at].to_datetime).perform_later new_declaration.id
       render json: new_declaration, status: :ok
     end
 
@@ -18,7 +18,6 @@ module Api
       error = { type: 'message', message: 'you cannot accept the declaration of other guild.' }
       render json: error, status: :forbidden and return unless declaration.to.id == @guild.id
 
-      # TODO : declaration -> war
       new_war = declaration.accept
       WarEndJob.set(wait_until: new_war.end_at).perform_later new_war.id
       render json: {}, status: :no_content
@@ -39,8 +38,9 @@ module Api
     end
 
     def create_params
+      @opposite_guild = Guild.where(name: params[:to_guild]).first!
       {
-        from_id: @guild.id, to_id: params[:to_id],
+        from_id: @guild.id, to_id: @opposite_guild.id,
         end_at: params[:end_at],
         war_time: params[:war_time],
         avoid_chance: params[:avoid_chance], prize_point: params[:prize_point],

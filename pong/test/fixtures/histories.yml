@@ -4,13 +4,13 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
+first:
+    game_type: 0
+    is_addon: false
 
-<% 30.times do |n| %>
-decl_<%= n %>:
-    from: guild_<%= n %>
-    to: one
-    end_at: <%= Time.current + 60000 %>
-    war_time: <%= n % 24 %>
-    avoid_chance: <%= n %>
-    prize_point: <%= 10 * n %>
+<% 20.times do |n| %>
+history_<%= n %>:
+    game_type: <%= n % 3 %>
+    is_addon: false
+    created_at: <%= DateTime.new(2021, 4, 10 + n) %>
 <% end %>
