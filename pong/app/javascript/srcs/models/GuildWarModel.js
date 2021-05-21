@@ -3,7 +3,7 @@ import Backbone from 'backbone';
 const GuildWarModel = Backbone.Model.extend({
   defaults: {
     id: 0,
-    from_id: 0,
+    from: {},
     to_id: 0,
     end_at: '',
     war_time: 0,
