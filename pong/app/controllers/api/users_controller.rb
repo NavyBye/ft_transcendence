@@ -44,8 +44,9 @@ module Api
       render json: { type: "message", message: 'not implemented yet!' }, status: :not_implemented
     end
 
-    def history
-      render json: { type: "message", message: 'not implemented yet!' }, status: :not_implemented
+    def histories
+      @history_relations = User.find(params[:id]).history_relations.order(created_at: :asc).last(10)
+      render status: :ok
     end
 
     private

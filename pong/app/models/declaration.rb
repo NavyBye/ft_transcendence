@@ -10,6 +10,7 @@ class Declaration < ApplicationRecord
   validates :avoid_chance, :prize_point, numericality: { greater_than: -1 }
 
   def accept
+    new_war = []
     WarGuild.transaction do
       new_war = War.create!(war_params)
       WarGuild.create!(guild_id: from_id, war_id: new_war.id)

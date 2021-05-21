@@ -4,7 +4,7 @@ module Api
     before_action :check_guild
 
     def index
-      render json: @guild.declaration_received, status: :ok
+      render status: :ok
     end
 
     def create

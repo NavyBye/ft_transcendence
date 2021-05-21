@@ -1,9 +1,24 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
+import $ from 'jquery/src/jquery';
 import { fabric } from 'fabric';
 import Ball from './Ball';
 import Bar from './Bar';
-import { MIN_X, MAX_X, MIN_Y, MAX_Y } from './constant';
+import {
+  MIN_X,
+  MAX_X,
+  MIN_Y,
+  MAX_Y,
+  BAR_WIDTH,
+  BAR_HEIGHT,
+  BALL_RADIUS,
+} from './constant';
+
+/*
+ * This code was originally written in April 2020 by hyekim, written in python.
+ * And translated into C, Ruby, ... and Javascript now. leave comment if you
+ * port this to another language.
+ */
 
 class Game {
   constructor(canvasId) {
@@ -16,8 +31,6 @@ class Game {
 
     /* canvas related stuffs */
     this.canvas = new fabric.Canvas(canvasId);
-    this.canvas.setWidth(MAX_X);
-    this.canvas.setHeight(MAX_Y);
     this.canvas.add(this.ball.fabricObj);
     this.canvas.add(this.bars[0].fabricObj);
     this.canvas.add(this.bars[1].fabricObj);
@@ -28,6 +41,11 @@ class Game {
     this.ball.move(dt);
     this.bars[0].move(dt);
     this.bars[1].move(dt);
+
+    const isDiplayNone = $('#side').css('display') === 'none';
+    if (isDiplayNone) this.canvas.setWidth($('body').width());
+    else this.canvas.setWidth($('body').width() - $('#side').width());
+    this.canvas.setHeight($('body').height() - $('#nav').height());
 
     this.checkWallConflictWithBall();
     this.checkBarConflictWithBall(this.bars[0]);
@@ -41,27 +59,27 @@ class Game {
   }
 
   checkWallConflictWithBall() {
-    if (this.ball.y + this.ball.r > MAX_Y) {
-      this.ball.y -= 2 * (this.ball.y + this.ball.r - MAX_Y);
+    if (this.ball.y + BALL_RADIUS > MAX_Y) {
+      this.ball.y -= 2 * (this.ball.y + BALL_RADIUS - MAX_Y);
       this.ball.vy *= -1;
-    } else if (this.ball.y - this.ball.r < MIN_Y) {
-      this.ball.y += 2 * (this.ball.r - this.ball.y);
+    } else if (this.ball.y - BALL_RADIUS < MIN_Y) {
+      this.ball.y += 2 * (BALL_RADIUS - this.ball.y);
       this.ball.vy *= -1;
     }
   }
 
   checkBarConflictWithBall(bar) {
     if (
-      this.ball.y >= bar.y - bar.len / 2 &&
-      this.ball.y < bar.y + bar.len / 2 &&
-      bar.width / 2 + this.ball.r > Math.abs(this.ball.x - bar.x)
+      this.ball.y + 2 * BALL_RADIUS >= bar.y &&
+      this.ball.y <= bar.y + BAR_HEIGHT &&
+      BAR_WIDTH / 2 + BALL_RADIUS > Math.abs(this.ball.x - bar.x)
     ) {
       if (this.ball.vx < 0) {
         this.ball.x +=
-          2 * (this.ball.r - this.ball.x + (bar.x + bar.width / 2));
+          2 * (BALL_RADIUS - this.ball.x + (bar.x + BAR_WIDTH / 2));
       } else {
         this.ball.x -=
-          2 * (this.ball.x + this.ball.r - (bar.x - bar.width / 2));
+          2 * (this.ball.x + BALL_RADIUS - (bar.x - BAR_WIDTH / 2));
       }
 
       this.ball.vy += bar.vy * 0.3;
@@ -70,12 +88,12 @@ class Game {
   }
 
   checkWallConflictWithBar(bar) {
-    if (bar.y + bar.len / 2 > MAX_Y) {
-      bar.y = MAX_Y - bar.len / 2;
+    if (bar.y + BAR_HEIGHT / 2 > MAX_Y) {
+      bar.y = MAX_Y - BAR_HEIGHT / 2;
       bar.vy = 0;
       bar.ay = 0;
-    } else if (bar.y - bar.len / 2 < MIN_Y) {
-      bar.y = MIN_Y + bar.len / 2;
+    } else if (bar.y - BAR_HEIGHT / 2 < MIN_Y) {
+      bar.y = MIN_Y + BAR_HEIGHT / 2;
       bar.vy = 0;
       bar.ay = 0;
     }
@@ -83,14 +101,16 @@ class Game {
 
   checkGoal() {
     if (this.ball.x < MIN_X) {
-      this.ball = new Ball();
       this.score2 += 1;
-      this.bars = [new Bar(true), new Bar(false)];
     } else if (this.ball.x > MAX_X) {
-      this.ball = new Ball();
       this.score1 += 1;
-      this.bars = [new Bar(true), new Bar(false)];
+    } else {
+      return;
     }
+
+    this.ball.reset();
+    this.bars[0].reset();
+    this.bars[1].reset();
   }
 
   checkEnd() {

@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       end
       member do
         get 'game'
-        get 'history'
+        get 'histories'
         post 'designate', controller: 'admin'
         post 'ban', controller: 'admin'
       end
