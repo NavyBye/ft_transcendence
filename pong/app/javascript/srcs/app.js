@@ -118,6 +118,11 @@ const app = {
         Radio.channel(data.element).request(data.type, data);
       }
     });
+
+    /* game connect signal (when match making was successful) */
+    Radio.channel('signal').reply('connect', function gameConnect(data) {
+      Radio.channel('route').trigger('route', `play?id=${data.game_id}`);
+    });
   },
   initErrorHandler() {
     Radio.channel('error').reply('trigger', function handler(json) {
