@@ -105,6 +105,8 @@ const app = {
         received(data) {
           if (data && data.type) {
             Radio.channel('signal').request(data.type, data);
+            alert('hey, signal here!');
+            alert(data);
           }
         },
       },
