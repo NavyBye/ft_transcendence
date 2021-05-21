@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       end
       member do
         get 'game'
-        get 'history'
+        get 'histories'
         post 'designate', controller: 'admin'
         post 'ban', controller: 'admin'
       end
@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     end
 
     # (war) declaration
-    resources :declearations, only: %i[index create update destroy]
+    resources :declarations, only: %i[index create update destroy]
     get 'wartimes', to: 'wars#timetable'
     get 'warmatch', to: 'wars#warmatch'
 
