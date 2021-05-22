@@ -99,8 +99,8 @@ module Api
     end
 
     def game_start(game)
-      game.players.each do |player|
-        player.status_update 'game'
+      game.game_players.each do |player|
+        player.user.status_update 'game'
         player.send_start_signal
       end
     end
