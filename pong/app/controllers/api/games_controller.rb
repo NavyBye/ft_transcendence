@@ -47,6 +47,9 @@ module Api
     end
 
     def queue_params
+      raise ActiveRecord::RecordNotFound if params[:game_type].nil?
+
+      params[:addon] = false if params[:addon].nil?
       {
         game_type: params[:game_type],
         addon: params[:addon],
