@@ -90,11 +90,12 @@ const app = {
         /* init routines after login is finished */
         app.initBlacklist();
         app.initFriendlist();
+        app.initSignalHandler();
       }
     });
   },
   initSignalHandler() {
-    const login = Radio('login').request('get');
+    const login = Radio.channel('login').request('get');
     this.channel = consumer.subscriptions.create(
       {
         channel: 'SignalChannel',
