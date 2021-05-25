@@ -19,7 +19,11 @@ const app = {
     app.initErrorHandler();
     $(document).ajaxError(function error(_event, res, _settings, _exception) {
       if (res.status / 100 !== 2) {
-        Radio.channel('error').request('trigger', res.responseText);
+        if (res.responseText) {
+          Radio.channel('error').request('trigger', res.responseText);
+        } else {
+          Radio.channel('error').request('trigger', res);
+        }
       }
     });
 
