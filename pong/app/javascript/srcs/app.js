@@ -125,7 +125,11 @@ const app = {
 
     /* game connect signal (when match making was successful) */
     Radio.channel('signal').reply('connect', function gameConnect(data) {
-      Radio.channel('route').trigger('route', `play?id=${data.game_id}`);
+      const isHost = data.isHost ? true : false;
+      Radio.channel('route').trigger(
+        'route',
+        `play?isHost=${isHost}&channelId=${data.game_id}`,
+      );
     });
 
     /* game match making refused */
