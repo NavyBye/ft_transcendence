@@ -3,8 +3,8 @@ class GameChannel < ApplicationCable::Channel
     @game = Game.find params[:id]
     @host = @game.game_players.where(is_host: true).first!
     stream_for @game
-    stream_for @host if current_user.id == @host.user_id
-    @is_spectator = if @game.players.exists? current_user
+    stream_for @host if host?
+    @is_spectator = if @game.players.exists? current_user.id
                       false
                     else
                       true
@@ -29,13 +29,19 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def receive_input(data)
-    data["is_host"] = (current_user.id == @host.user_id)
+    data["is_host"] = host?
     GameChannel.broadcast_to @host, data unless spectator?
   end
 
-  def receive_end(data); end
+  def receive_end(data)
+    @game.to_history data["scores"] if host?
+  end
 
   def spectator?
     @is_spectator
+  end
+
+  def host?
+    current_user.id == @host.user_id
   end
 end
