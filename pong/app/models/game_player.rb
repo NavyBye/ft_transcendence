@@ -14,7 +14,7 @@ class GamePlayer < ApplicationRecord
   end
 
   def send_start_signal
-    send_signal(user.id, { type: 'connect', game_id: game_id })
+    send_signal(user_id, { type: 'connect', game_id: game_id })
   end
 
   private
