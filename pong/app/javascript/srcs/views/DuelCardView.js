@@ -17,6 +17,7 @@ const DuelCardView = common.View.extend({
         game_type: 'duel',
         addon: false,
       },
+      async: false,
       success() {
         Radio.channel('route').trigger('route', 'loading');
       },

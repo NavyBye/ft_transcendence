@@ -18,6 +18,7 @@ const LadderTournamentCardView = common.View.extend({
         game_type: 'ladder_tournament',
         addon: false,
       },
+      async: false,
       success() {
         Radio.channel('route').trigger('route', 'loading');
       },
