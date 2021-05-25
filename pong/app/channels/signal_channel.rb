@@ -8,5 +8,9 @@ class SignalChannel < ApplicationCable::Channel
 
   def unsubscribed; end
 
-  def receive; end
+  def receive(data)
+    SignalChannel.broadcast_to @user, { data: data, status: :ok }
+  end
+
+  private
 end
