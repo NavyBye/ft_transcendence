@@ -11,7 +11,7 @@ const LoadingView = common.View.extend({
     /* TODO: what to do not going to another page, just closing browser? */
     $.ajax({
       type: 'DELETE',
-      url: '/api/games',
+      url: '/api/games/cancel',
       headers: auth.getTokenHeader(),
     });
   },
