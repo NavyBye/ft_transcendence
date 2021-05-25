@@ -12,7 +12,7 @@ module ApplicationHelper
   end
 
   def send_signal(id, data)
-    # check_signal_format data
+    check_signal_format data
     user = User.find id
     SignalChannel.broadcast_to user, data
   end
@@ -20,12 +20,12 @@ module ApplicationHelper
   private
 
   def check_signal_format(data)
-    type = data['type']
+    type = data[:type]
     raise SignalChannel::InvalidFormat unless %w[connect fetch refuse].include?(type)
 
-    raise SignalChannel::InvalidFormat if type == 'connect' && data['game_id'].nil?
+    raise SignalChannel::InvalidFormat if type == 'connect' && data[:game_id].nil?
 
-    raise SignalChannel::InvalidFormat if type == 'fetch' && data['element'].nil?
+    raise SignalChannel::InvalidFormat if type == 'fetch' && data[:element].nil?
 
     true
   end
