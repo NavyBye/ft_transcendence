@@ -12,7 +12,7 @@ module ApplicationHelper
   end
 
   def send_signal(id, data)
-    check_signal_format data
+    # check_signal_format data
     user = User.find id
     SignalChannel.broadcast_to user, data
   end
