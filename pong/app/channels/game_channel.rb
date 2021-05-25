@@ -4,7 +4,7 @@ class GameChannel < ApplicationCable::Channel
     @host = @game.game_players.where(is_host: true).first!
     stream_for @game
     stream_for @host if host?
-    @is_spectator = if @game.players.exists? current_user
+    @is_spectator = if @game.players.exists? current_user.id
                       false
                     else
                       true
