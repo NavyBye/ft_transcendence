@@ -60,7 +60,7 @@ class GameReceiver {
       },
     );
 
-    function key(event) {
+    function keyDown(event) {
       const data = { type: 'input' };
       if (event.key === 'ArrowUp') {
         data.input = 'up';
@@ -71,8 +71,14 @@ class GameReceiver {
       }
       self.connection.send(data);
     }
-    $(document).keydown(key);
-    $(document).keyup(key);
+
+    function keyUp() {
+      const data = { type: 'input', input: 'neutral' };
+      self.connection.send(data);
+    }
+
+    $(document).keydown(keyDown);
+    $(document).keyup(keyUp);
   }
 
   simulate() {
