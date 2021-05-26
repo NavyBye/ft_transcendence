@@ -42,7 +42,6 @@ class GameSender {
         received(data) {
           if (!data) return;
           if (data.type === 'end') {
-            console.log('hello, this is end message!');
             self.connection.unsubscribe();
             Radio.channel('route').trigger('route', 'home');
           } else if (data.type === 'input') {
