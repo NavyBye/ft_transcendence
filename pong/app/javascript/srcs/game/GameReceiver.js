@@ -2,6 +2,7 @@
 /* eslint-disable class-methods-use-this */
 import $ from 'jquery/src/jquery';
 import { fabric } from 'fabric';
+import { Radio } from 'backbone';
 import Ball from './Ball';
 import Bar from './Bar';
 import consumer from '../../channels/consumer';
@@ -38,18 +39,23 @@ class GameReceiver {
         subscribed() {},
         disconnected() {},
         received(data) {
-          if (!data || data.type !== 'frame') return;
-          self.ball.fromHash(data.ball);
-          self.bars[0].fromHash(data.bars[0]);
-          self.bars[1].fromHash(data.bars[1]);
-          self.winner = data.winner;
-          self.score1 = data.score1;
-          self.score2 = data.score2;
-          self.isStarted = data.isStarted;
-          self.ball.update();
-          self.bars[0].update();
-          self.bars[1].update();
-          self.simulate();
+          if (!data || !data.type) return;
+          if (data.type === 'end') {
+            self.connection.unsubscribe();
+            Radio.channel('route').trigger('route', 'home');
+          } else if (data.type === 'frame') {
+            self.ball.fromHash(data.ball);
+            self.bars[0].fromHash(data.bars[0]);
+            self.bars[1].fromHash(data.bars[1]);
+            self.winner = data.winner;
+            self.score1 = data.score1;
+            self.score2 = data.score2;
+            self.isStarted = data.isStarted;
+            self.ball.update();
+            self.bars[0].update();
+            self.bars[1].update();
+            self.simulate();
+          }
         },
       },
     );

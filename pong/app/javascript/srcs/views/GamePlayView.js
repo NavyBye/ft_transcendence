@@ -22,8 +22,12 @@ const GuildWarTimeModalView = common.View.extend({
       const receiver = new game.GameReceiver(canvasId, this.channelId);
 
       setTimeout(function simulate() {
-        sender.simulate(0.03);
-        setTimeout(simulate, delay);
+        const isEnd = sender.simulate(0.03);
+        if (isEnd) {
+          sender.endGame();
+        } else {
+          setTimeout(simulate, delay);
+        }
       }, delay);
     } else {
       const receiver = new game.GameReceiver(canvasId, this.channelId);
