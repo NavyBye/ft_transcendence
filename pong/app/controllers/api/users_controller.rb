@@ -66,7 +66,7 @@ module Api
     private
 
     def update_params
-      raise User::NotNewcomer if parmas[:nickname] == 'newcomer'
+      raise User::NotNewcomer if params[:nickname] == 'newcomer'
 
       params.permit(:nickname, :is_banned, :is_email_auth, :image)
     end
