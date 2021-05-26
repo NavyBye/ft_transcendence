@@ -47,6 +47,9 @@ module Api
     end
 
     def queue_params
+      raise ActiveRecord::RecordNotFound if params[:game_type].nil?
+
+      params[:addon] = false if params[:addon].nil?
       {
         game_type: params[:game_type],
         addon: params[:addon],
@@ -99,8 +102,8 @@ module Api
     end
 
     def game_start(game)
-      game.players.each do |player|
-        player.status_update 'game'
+      game.game_players.each do |player|
+        player.user.status_update 'game'
         player.send_start_signal
       end
     end
