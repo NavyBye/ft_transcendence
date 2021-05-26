@@ -12,13 +12,18 @@ import ErrorModalView from './views/ErrorModalView';
 import collection from './collections';
 import model from './models';
 import consumer from '../channels/consumer';
+import OkModalView from './views/OkModalView';
 
 const app = {
   start() {
     app.initErrorHandler();
     $(document).ajaxError(function error(_event, res, _settings, _exception) {
       if (res.status / 100 !== 2) {
-        Radio.channel('error').request('trigger', res.responseText);
+        if (res.responseText) {
+          Radio.channel('error').request('trigger', res.responseText);
+        } else {
+          Radio.channel('error').request('trigger', res);
+        }
       }
     });
 
@@ -89,11 +94,12 @@ const app = {
         /* init routines after login is finished */
         app.initBlacklist();
         app.initFriendlist();
+        app.initSignalHandler();
       }
     });
   },
   initSignalHandler() {
-    const login = Radio('login').request('get');
+    const login = Radio.channel('login').request('get');
     this.channel = consumer.subscriptions.create(
       {
         channel: 'SignalChannel',
@@ -115,6 +121,23 @@ const app = {
       if (data && data.element) {
         Radio.channel(data.element).request(data.type, data);
       }
+    });
+
+    /* game connect signal (when match making was successful) */
+    Radio.channel('signal').reply('connect', function gameConnect(data) {
+      const isHost = data.isHost ? true : false;
+      Radio.channel('route').trigger(
+        'route',
+        `play?isHost=${isHost}&channelId=${data.game_id}`,
+      );
+    });
+
+    /* game match making refused */
+    Radio.channel('signal').reply('refuse', function requestRefused(data) {
+      new OkModalView().show(
+        'Match Request Refused',
+        'Your game request was refused.',
+      );
     });
   },
   initErrorHandler() {
