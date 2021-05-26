@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
+import { Radio } from 'backbone';
 import Ball from './Ball';
 import Bar from './Bar';
 import consumer from '../../channels/consumer';
@@ -40,7 +41,10 @@ class GameSender {
         disconnected() {},
         received(data) {
           if (!data) return;
-          if (data.type === 'input') {
+          if (data.type === 'end') {
+            self.connection.unsubscribe();
+            Radio.channel('route').trigger('route', 'home');
+          } else if (data.type === 'input') {
             /* TODO: server doesn't send it */
             self.pushBar(data.is_host ? 0 : 1, data.input);
           }
@@ -83,14 +87,6 @@ class GameSender {
       /* is ball's x is greater than bar's x? (conflict with bar) */
       BAR_WIDTH + BALL_RADIUS > Math.abs(this.ball.x - bar.x) /* */
     ) {
-      if (this.ball.vx < 0) {
-        this.ball.x +=
-          2 * (BALL_RADIUS - this.ball.x + (bar.x + BAR_WIDTH / 2));
-      } else {
-        this.ball.x -=
-          2 * (this.ball.x + BALL_RADIUS - (bar.x - BAR_WIDTH / 2));
-      }
-
       this.ball.vy += bar.vy * 0.3;
       this.ball.vx *= -1;
     }
@@ -125,11 +121,19 @@ class GameSender {
   }
 
   checkEnd() {
+    let ret = true;
     if (this.score1 === 3) {
       this.winner = 1;
     } else if (this.score2 === 3) {
       this.winner = 2;
+    } else {
+      ret = false;
     }
+    return ret;
+  }
+
+  endGame() {
+    this.connection.send({ type: 'end', scores: [this.score1, this.score2] });
   }
 
   toHash() {
