@@ -88,14 +88,6 @@ class GameSender {
       /* is ball's x is greater than bar's x? (conflict with bar) */
       BAR_WIDTH + BALL_RADIUS > Math.abs(this.ball.x - bar.x) /* */
     ) {
-      if (this.ball.vx < 0) {
-        this.ball.x +=
-          2 * (BALL_RADIUS - this.ball.x + (bar.x + BAR_WIDTH / 2));
-      } else {
-        this.ball.x -=
-          2 * (this.ball.x + BALL_RADIUS - (bar.x - BAR_WIDTH / 2));
-      }
-
       this.ball.vy += bar.vy * 0.3;
       this.ball.vx *= -1;
     }
