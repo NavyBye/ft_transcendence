@@ -253,6 +253,9 @@ const app = {
         type: 'DELETE',
         url: `/api/users/${app.user.get('id')}/friends/${id}`,
         headers: auth.getTokenHeader(),
+        success() {
+          Radio.channel('friendView').trigger('refresh');
+        },
       });
     });
   },
