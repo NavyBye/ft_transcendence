@@ -37,7 +37,13 @@ module Api
     end
 
     def challenge
-      render json: { type: "message", message: 'not implemented yet!' }, status: :not_implemented
+      current_user.update!(rank: User.initial_rank) if current_user.rank.nil?
+      rank = current_user.rank
+      render json: {}, status: :ok and return if rank == 1
+
+      @candidates = User.where(rank: rank - 1)
+      @candidates = @candidates.sample(3) if rank > 3
+      render json: @candidates, status: :ok
     end
 
     def game
