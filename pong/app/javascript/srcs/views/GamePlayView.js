@@ -18,7 +18,7 @@ const GuildWarTimeModalView = common.View.extend({
     const login = Radio.channel('login').request('get');
     const moderator = 1;
     const canvasId = 'game-play';
-    const delay = 50;
+    const delay = 40;
     const self = this;
     if (this.isHost) {
       const sender = new game.GameSender(this.channelId);
@@ -26,7 +26,7 @@ const GuildWarTimeModalView = common.View.extend({
       self.gameObjects.push(receiver);
       self.gameObjects.push(sender);
       setTimeout(function simulate() {
-        const isEnd = sender.simulate(0.03);
+        const isEnd = sender.simulate(1 / delay);
         if (isEnd) {
           sender.endGame();
         } else {
