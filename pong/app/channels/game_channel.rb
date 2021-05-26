@@ -11,7 +11,16 @@ class GameChannel < ApplicationCable::Channel
                     end
   end
 
-  def unsubscribed; end
+  def unsubscribed
+    return if @game.nil?
+
+    GameChannel.broadcast_to @game, { type: "end" }
+    if host?
+      @game.to_history [0, 3]
+    else
+      @game.to_history [3, 0]
+    end
+  end
 
   def receive(data)
     case data["type"]
