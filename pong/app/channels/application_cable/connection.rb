@@ -7,6 +7,17 @@ module ApplicationCable
       logger.add_tags 'ActionCable', current_user.id
     end
 
+    def disconnect
+      player = GamePlayer.find_by id: current_user.id
+      unless player.nil?
+        if player.is_host
+          player.game.to_history [3, 0]
+        else
+          player.game.to_history [0, 3]
+        end
+      end
+    end
+
     protected
 
     def find_verified_user
