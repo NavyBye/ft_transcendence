@@ -1,7 +1,7 @@
+import { Radio } from 'backbone';
 import $ from 'jquery/src/jquery';
 import common from '../common';
 import auth from '../utils/auth';
-import ErrorModalView from './ErrorModalView';
 
 const InputPasswordModalView = common.View.extend({
   el: '#input-password-modal',
@@ -32,7 +32,7 @@ const InputPasswordModalView = common.View.extend({
         view.model.set('joined', true);
       },
       error(res) {
-        new ErrorModalView().show('Error', res.responseText);
+        Radio.channel('error').request('trigger', res.responseText);
       },
     });
     $(this.el).modal('hide');

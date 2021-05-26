@@ -45,6 +45,10 @@ const ChatCollectionView = common.CollectionView.extend({
     Radio.channel('chat-collection').reply('fetch', function fetch() {
       Radio.channel('side').trigger('enter-chatroom', chatRoomId);
     });
+
+    Radio.channel('chat-collection').reply('getId', function getId() {
+      return chatRoomId;
+    });
   },
   onRender() {
     const view = this;

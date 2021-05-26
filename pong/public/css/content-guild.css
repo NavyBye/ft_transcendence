@@ -1,0 +1,96 @@
+#content .guild-create {
+  overflow-y: hidden !important;
+}
+
+#guild-content {
+  height: calc(100% - 42px);
+  background-color: rgba(255, 255, 255, 0.7);
+  /* background-color: white; */
+}
+.yes-guild-body {
+  max-width: 600px;
+  margin: auto;
+}
+
+#content .guild-nav-tabs {
+  margin: 0;
+}
+
+#guild-body .guild-nav-tabs a {
+  color: white;
+}
+
+#guild-body .guild-nav-tabs .active {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: black;
+}
+
+#guild-body .guild-name,
+.guild-anagram {
+  text-align: center;
+  margin: 0;
+  font-family: sans-serif;
+  color: black;
+}
+
+.guild-text-wrapper {
+  margin-top: 50px;
+  margin-left: 50px;
+  font-size: larger;
+}
+
+#guild-member {
+  margin: 0 20px;
+  padding-top: 10px;
+  padding-left: 30px;
+  background-color: white;
+  display: block;
+  height: calc(100% - 270px);
+  overflow-y: scroll;
+}
+
+#guild-out-btn {
+  max-width: 100px;
+  margin: 20px auto;
+}
+
+#guild-war-declare {
+  max-width: 400px;
+  overflow-y: scroll;
+  height: calc(100% - 280px);
+  padding-top: 30px;
+  margin: auto;
+}
+
+.war-declare-form {
+  width: 100px;
+  display: inline-block;
+}
+
+#guild-member::-webkit-scrollbar {
+  display: none;
+}
+
+#guild-war-declare::-webkit-scrollbar {
+  display: none;
+}
+
+#guild-war-invite::-webkit-scrollbar {
+  display: none;
+}
+
+.guild-invite-view {
+  max-width: 300px;
+  margin: 10px auto;
+}
+
+.guild-invite-name {
+  display: inline-block;
+  width: 120px;
+  margin-right: 50px;
+}
+
+.wartime {
+  font-size: small;
+  width: 14%;
+}

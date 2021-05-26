@@ -38,6 +38,9 @@ class User < ApplicationRecord
   has_one :game_relation, class_name: "GamePlayer", inverse_of: :user, foreign_key: :user_id, dependent: :destroy
   has_one :game, through: :game_relation, source: :game
 
+  has_many :history_relations, class_name: "HistoryUser", inverse_of: :user, foreign_key: :user_id, dependent: :destroy
+  has_many :histories, through: :history_relations, source: :history
+
   # validations
   validates :status, inclusion: { in: User.statuses.keys }
   validates :role, inclusion: { in: User.roles.keys }
@@ -52,11 +55,8 @@ class User < ApplicationRecord
   before_validation :second_initialize, on: :create
 
   # devise
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable, :rememberable, :validatable, :session_limitable,
          :omniauthable, omniauth_providers: [:marvin]
-
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email

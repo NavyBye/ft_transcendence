@@ -7,6 +7,18 @@ class Guild < ApplicationRecord
   has_many :invitations, class_name: "Invite", inverse_of: :guild, foreign_key: :guild_id, dependent: :destroy
   has_many :invited_users, through: :invitations, source: :user
 
+  has_many :declaration_sent, class_name: "Declaration", inverse_of: :from,
+                              foreign_key: :from_id, dependent: :destroy
+  has_many :declaration_received, class_name: "Declaration", inverse_of: :to,
+                                  foreign_key: :to_id, dependent: :destroy
+
+  has_one :war_relation, class_name: "WarGuild", inverse_of: :guild, foreign_key: :guild_id, dependent: :destroy
+  has_one :war, through: :war_relation, source: :war
+
+  has_many :war_history_relations, class_name: "HistoryGuild", inverse_of: :guild,
+                                   foreign_key: :guild_id, dependent: :destroy
+  has_many :war_histories, through: :war_history_relations, source: :war_history
+
   # validations
   validates :name, length: { in: 4..10 }
   validates :anagram, length: { is: 4 }
