@@ -41,7 +41,10 @@ module Api
     end
 
     def game
-      render json: { type: "message", message: 'not implemented yet!' }, status: :not_implemented
+      @game_player = GamePlayer.where(user_id: current_user.id)
+      render json: {}, status: :ok and return if @game.empty?
+
+      render status: :ok
     end
 
     def histories
