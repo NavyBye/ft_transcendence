@@ -19,5 +19,12 @@ module Api
         post api_games_url, params: { game_type: 'friendly', addon: false }
       end
     end
+
+    test "canceling request always success" do
+      user = users(:game_test_user)
+      sign_in user
+      delete cancel_api_games_url
+      assert_response :success
+    end
   end
 end
