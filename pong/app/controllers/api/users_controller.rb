@@ -37,11 +37,20 @@ module Api
     end
 
     def challenge
-      render json: { type: "message", message: 'not implemented yet!' }, status: :not_implemented
+      current_user.update!(rank: User.initial_rank) if current_user.rank.nil?
+      rank = current_user.rank
+      render json: {}, status: :ok and return if rank == 1
+
+      @candidates = User.where(rank: rank - 1)
+      @candidates = @candidates.sample(3) if rank > 3
+      render json: @candidates, status: :ok
     end
 
     def game
-      render json: { type: "message", message: 'not implemented yet!' }, status: :not_implemented
+      @game_player = GamePlayer.where(user_id: params[:id])
+      render json: {}, status: :ok and return if @game.empty?
+
+      render status: :ok
     end
 
     def histories
@@ -49,9 +58,16 @@ module Api
       render status: :ok
     end
 
+    def who
+      user = User.where(nickname: params[:nickname]).first!
+      render json: user, status: :ok
+    end
+
     private
 
     def update_params
+      raise User::NotNewcomer if params[:nickname] == 'newcomer'
+
       params.permit(:nickname, :is_banned, :is_email_auth, :image)
     end
   end
