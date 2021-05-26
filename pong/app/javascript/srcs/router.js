@@ -1,3 +1,6 @@
+/* eslint-disable no-unneeded-ternary */
+/* eslint-disable radix */
+/* eslint-disable no-param-reassign */
 import Backbone from 'backbone';
 import Radio from 'backbone.radio';
 import view from './views';
@@ -132,6 +135,12 @@ const Router = Backbone.Router.extend({
     }
   },
   play(isHost, channelId) {
+    if (typeof isHost === 'string') {
+      isHost = isHost === 'true' ? true : false;
+    }
+    if (typeof channelId === 'string') {
+      channelId = parseInt(channelId);
+    }
     const rootView = Radio.channel('app').request('rootView');
     const login = Radio.channel('login').request('get');
     if (!login) {
