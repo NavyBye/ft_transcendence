@@ -11,6 +11,7 @@ import UserProfileModalView from './UserProfileModalView';
 import auth from '../utils/auth';
 import InputBanDurationModalView from './InputBanDurationModalView';
 import InputMuteDurationModalView from './InputMuteDurationModalView';
+import OkModalView from './OkModalView';
 
 const ChatView = common.View.extend({
   recvTemplate,
@@ -20,12 +21,17 @@ const ChatView = common.View.extend({
     'click img': 'showProfile',
   },
   onInitialize() {
+    const me = Radio.channel('login').request('get');
+
     if (this.model.get('type') === 'notification') {
       this.template = servTemplate;
+      const user = this.model.get('user');
+      if (user.id === me.get('id')) {
+        Radio.channel('side').request('changeTab', 'chat-tab');
+        new OkModalView().show('', this.model.get('body'));
+      }
     } else if (this.model.get('type') === 'message') {
-      const me = Radio.channel('login').request('get');
       const userId = this.model.get('user').id;
-
       const isBlocked = Radio.channel('blacklist').request(
         'isBlocked',
         this.model.get('user').id,
@@ -58,6 +64,7 @@ const ChatView = common.View.extend({
                 },
                 classNames: 'dropdown-item',
               },
+
               {
                 name: 'free',
                 onClick() {
@@ -67,6 +74,20 @@ const ChatView = common.View.extend({
                   $.ajax({
                     type: 'POST',
                     url: `/api/chatrooms/${chatRoomId}/members/${userId}/free`,
+                    headers: auth.getTokenHeader(),
+                  });
+                },
+                classNames: 'dropdown-item',
+              },
+              {
+                name: 'kick',
+                onClick() {
+                  const chatRoomId = Radio.channel('chat-collection').request(
+                    'getId',
+                  );
+                  $.ajax({
+                    type: 'DELETE',
+                    url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
                     headers: auth.getTokenHeader(),
                   });
                 },
