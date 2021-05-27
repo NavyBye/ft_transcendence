@@ -5,4 +5,21 @@ class GamePlayer < ApplicationRecord
 
   # validations
   validates :user_id, uniqueness: true
+
+  # methods
+  def status_update(status)
+    @user = User.find user_id
+    @user.update!(status: status)
+    FriendChannel.broadcast_to @user, { data: serialize, status: :ok }
+  end
+
+  def send_start_signal
+    ApplicationController.helpers.send_signal(user_id, { type: 'connect', game_id: game_id, is_host: is_host })
+  end
+
+  private
+
+  def serialize(user)
+    user.to_json only: %i[id name nickname status]
+  end
 end

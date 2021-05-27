@@ -28,6 +28,7 @@ gem 'devise'
 gem 'devise-security'
 gem 'kaminari'
 gem 'omniauth-marvin', '~> 1.0.2'
+gem 'with_advisory_lock'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

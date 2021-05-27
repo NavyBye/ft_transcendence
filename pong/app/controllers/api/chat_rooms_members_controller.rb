@@ -18,39 +18,46 @@ module Api
     end
 
     def update
-      if params[:role].is_a? String
-        params[:role] = params[:role].to_i(base = 10) 
-      end
+      return if @chat_rooms_member.role == params[:role]
+
       @chat_rooms_member.role = params[:role]
       @chat_rooms_member.save!
+      if @chat_rooms_member.admin?
+        broadcast "admin", @chat_rooms_member.chat_room
+      else
+        broadcast "unadmin", @chat_rooms_member.chat_room
+      end
       render json: {}, status: :ok
     end
 
     def destroy
       @chat_room.members.delete params[:id]
       @chat_room.destroy! if @chat_room.members.empty?
+      broadcast "kick", @chat_room
       render json: {}, status: :ok
     end
 
     def ban
-      if params[:duration].is_a? String
-        params[:duration] = params[:duration].to_i(base = 10) 
-      end
+      duration = params[:duration].to_i
+      raise ActiveRecord::RecordInvalid if duration < 1
+
       @chat_rooms_member.ban_at = Time.zone.now
       @chat_rooms_member.save!
-      ChatRoomsMemberBanRecoveryJob.set(wait: params[:duration].minutes).perform_later @chat_rooms_member.id,
-                                                                                       @chat_rooms_member.ban_at
+      ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
+                                                                              @chat_rooms_member.ban_at
+      broadcast "ban", @chat_rooms_member.chat_room
       render json: {}, status: :ok
     end
 
     def mute
-      if params[:duration].is_a? String
-        params[:duration] = params[:duration].to_i(base = 10) 
-      end
+      duration = params[:duration].to_i
+      raise ActiveRecord::RecordInvalid if duration < 1
+
       @chat_rooms_member.mute_at = Time.zone.now
       @chat_rooms_member.save!
-      ChatRoomsMemberBanRecoveryJob.set(wait: params[:duration].minutes).perform_later @chat_rooms_member.id,
-                                                                                       @chat_rooms_member.mute_at
+      ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
+                                                                              @chat_rooms_member.mute_at
+      broadcast "mute", @chat_rooms_member.chat_room
       render json: {}, status: :ok
     end
 
@@ -58,6 +65,7 @@ module Api
       @chat_rooms_member.mute_at = nil
       @chat_rooms_member.ban_at = nil
       @chat_rooms_member.save!
+      broadcast "free", @chat_rooms_member.chat_room
       render json: {}, status: :ok
     end
 
@@ -85,6 +93,11 @@ module Api
 
     def serialize(user)
       user.as_json
+    end
+
+    def broadcast(type, room)
+      ChatRoomChannel.broadcast_to(ChatRoomChannel.broadcasting_for(room),
+                                   { type: type, user: current_user.as_json(only: %w[id nickname]) }.as_json)
     end
   end
 end

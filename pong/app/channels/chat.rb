@@ -1,12 +1,12 @@
 module Chat
   def subscribed
-    @self_broadcasting = "#{self.class}##{current_user.id}"
-    stream_from @self_broadcasting
     @room = find_room!
+    @self_broadcasting = "#{self.class}.#{@room.id}.#{current_user.id}"
+    stream_from @self_broadcasting
     if @room.members.exists? id: current_user.id
       stream_for @room
     else
-      self.class.broadcast_to @room, { data: "not member of a room", status: 403 }
+      self.class.broadcast_to @self_broadcasting, { data: "not member of a room", status: 403 }
     end
   end
 

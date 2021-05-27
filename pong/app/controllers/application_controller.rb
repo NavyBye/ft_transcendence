@@ -9,7 +9,10 @@ class ApplicationController < ActionController::Base
   rescue_from User::PermissionDenied, with: :error_permission_denied
   rescue_from EmailAuth::AuthenticationNotFinished, with: :need_second_authenticate
   rescue_from User::NeedFirstUpdate, with: :need_first_update
+  rescue_from User::NotNewcomer, with: :nickname_not_newcomer
   rescue_from SignalChannel::InvalidFormat, with: :error_invalid
+  # TODO : fit to valid error type.
+  rescue_from GameQueue::RequestedUserCanceled, with: :error_invalid
 
   protect_from_forgery with: :null_session
 
@@ -55,5 +58,9 @@ class ApplicationController < ActionController::Base
 
   def need_first_update(_exception)
     render json: { type: 'redirect', target: 'mypage' }, status: :unauthorized
+  end
+
+  def nickname_not_newcomer(_exception)
+    render json: { type: 'message', message: 'new nickname should not be newcomer.' }, status: :bad_request
   end
 end

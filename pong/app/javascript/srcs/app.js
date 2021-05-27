@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable camelcase */
@@ -10,14 +11,20 @@ import auth from './utils/auth';
 import ErrorModalView from './views/ErrorModalView';
 import collection from './collections';
 import model from './models';
+import consumer from '../channels/consumer';
+import OkModalView from './views/OkModalView';
 
 const app = {
   start() {
     app.initErrorHandler();
-    $.ajaxSetup({
-      error: function error(res) {
-        Radio.channel('error').request('trigger', res.responseText);
-      },
+    $(document).ajaxError(function error(_event, res, _settings, _exception) {
+      if (res.status / 100 !== 2) {
+        if (res.responseText) {
+          Radio.channel('error').request('trigger', res.responseText);
+        } else {
+          Radio.channel('error').request('trigger', res);
+        }
+      }
     });
 
     const callback = Backbone.sync;
@@ -87,17 +94,60 @@ const app = {
         /* init routines after login is finished */
         app.initBlacklist();
         app.initFriendlist();
+        app.initSignalHandler();
       }
+    });
+  },
+  initSignalHandler() {
+    const login = Radio.channel('login').request('get');
+    this.channel = consumer.subscriptions.create(
+      {
+        channel: 'SignalChannel',
+        id: login.get('id'),
+      },
+      {
+        connected() {},
+        disconnected() {},
+        received(data) {
+          if (data && data.type) {
+            Radio.channel('signal').request(data.type, data);
+          }
+        },
+      },
+    );
+
+    /* redirect fetch radio to actual handler */
+    Radio.channel('signal').reply('fetch', function fetch(data) {
+      if (data && data.element) {
+        Radio.channel(data.element).request(data.type, data);
+      }
+    });
+
+    /* game connect signal (when match making was successful) */
+    Radio.channel('signal').reply('connect', function gameConnect(data) {
+      Radio.channel('route').trigger(
+        'route',
+        `play?isHost=${data.is_host}&channelId=${data.game_id}`,
+      );
+    });
+
+    /* game match making refused */
+    Radio.channel('signal').reply('refuse', function requestRefused(data) {
+      new OkModalView().show(
+        'Match Request Refused',
+        'Your game request was refused.',
+      );
     });
   },
   initErrorHandler() {
     Radio.channel('error').reply('trigger', function handler(json) {
-      if (typeof json === 'string') json = JSON.parse(json);
-
-      if (json.type === 'message') {
-        new ErrorModalView().show('Error', json.message);
-      } else if (json.type === 'redirect') {
-        Radio.channel('route').trigger('route', json.target);
+      const parsed = typeof json === 'string' ? JSON.parse(json) : json;
+      if (parsed.type === 'message') {
+        new ErrorModalView().show('Error', parsed.message);
+      } else if (parsed.type === 'redirect') {
+        Radio.channel('route').trigger('route', parsed.target);
+      } else {
+        new ErrorModalView().show('Unknown Error', json);
       }
     });
   },
@@ -152,6 +202,21 @@ const app = {
     });
   },
   initFriendlist() {
+    /* subscribe my friend channel */
+    const login = Radio.channel('login').request('get');
+    this.channel = consumer.subscriptions.create(
+      {
+        channel: 'FriendChannel',
+        id: login.get('id'),
+      },
+      {
+        connected() {},
+        disconnected() {},
+        received() {},
+      },
+    );
+
+    /* make friend list */
     app.friendlist = new collection.FriendCollection();
     app.friendlist.fetch({ async: false });
     Radio.channel('friendlist').reply('isFriend', function friendlist(userId) {

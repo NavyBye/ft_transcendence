@@ -1,0 +1,16 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# This model initially had no columns defined. If you add columns to the
+# model remove the '{}' from the fixture names and add the columns immediately
+# below each fixture, per the syntax in the comments below
+#
+
+<% 30.times do |n| %>
+decl_<%= n %>:
+    from: guild_<%= n %>
+    to: one
+    end_at: <%= Time.current + 60000 %>
+    war_time: <%= n % 24 %>
+    avoid_chance: <%= n %>
+    prize_point: <%= 10 * n %>
+<% end %>

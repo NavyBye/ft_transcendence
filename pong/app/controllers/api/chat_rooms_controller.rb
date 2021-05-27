@@ -1,14 +1,13 @@
 module Api
   class ChatRoomsController < ApplicationController
-    before_action :find_chat_room!, only: %i[update destroy]
     before_action :authenticate_user!
+    before_action :find_chat_room!, only: %i[update destroy]
 
     def index
       render json: serialize_with_joined(ChatRoom.all)
     end
 
     def update
-      @chat_room = ChatRoom.find(params[:id])
       @chat_room.update! chat_room_params
       render json: serialize(@chat_room)
     end
@@ -26,6 +25,11 @@ module Api
     end
 
     private
+
+    def check_permission!
+      member = @chat_room.chat_rooms_members.find_by user: current_user
+      raise ChatRoomsMember::PermissionDenied if member.nil? || member.user?
+    end
 
     def find_chat_room!
       @chat_room = ChatRoom.find params[:id]
