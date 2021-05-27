@@ -23,9 +23,9 @@ module Api
       @chat_rooms_member.role = params[:role]
       @chat_rooms_member.save!
       if @chat_rooms_member.admin?
-        broadcast "admin", @chat_rooms_member.chat_room
+        broadcast_notificiation @chat_rooms_member.chat_room, "#{current_user.nickname} is now admin"
       else
-        broadcast "unadmin", @chat_rooms_member.chat_room
+        broadcast_notificiation @chat_rooms_member.chat_room, "#{current_user.nickname} is no longer admin"
       end
       render json: {}, status: :ok
     end
@@ -33,7 +33,7 @@ module Api
     def destroy
       @chat_room.members.delete params[:id]
       @chat_room.destroy! if @chat_room.members.empty?
-      broadcast "kick", @chat_room
+      broadcast_notificiation @chat_room, "#{current_user.nickname} is kicked"
       render json: {}, status: :ok
     end
 
@@ -45,7 +45,7 @@ module Api
       @chat_rooms_member.save!
       ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
                                                                               @chat_rooms_member.ban_at
-      broadcast "ban", @chat_rooms_member.chat_room
+      broadcast_notificiation @chat_rooms_member.chat_room, "#{current_user.nickname} is banned"
       render json: {}, status: :ok
     end
 
@@ -57,7 +57,7 @@ module Api
       @chat_rooms_member.save!
       ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
                                                                               @chat_rooms_member.mute_at
-      broadcast "mute", @chat_rooms_member.chat_room
+      broadcast_notificiation @chat_rooms_member.chat_room, "#{current_user.nickname} is muted"
       render json: {}, status: :ok
     end
 
@@ -65,7 +65,7 @@ module Api
       @chat_rooms_member.mute_at = nil
       @chat_rooms_member.ban_at = nil
       @chat_rooms_member.save!
-      broadcast "free", @chat_rooms_member.chat_room
+      broadcast_notificiation @chat_rooms_member.chat_room, "#{current_user.nickname} is now free"
       render json: {}, status: :ok
     end
 
@@ -95,8 +95,8 @@ module Api
       user.as_json
     end
 
-    def broadcast(type, room)
-      ChatRoomChannel.broadcast_to(room, { type: type, user: current_user.as_json(only: %w[id nickname]) }.as_json)
+    def broadcast_notificiation(room, message)
+      ChatRoomChannel.broadcast_to(room, { type: "notification", data: { body: message } })
     end
   end
 end

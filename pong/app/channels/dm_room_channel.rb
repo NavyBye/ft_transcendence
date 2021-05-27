@@ -9,18 +9,14 @@ class DmRoomChannel < ApplicationCable::Channel
   private
 
   def error_invalid(exception)
-    DmRoomChannel.broadcast_to @self_broadcasting, { data: exception, status: :bad_request }
+    DmRoomChannel.broadcast_to @self_broadcasting, { data: exception, type: "error" }
   end
 
   def error_not_found(exception)
-    DmRoomChannel.broadcast_to @self_broadcasting, { data: exception, status: :not_found }
+    DmRoomChannel.broadcast_to @self_broadcasting, { data: exception, type: "error" }
   end
 
   def find_room!
     DmRoom.find params[:id]
-  end
-
-  def check_permission
-    true
   end
 end
