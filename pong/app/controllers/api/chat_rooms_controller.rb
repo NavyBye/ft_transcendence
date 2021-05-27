@@ -2,6 +2,7 @@ module Api
   class ChatRoomsController < ApplicationController
     before_action :authenticate_user!
     before_action :find_chat_room!, only: %i[update destroy]
+    before_action :check_permission!, only: %i[update]
 
     def index
       render json: serialize_with_joined(ChatRoom.all)
