@@ -3,7 +3,7 @@ module Api
     before_action :authenticate_user!
     before_action :find_chat_room!, only: %i[update destroy]
     before_action :check_permission!, only: %i[update]
-    after_action :send_fetch_signal, except: except: %i[index]
+    after_action :send_fetch_signal, except: %i[index]
 
     def index
       render json: serialize_with_joined(ChatRoom.all)
