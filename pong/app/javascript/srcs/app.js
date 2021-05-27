@@ -43,6 +43,7 @@ const app = {
           $('meta[name="csrf-param"]').attr('content', res.csrf_param);
           $('meta[name="csrf-token"]').attr('content', res.csrf_token);
           Radio.channel('route').trigger('route', 'login');
+          consumer.disconnect();
         },
       });
     });
@@ -252,6 +253,9 @@ const app = {
         type: 'DELETE',
         url: `/api/users/${app.user.get('id')}/friends/${id}`,
         headers: auth.getTokenHeader(),
+        success() {
+          Radio.channel('friendView').trigger('refresh');
+        },
       });
     });
   },
