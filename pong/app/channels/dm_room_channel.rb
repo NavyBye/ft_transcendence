@@ -19,4 +19,8 @@ class DmRoomChannel < ApplicationCable::Channel
   def find_room!
     DmRoom.find params[:id]
   end
+
+  def check_permission
+    true
+  end
 end

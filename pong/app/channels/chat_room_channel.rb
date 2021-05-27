@@ -19,4 +19,13 @@ class ChatRoomChannel < ApplicationCable::Channel
   def find_room!
     ChatRoom.find params[:id]
   end
+
+  def check_permission
+    member = @room.chat_rooms_member.find_by user: current_user
+    if member.nil? || !member.mute_at.nil? || !member.ban_at.nil?
+      false
+    else
+      true
+    end
+  end
 end
