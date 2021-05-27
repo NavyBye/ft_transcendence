@@ -22,18 +22,20 @@ module Api
 
       @chat_rooms_member.role = params[:role]
       @chat_rooms_member.save!
+      target = @chat_rooms_member.user
       if @chat_rooms_member.admin?
-        broadcast_notificiation @chat_rooms_member.chat_room, "#{current_user.nickname} is now admin"
+        broadcast_notification @chat_rooms_member.chat_room, target, "#{target.nickname} is now admin"
       else
-        broadcast_notificiation @chat_rooms_member.chat_room, "#{current_user.nickname} is no longer admin"
+        broadcast_notification @chat_rooms_member.chat_room, target, "#{target.nickname} is no longer admin"
       end
       render json: {}, status: :ok
     end
 
     def destroy
+      target_user = User.find params[:id]
       @chat_room.members.delete params[:id]
       @chat_room.destroy! if @chat_room.members.empty?
-      broadcast_notificiation @chat_room, "#{current_user.nickname} is kicked"
+      broadcast_notification @chat_room, target_user, "#{target_user.nickname} is kicked"
       render json: {}, status: :ok
     end
 
@@ -45,7 +47,8 @@ module Api
       @chat_rooms_member.save!
       ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
                                                                               @chat_rooms_member.ban_at
-      broadcast_notificiation @chat_rooms_member.chat_room, "#{current_user.nickname} is banned"
+      broadcast_notification @chat_rooms_member.chat_room, @chat_rooms_member.user,
+                             "#{@chat_rooms_member.user.nickname} is banned"
       render json: {}, status: :ok
     end
 
@@ -57,7 +60,8 @@ module Api
       @chat_rooms_member.save!
       ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
                                                                               @chat_rooms_member.mute_at
-      broadcast_notificiation @chat_rooms_member.chat_room, "#{current_user.nickname} is muted"
+      broadcast_notification @chat_rooms_member.chat_room, @chat_rooms_member.user,
+                             "#{@chat_rooms_member.user.nickname} is muted"
       render json: {}, status: :ok
     end
 
@@ -65,7 +69,8 @@ module Api
       @chat_rooms_member.mute_at = nil
       @chat_rooms_member.ban_at = nil
       @chat_rooms_member.save!
-      broadcast_notificiation @chat_rooms_member.chat_room, "#{current_user.nickname} is now free"
+      broadcast_notification @chat_rooms_member.chat_room, @chat_rooms_member.user,
+                             "#{@chat_rooms_member.user.nickname} is now free"
       render json: {}, status: :ok
     end
 
@@ -95,11 +100,11 @@ module Api
       user.as_json
     end
 
-    def broadcast_notificiation(room, message)
+    def broadcast_notification(room, target_user, message)
       ChatRoomChannel.broadcast_to(room,
                                    { type: "notification",
                                      data: { body: message,
-                                             user: { id: current_user.id, nickname: current_user.nickname } } })
+                                             user: { id: target_user.id, nickname: target_user.nickname } } })
     end
   end
 end
