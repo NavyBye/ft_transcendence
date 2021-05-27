@@ -96,7 +96,10 @@ module Api
     end
 
     def broadcast_notificiation(room, message)
-      ChatRoomChannel.broadcast_to(room, { type: "notification", data: { body: message } })
+      ChatRoomChannel.broadcast_to(room,
+                                   { type: "notification",
+                                     data: { body: message,
+                                             user: { id: current_user.id, nickname: current_user.nickname } } })
     end
   end
 end
