@@ -6,13 +6,15 @@ module Chat
     if @room.members.exists? id: current_user.id
       stream_for @room
     else
-      self.class.broadcast_to @self_broadcasting, { data: "not member of a room", status: 403 }
+      self.class.broadcast_to @self_broadcasting, { data: "not member of a room", type: "error" }
     end
   end
 
   def receive(data)
+    return if check_permission
+
     message = @room.messages.create! user_id: current_user.id, body: data["body"]
-    self.class.broadcast_to @room, { data: serialize(message), status: 200 }
+    self.class.broadcast_to @room, { data: serialize(message), type: "message" }
   end
 
   private
@@ -22,4 +24,8 @@ module Chat
   end
 
   def find_room!(); end
+
+  def check_permission
+    false
+  end
 end
