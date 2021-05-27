@@ -20,115 +20,92 @@ const ChatView = common.View.extend({
     'click img': 'showProfile',
   },
   onInitialize() {
-    this.template = servTemplate;
+    if (this.model.get('type') === 'notification') {
+      this.template = servTemplate;
+    } else if (this.model.get('type') === 'message') {
+      const me = Radio.channel('login').request('get');
+      const userId = this.model.get('user').id;
 
-    if (this.model.get('type') === 'kick') {
-      return;
-    }
-
-    if (this.model.get('type') === 'ban') {
-      return;
-    }
-
-    if (this.model.get('type') === 'mute') {
-      return;
-    }
-
-    if (this.model.get('type') === 'free') {
-      return;
-    }
-
-    if (this.model.get('type') === 'admin') {
-      return;
-    }
-
-    if (this.model.get('type') === 'unadmin') {
-      return;
-    }
-
-    /* message from user */
-    const me = Radio.channel('login').request('get');
-    const userId = this.model.get('user').id;
-
-    const isBlocked = Radio.channel('blacklist').request(
-      'isBlocked',
-      this.model.get('user').id,
-    );
-
-    /* no template if blocked */
-    if (isBlocked) {
-      return;
-    }
-
-    if (userId === me.get('id')) {
-      this.template = sendTemplate;
-    } else {
-      this.template = recvTemplate;
-      this.menu = new BootstrapMenu(
-        `.recv-chat[chat-id=${this.model.get('id')}]`,
-        {
-          actions: [
-            {
-              name: 'ban',
-              onClick() {
-                new InputBanDurationModalView(userId);
-              },
-              classNames: 'dropdown-item',
-            },
-            {
-              name: 'mute',
-              onClick() {
-                new InputMuteDurationModalView(userId);
-              },
-              classNames: 'dropdown-item',
-            },
-            {
-              name: 'free',
-              onClick() {
-                const chatRoomId = Radio.channel('chat-collection').request(
-                  'getId',
-                );
-                $.ajax({
-                  type: 'POST',
-                  url: `/api/chatrooms/${chatRoomId}/members/${userId}/free`,
-                  headers: auth.getTokenHeader(),
-                });
-              },
-              classNames: 'dropdown-item',
-            },
-            {
-              name: 'give admin',
-              onClick() {
-                const chatRoomId = Radio.channel('chat-collection').request(
-                  'getId',
-                );
-                $.ajax({
-                  type: 'PUT',
-                  url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
-                  headers: auth.getTokenHeader(),
-                  data: { role: 'admin' },
-                });
-              },
-              classNames: 'dropdown-item',
-            },
-            {
-              name: 'take admin',
-              onClick() {
-                const chatRoomId = Radio.channel('chat-collection').request(
-                  'getId',
-                );
-                $.ajax({
-                  type: 'PUT',
-                  url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
-                  headers: auth.getTokenHeader(),
-                  data: { role: 'user' },
-                });
-              },
-              classNames: 'dropdown-item',
-            },
-          ],
-        },
+      const isBlocked = Radio.channel('blacklist').request(
+        'isBlocked',
+        this.model.get('user').id,
       );
+
+      /* no template if blocked */
+      if (isBlocked) {
+        return;
+      }
+
+      if (userId === me.get('id')) {
+        this.template = sendTemplate;
+      } else {
+        this.template = recvTemplate;
+        this.menu = new BootstrapMenu(
+          `.recv-chat[chat-id=${this.model.get('id')}]`,
+          {
+            actions: [
+              {
+                name: 'ban',
+                onClick() {
+                  new InputBanDurationModalView(userId);
+                },
+                classNames: 'dropdown-item',
+              },
+              {
+                name: 'mute',
+                onClick() {
+                  new InputMuteDurationModalView(userId);
+                },
+                classNames: 'dropdown-item',
+              },
+              {
+                name: 'free',
+                onClick() {
+                  const chatRoomId = Radio.channel('chat-collection').request(
+                    'getId',
+                  );
+                  $.ajax({
+                    type: 'POST',
+                    url: `/api/chatrooms/${chatRoomId}/members/${userId}/free`,
+                    headers: auth.getTokenHeader(),
+                  });
+                },
+                classNames: 'dropdown-item',
+              },
+              {
+                name: 'give admin',
+                onClick() {
+                  const chatRoomId = Radio.channel('chat-collection').request(
+                    'getId',
+                  );
+                  $.ajax({
+                    type: 'PUT',
+                    url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
+                    headers: auth.getTokenHeader(),
+                    data: { role: 'admin' },
+                  });
+                },
+                classNames: 'dropdown-item',
+              },
+              {
+                name: 'take admin',
+                onClick() {
+                  const chatRoomId = Radio.channel('chat-collection').request(
+                    'getId',
+                  );
+                  $.ajax({
+                    type: 'PUT',
+                    url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
+                    headers: auth.getTokenHeader(),
+                    data: { role: 'user' },
+                  });
+                },
+                classNames: 'dropdown-item',
+              },
+            ],
+          },
+        );
+      }
     }
   },
   showProfile() {
