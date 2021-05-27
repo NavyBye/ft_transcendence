@@ -96,8 +96,7 @@ module Api
     end
 
     def broadcast(type, room)
-      ChatRoomChannel.broadcast_to(ChatRoomChannel.broadcasting_for(room),
-                                   { type: type, user: current_user.as_json(only: %w[id nickname]) }.as_json)
+      ChatRoomChannel.broadcast_to(room, { type: type, user: current_user.as_json(only: %w[id nickname]) }.as_json)
     end
   end
 end
