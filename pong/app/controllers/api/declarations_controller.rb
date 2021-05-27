@@ -19,6 +19,7 @@ module Api
       render json: error, status: :forbidden and return unless declaration.to.id == @guild.id
 
       new_war = declaration.accept
+      @guild.declaration_received.destroy_all
       WarEndJob.set(wait_until: new_war.end_at).perform_later new_war.id
       render json: {}, status: :no_content
     end

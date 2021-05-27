@@ -20,11 +20,11 @@ module Api
     def cancel
       GameQueue.with_advisory_lock('queue') do
         find_queue current_user.id
-        unless @queue.target_id.nil?
+        unless @queue.nil? || @queue.target_id.nil?
           match_refuse(@queue.user_id, @queue.target_id)
           send_signal(@user.id, { type: 'refuse' })
         end
-        @queue.destroy
+        @queue&.destroy
       end
       render json: {}, status: :no_content
     end
@@ -95,9 +95,9 @@ module Api
 
     def find_queue(id)
       @queue = if GameQueue.where(user_id: id).exists?
-                 GameQueue.where(user_id: id).first!
+                 GameQueue.where(user_id: id).first
                else
-                 GameQueue.where(target_id: id).first!
+                 GameQueue.where(target_id: id).first
                end
     end
 

@@ -126,10 +126,9 @@ const app = {
 
     /* game connect signal (when match making was successful) */
     Radio.channel('signal').reply('connect', function gameConnect(data) {
-      const isHost = data.isHost ? true : false;
       Radio.channel('route').trigger(
         'route',
-        `play?isHost=${isHost}&channelId=${data.game_id}`,
+        `play?isHost=${data.is_host}&channelId=${data.game_id}`,
       );
     });
 
