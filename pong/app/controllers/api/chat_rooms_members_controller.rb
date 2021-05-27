@@ -18,8 +18,15 @@ module Api
     end
 
     def update
+      return if @chat_rooms_member.role == params[:role]
+
       @chat_rooms_member.role = params[:role]
       @chat_rooms_member.save!
+      if @chat_rooms_member.admin?
+        broadcast "admin", @chat_rooms_member.chat_room
+      else
+        broadcast "unadmin", @chat_rooms_member.chat_room
+      end
       render json: {}, status: :ok
     end
 
@@ -37,6 +44,7 @@ module Api
       @chat_rooms_member.save!
       ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
                                                                               @chat_rooms_member.ban_at
+      broadcast "ban", @chat_rooms_member.chat_room
       render json: {}, status: :ok
     end
 
@@ -48,6 +56,7 @@ module Api
       @chat_rooms_member.save!
       ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
                                                                               @chat_rooms_member.mute_at
+      broadcast "mute", @chat_rooms_member.chat_room
       render json: {}, status: :ok
     end
 
@@ -55,6 +64,7 @@ module Api
       @chat_rooms_member.mute_at = nil
       @chat_rooms_member.ban_at = nil
       @chat_rooms_member.save!
+      broadcast "free", @chat_rooms_member.chat_room
       render json: {}, status: :ok
     end
 
@@ -82,6 +92,11 @@ module Api
 
     def serialize(user)
       user.as_json
+    end
+
+    def broadcast(type, room)
+      ChatRoomChannel.broadcast_to(ChatRoomChannel.broadcasting_for(room),
+                                   { type: type, user: current_user.as_json(only: %w[id nickname]) }.as_json)
     end
   end
 end
