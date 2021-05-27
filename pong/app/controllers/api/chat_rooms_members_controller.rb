@@ -33,6 +33,7 @@ module Api
     def destroy
       @chat_room.members.delete params[:id]
       @chat_room.destroy! if @chat_room.members.empty?
+      broadcast "kick", @chat_room
       render json: {}, status: :ok
     end
 
