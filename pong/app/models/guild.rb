@@ -15,6 +15,10 @@ class Guild < ApplicationRecord
   has_one :war_relation, class_name: "WarGuild", inverse_of: :guild, foreign_key: :guild_id, dependent: :destroy
   has_one :war, through: :war_relation, source: :war
 
+  has_many :war_history_relations, class_name: "HistoryGuild", inverse_of: :guild,
+                                   foreign_key: :guild_id, dependent: :destroy
+  has_many :war_histories, through: :war_history_relations, source: :war_history
+
   # validations
   validates :name, length: { in: 4..10 }
   validates :anagram, length: { is: 4 }

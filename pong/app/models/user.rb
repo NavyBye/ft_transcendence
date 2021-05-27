@@ -3,6 +3,8 @@ class User < ApplicationRecord
 
   class NeedFirstUpdate < StandardError; end
 
+  class NotNewcomer < StandardError; end
+
   mount_uploader :image, UserImageUploader
 
   # constants & enums
@@ -37,6 +39,9 @@ class User < ApplicationRecord
 
   has_one :game_relation, class_name: "GamePlayer", inverse_of: :user, foreign_key: :user_id, dependent: :destroy
   has_one :game, through: :game_relation, source: :game
+
+  has_many :history_relations, class_name: "HistoryUser", inverse_of: :user, foreign_key: :user_id, dependent: :destroy
+  has_many :histories, through: :history_relations, source: :history
 
   # validations
   validates :status, inclusion: { in: User.statuses.keys }

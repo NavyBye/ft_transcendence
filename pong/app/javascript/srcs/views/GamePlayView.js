@@ -1,19 +1,48 @@
+/* eslint-disable no-unused-vars */
+import { Radio } from 'backbone';
+import _ from 'underscore';
 import common from '../common';
-import Game from '../game/Game';
 import template from '../templates/GamePlayView.html';
+import game from '../game';
 
 const GuildWarTimeModalView = common.View.extend({
   el: '#game-play',
   template,
   events: {},
-  onInitialize() {},
+  onInitialize(obj) {
+    this.isHost = obj.isHost;
+    this.channelId = obj.channelId;
+    this.gameObjects = [];
+  },
   onRender() {
-    const game = new Game('game-play');
-    this.game = game;
-    setTimeout(function foo() {
-      game.simulate(0.2);
-      setTimeout(foo, 30);
-    }, 30);
+    const login = Radio.channel('login').request('get');
+    const moderator = 1;
+    const canvasId = 'game-play';
+    const delay = 40;
+    const self = this;
+    if (this.isHost) {
+      const sender = new game.GameSender(this.channelId);
+      const receiver = new game.GameReceiver(canvasId, this.channelId);
+      self.gameObjects.push(receiver);
+      self.gameObjects.push(sender);
+      setTimeout(function simulate() {
+        const isEnd = sender.simulate(1 / delay);
+        if (isEnd) {
+          sender.endGame();
+        } else {
+          setTimeout(simulate, delay);
+        }
+      }, delay);
+    } else {
+      const receiver = new game.GameReceiver(canvasId, this.channelId);
+      self.gameObjects.push(receiver);
+    }
+  },
+  onDestroy() {
+    /* unsubscribe if user moves to another route */
+    _.forEach(this.gameObjects, function disconnect(obj) {
+      obj.connection.unsubscribe();
+    });
   },
 });
 

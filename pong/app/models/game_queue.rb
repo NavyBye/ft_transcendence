@@ -41,8 +41,8 @@ class GameQueue < ApplicationRecord
                  else
                    GameQueue.find_by(game_type: params[:game_type], addon: params[:addon], target_id: cur_user_id)
                  end
-    GamePlayer.create!(game_id: game.id, user_id: wait_queue.user_id)
-    GamePlayer.create!(game_id: game.id, user_id: params[:user_id])
+    GamePlayer.create!(game_id: game.id, user_id: wait_queue.user_id, is_host: true)
+    GamePlayer.create!(game_id: game.id, user_id: params[:user_id], is_host: false)
     # pop
     wait_queue.destroy!
     game
