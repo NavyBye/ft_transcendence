@@ -11,6 +11,7 @@ module Api
     def update
       guild_member = GuildMember.find_by(user_id: params[:user_id])
       change_master(guild_member) and return if params[:role] == 'master'
+      master_degrading and return if guild_member.role == 'master' && params[:role] != 'master'
 
       problem = GuildMember.update_check(current_user, guild_member, params[:role])
       if problem['status'].nil?
@@ -47,6 +48,14 @@ module Api
         guild_member.update!(role: 'master')
       end
       render json: guild_member, status: :ok
+    end
+
+    def master_degrading
+      error_message = {
+        type: 'message',
+        message: 'cannot degrade guild master. promoting other member is better way.'
+      }
+      render json: error_message, status: :bad_request
     end
   end
 end
