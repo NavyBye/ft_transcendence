@@ -48,7 +48,7 @@ module Api
 
     def game
       @game_player = GamePlayer.where(user_id: params[:id])
-      render json: {}, status: :ok and return if @game.empty?
+      render json: {}, status: :ok and return if @game_player.empty?
 
       render status: :ok
     end
