@@ -24,7 +24,6 @@ const AdminUserView = common.View.extend({
               headers: auth.getTokenHeader(),
               data: { is_banned: true },
               success() {
-                self.model.fetch();
                 new OkModalView().show(
                   'Success',
                   'Successfully change user data',
@@ -43,7 +42,6 @@ const AdminUserView = common.View.extend({
               headers: auth.getTokenHeader(),
               data: { is_banned: false },
               success() {
-                self.model.fetch();
                 new OkModalView().show(
                   'Success',
                   'Successfully change user data',
@@ -62,7 +60,6 @@ const AdminUserView = common.View.extend({
               headers: auth.getTokenHeader(),
               data: { role: 'admin' },
               success() {
-                self.model.fetch();
                 new OkModalView().show(
                   'Success',
                   'Successfully change user data',
@@ -81,7 +78,6 @@ const AdminUserView = common.View.extend({
               headers: auth.getTokenHeader(),
               data: { role: 'user' },
               success() {
-                self.model.fetch();
                 new OkModalView().show(
                   'Success',
                   'Successfully change user data',
