@@ -30,9 +30,6 @@ const RequestPongMatchModalView = common.View.extend({
       type: 'DELETE',
       url: '/api/games/cancel',
       headers: auth.getTokenHeader(),
-      data: {
-        game_type: 'friendly',
-      },
     });
     $(this.el).modal('hide');
   },
