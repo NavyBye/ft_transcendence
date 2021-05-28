@@ -17,6 +17,11 @@ module ApplicationHelper
     SignalChannel.broadcast_to user, data
   end
 
+  def send_global_signal(data)
+    check_signal_format data
+    ActionCable.server.broadcast "signal:global", data
+  end
+
   private
 
   def check_signal_format(data)
