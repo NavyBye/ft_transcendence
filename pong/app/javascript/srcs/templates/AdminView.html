@@ -1,35 +1,17 @@
-<div id="admin" class="inner-box background-dark">
+<div id="admin" class="inner-box background-dark no-selection">
   <h3 class="title">Admin</h3>
-  <div class="body">
-    <form>
-      <div class="inner-box">
-        <div class="form-group row">
-          <label class="col-2 col-form-label">Nickname</label>
-          <div class="col-10 row">
-            <input type="text" name="nickname" />
-            <button
-              type="submit"
-              id="give-admin-button"
-              class="btn btn-primary"
-            >
-              admin
-            </button>
-            <button
-              type="submit"
-              id="take-admin-button"
-              class="btn btn-primary"
-            >
-              unadmin
-            </button>
-            <button type="submit" id="ban-button" class="btn btn-primary">
-              ban
-            </button>
-          </div>
-        </div>
-        <div class="form-group row">
-          <p>Tournament. to be implemented</p>
-        </div>
-      </div>
-    </form>
+  <div class="content-wrapper" id="admin-body">
+    <ul class="nav nav-tabs admin-nav-tabs">
+      <li class="nav-item">
+        <a href="#" class="nav-link active" id="user-tab">User</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link" id="guild-tab">Guild</a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link" id="tournament-tab">Tournament</a>
+      </li>
+    </ul>
+    <div id="admin-content"></div>
   </div>
 </div>
