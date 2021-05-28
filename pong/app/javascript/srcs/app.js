@@ -128,7 +128,7 @@ const app = {
     Radio.channel('signal').reply('connect', function gameConnect(data) {
       Radio.channel('route').trigger(
         'route',
-        `play?isHost=${data.is_host}&channelId=${data.game_id}`,
+        `play?isHost=${data.is_host}&channelId=${data.game_id}&addon=${data.addon}`,
       );
     });
 
