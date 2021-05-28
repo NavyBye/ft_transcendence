@@ -31,6 +31,10 @@ const SideView = common.View.extend({
           .show(new view.FriendCollectionView({ userId: login.get('id') }));
       }
     });
+
+    Radio.channel('side').reply('refresh', function refresh() {
+      Radio.channel('side').request('changeTab', self.currentTab);
+    });
   },
   onRender() {
     this.currentTab = 'chat-tab';

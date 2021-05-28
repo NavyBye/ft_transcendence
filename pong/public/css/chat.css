@@ -28,6 +28,10 @@
   height: calc(100% - 40px - 55px - 50px);
 }
 
+#chat-collection::-webkit-scrollbar {
+  display: none;
+}
+
 #dm-collection {
   overflow-y: scroll;
   overflow-x: hidden;

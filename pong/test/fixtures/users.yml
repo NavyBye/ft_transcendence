@@ -158,6 +158,18 @@ banned_user:
     trophy: 0
     role: 1
 
+game_test_user:
+    name: tester
+    nickname: tester
+    email: test@er.co.kr
+    status: 1
+    is_banned: false
+    is_email_auth: false
+    rating: 5495
+    rank: 5
+    trophy: 0
+    role: 0
+
 <% 10.times do |n| %>
 user<%= n %>:
     name:  <%= "user#{n}" %>

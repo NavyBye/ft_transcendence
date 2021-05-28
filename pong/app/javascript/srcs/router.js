@@ -1,3 +1,6 @@
+/* eslint-disable no-unneeded-ternary */
+/* eslint-disable radix */
+/* eslint-disable no-param-reassign */
 import Backbone from 'backbone';
 import Radio from 'backbone.radio';
 import view from './views';
@@ -12,6 +15,9 @@ const Router = Backbone.Router.extend({
     guild: 'guild',
     auth: 'auth',
     admin: 'admin',
+    game: 'gamePage',
+    'play?isHost=:isHost&channelId=:channelId': 'play',
+    loading: 'loading',
   },
   initialize() {
     const channel = Radio.channel('route');
@@ -126,6 +132,54 @@ const Router = Backbone.Router.extend({
         .getRegion('content')
         .getView()
         .show('content', new view.AdminView({ model: login }));
+    }
+  },
+  play(isHost, channelId) {
+    if (typeof isHost === 'string') {
+      isHost = isHost === 'true' ? true : false;
+    }
+    if (typeof channelId === 'string') {
+      channelId = parseInt(channelId);
+    }
+    const rootView = Radio.channel('app').request('rootView');
+    const login = Radio.channel('login').request('get');
+    if (!login) {
+      Radio.channel('route').trigger('route', 'login');
+    } else {
+      if (!rootView.getRegion('content').getView())
+        rootView.show('content', new view.MainView());
+      rootView
+        .getRegion('content')
+        .getView()
+        .show('content', new view.GamePlayView({ isHost, channelId }));
+    }
+  },
+  gamePage() {
+    const rootView = Radio.channel('app').request('rootView');
+    const login = Radio.channel('login').request('get');
+    if (!login) {
+      Radio.channel('route').trigger('route', 'login');
+    } else {
+      if (!rootView.getRegion('content').getView())
+        rootView.show('content', new view.MainView());
+      rootView
+        .getRegion('content')
+        .getView()
+        .show('content', new view.GamePageView());
+    }
+  },
+  loading() {
+    const rootView = Radio.channel('app').request('rootView');
+    const login = Radio.channel('login').request('get');
+    if (!login) {
+      Radio.channel('route').trigger('route', 'login');
+    } else {
+      if (!rootView.getRegion('content').getView())
+        rootView.show('content', new view.MainView());
+      rootView
+        .getRegion('content')
+        .getView()
+        .show('content', new view.LoadingView());
     }
   },
 });
