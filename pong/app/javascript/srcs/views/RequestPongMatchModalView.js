@@ -20,6 +20,7 @@ const RequestPongMatchModalView = common.View.extend({
       headers: auth.getTokenHeader(),
       data: {
         game_type: 'friendly',
+        addon: false,
       },
     });
     $(this.el).modal('hide');
