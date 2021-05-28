@@ -19,7 +19,7 @@ const RequestPongMatchModalView = common.View.extend({
       url: '/api/games',
       headers: auth.getTokenHeader(),
       data: {
-        type: 'friendly',
+        game_type: 'friendly',
       },
     });
     $(this.el).modal('hide');
@@ -30,7 +30,7 @@ const RequestPongMatchModalView = common.View.extend({
       url: '/api/games/cancel',
       headers: auth.getTokenHeader(),
       data: {
-        type: 'friendly',
+        game_type: 'friendly',
       },
     });
     $(this.el).modal('hide');
