@@ -2,7 +2,8 @@ module Api
   class ChatRoomsController < ApplicationController
     before_action :authenticate_user!
     before_action :find_chat_room!, only: %i[update destroy]
-    before_action :check_permission!, only: %i[update]
+    before_action :check_update_permission!, only: %i[update]
+    before_action :check_destroy_permission!, only: %i[destroy]
     after_action :send_fetch_signal, except: %i[index]
 
     def index
@@ -28,9 +29,14 @@ module Api
 
     private
 
-    def check_permission!
+    def check_update_permission!
       member = @chat_room.chat_rooms_members.find_by user: current_user
       raise ChatRoomsMember::PermissionDenied if member.nil? || member.user?
+    end
+
+    def check_destroy_permission!
+      member = @chat_room.chat_rooms_members.find_by user: current_user
+      raise ChatRoomsMember::PermissionDenied if member.nil? || !member.owner?
     end
 
     def find_chat_room!
@@ -42,7 +48,7 @@ module Api
     end
 
     def send_fetch_signal
-      send_signal current_user.id, { type: 'fetch', element: 'chatrooms' }
+      send_global_signal({ type: 'fetch', element: 'chatrooms' })
     end
 
     def serialize(chat_room)
