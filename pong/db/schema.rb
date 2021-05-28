@@ -207,6 +207,7 @@ ActiveRecord::Schema.define(version: 2021_05_25_070406) do
   create_table "tournament_participants", force: :cascade do |t|
     t.bigint "tournament_id", null: false
     t.bigint "user_id", null: false
+    t.integer "index", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["tournament_id"], name: "index_tournament_participants_on_tournament_id"
@@ -214,6 +215,8 @@ ActiveRecord::Schema.define(version: 2021_05_25_070406) do
   end
 
   create_table "tournaments", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "max_participants", default: 4, null: false
     t.boolean "is_ladder", default: false
     t.boolean "is_addon", default: false
     t.datetime "created_at", precision: 6, null: false
