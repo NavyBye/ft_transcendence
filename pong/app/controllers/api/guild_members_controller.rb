@@ -3,8 +3,8 @@ module Api
     before_action :authenticate_user!
 
     def index
-      guild = Guild.find(params[:guild_id])
-      @members = guild.guild_member_relationship
+      @guild = Guild.find(params[:guild_id])
+      @members = @guild.guild_member_relationship
       render status: :ok
     end
 
