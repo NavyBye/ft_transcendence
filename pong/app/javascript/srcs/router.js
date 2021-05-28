@@ -154,7 +154,7 @@ const Router = Backbone.Router.extend({
       rootView
         .getRegion('content')
         .getView()
-        .show('content', new view.GamePlayView({ isHost, channelId }));
+        .show('content', new view.GamePlayView({ isHost, channelId, addon }));
     }
   },
   gamePage() {

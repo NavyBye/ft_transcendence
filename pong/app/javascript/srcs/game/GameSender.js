@@ -23,19 +23,13 @@ import {
 /* This is for Moderator of the game */
 
 class GameSender {
-  constructor(channelId, addOn) {
-    this.addOn = addOn;
+  constructor(channelId) {
     this.isStarted = true;
     this.winner = null;
     this.score1 = 0;
     this.score2 = 0;
     this.ball = new Ball();
     this.bars = [new Bar(true), new Bar(false)];
-    if (this.addOn) {
-      this.ball.fabricObj.set('fill', 'black');
-      this.bars[0].fabricObj.set('fill', 'black');
-      this.bars[1].fabricObj.set('fill', 'black');
-    }
     const self = this;
     this.connection = consumer.subscriptions.create(
       {
