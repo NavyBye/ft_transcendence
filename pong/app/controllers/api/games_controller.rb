@@ -50,6 +50,12 @@ module Api
       GameQueue.playable?(current_user)
     end
 
+    def request_and_accept_available
+      return true unless %w[ladder_tournament friendly].include params[:game_type]
+
+      raise Game::NotPlayable if !params[:target_id].nil? && User.find(params[:target_id])
+    end
+
     def queue_params
       raise ActiveRecord::RecordNotFound if params[:game_type].nil?
 
