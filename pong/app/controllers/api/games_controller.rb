@@ -12,7 +12,7 @@ module Api
     end
 
     def create
-      render json: { type: 'message', message: 'not playable!' }, status: :conflict and return unless availability_check
+      # render json: { type: 'message', message: 'not playable!' }, status: :conflict and return unless availability_check
 
       match_make
       render json: {}, status: :no_content
