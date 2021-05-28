@@ -28,3 +28,8 @@ private_user1:
   chat_room: private_room
   user: user1
   role: 0
+
+hello_hyekim:
+  chat_room: hello
+  user: hyekim
+  role: 2

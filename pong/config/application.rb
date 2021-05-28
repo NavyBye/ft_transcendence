@@ -33,5 +33,7 @@ module Pong
     config.time_zone = "Seoul"
     config.active_record.default_timezone = :local
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.autoload_paths += %W[#{config.root}/lib]
   end
 end

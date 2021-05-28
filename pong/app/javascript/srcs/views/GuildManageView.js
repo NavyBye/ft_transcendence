@@ -5,6 +5,7 @@ import template from '../templates/GuildManageView.html';
 import auth from '../utils/auth';
 import GuildWarTimeModalView from './GuildWarTimeModalView';
 import GuildWarCollectionView from './GuildWarCollectionView';
+import OkModalView from './OkModalView';
 
 const GuildManageView = common.View.extend({
   el: '#guild-body',
@@ -36,6 +37,9 @@ const GuildManageView = common.View.extend({
       url: `/api/declarations`,
       headers: auth.getTokenHeader(),
       data,
+      success() {
+        new OkModalView().show('Success', 'Successfully declare');
+      },
     });
   },
 });

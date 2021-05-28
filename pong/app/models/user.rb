@@ -3,6 +3,8 @@ class User < ApplicationRecord
 
   class NeedFirstUpdate < StandardError; end
 
+  class NotNewcomer < StandardError; end
+
   mount_uploader :image, UserImageUploader
 
   # constants & enums

@@ -12,6 +12,15 @@ const GamePageView = common.View.extend({
   events: {
     'click #left-button': 'leftRotate',
     'click #right-button': 'rightRotate',
+    'click #box1': function click() {
+      this.getRegion('box1').getView().click();
+    },
+    'click #box2': function click() {
+      this.getRegion('box2').getView().click();
+    },
+    'click #box3': function click() {
+      this.getRegion('box3').getView().click();
+    },
   },
   onInitialize() {
     this.arr = [

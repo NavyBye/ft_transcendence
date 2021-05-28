@@ -1,3 +1,4 @@
+import Radio from 'backbone.radio';
 import BootstrapMenu from 'bootstrap-menu';
 import $ from 'jquery/src/jquery';
 import common from '../common';
@@ -22,7 +23,7 @@ const GuildWarView = common.View.extend({
               headers: auth.getTokenHeader(),
               success() {
                 new OkModalView().show('Success', 'Successfully Accept War');
-                self.destroy();
+                Radio.channel('guildwar').request('refresh');
               },
             });
           },
@@ -37,7 +38,7 @@ const GuildWarView = common.View.extend({
               headers: auth.getTokenHeader(),
               success() {
                 new OkModalView().show('Success', 'Successfully Refuse War');
-                self.destroy();
+                Radio.channel('guildwar').request('refresh');
               },
             });
           },
