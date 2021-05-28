@@ -26,7 +26,7 @@ module ApplicationHelper
 
   def check_signal_format(data)
     type = data[:type]
-    raise SignalChannel::InvalidFormat unless %w[connect fetch refuse].include?(type)
+    raise SignalChannel::InvalidFormat unless %w[connect fetch refuse request].include?(type)
 
     raise SignalChannel::InvalidFormat if type == 'connect' && data[:game_id].nil?
 
