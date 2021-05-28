@@ -1,3 +1,4 @@
+/* eslint-disable no-new */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-unneeded-ternary */
@@ -13,6 +14,7 @@ import collection from './collections';
 import model from './models';
 import consumer from '../channels/consumer';
 import OkModalView from './views/OkModalView';
+import RequestPongMatchModalView from './views/RequestPongMatchModalView';
 
 const app = {
   start() {
@@ -138,6 +140,14 @@ const app = {
         'Match Request Refused',
         'Your game request was refused.',
       );
+    });
+
+    /* someone requested pong match to me */
+    Radio.channel('signal').reply('request', function requestRefused(data) {
+      new RequestPongMatchModalView({
+        user: data.user,
+        game: data.game,
+      });
     });
   },
   initErrorHandler() {
