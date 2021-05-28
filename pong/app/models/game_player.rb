@@ -14,7 +14,13 @@ class GamePlayer < ApplicationRecord
   end
 
   def send_start_signal
-    ApplicationController.helpers.send_signal(user_id, { type: 'connect', game_id: game_id, is_host: is_host })
+    connect_signal = {
+      type: 'connect',
+      game_id: game_id,
+      is_host: is_host,
+      addon: game.addon
+    }
+    ApplicationController.helpers.send_signal(user_id, connect_signal)
   end
 
   private
