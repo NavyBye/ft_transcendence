@@ -1,3 +1,4 @@
+import Radio from 'backbone.radio';
 import common from '../common';
 import template from '../templates/AdminView.html';
 import AdminUserCollectionView from './AdminUserCollectionView';
@@ -11,7 +12,11 @@ const YesGuildView = common.View.extend({
     'click .nav-item': 'showTab',
   },
   onInitialize() {
+    const self = this;
     this.addRegion('adminContent', '#admin-content');
+    Radio.channel('admin').reply('reRender', function reRender() {
+      self.render();
+    });
   },
   onRender() {
     this.currentTab = 'user-tab';

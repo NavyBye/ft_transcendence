@@ -1,3 +1,4 @@
+import Radio from 'backbone.radio';
 import $ from 'jquery/src/jquery';
 import BootstrapMenu from 'bootstrap-menu';
 import common from '../common';
@@ -24,6 +25,7 @@ const AdminUserView = common.View.extend({
               headers: auth.getTokenHeader(),
               data: { is_banned: true },
               success() {
+                Radio.channel('admin').request('reRender');
                 new OkModalView().show(
                   'Success',
                   'Successfully change user data',
@@ -42,6 +44,7 @@ const AdminUserView = common.View.extend({
               headers: auth.getTokenHeader(),
               data: { is_banned: false },
               success() {
+                Radio.channel('admin').request('reRender');
                 new OkModalView().show(
                   'Success',
                   'Successfully change user data',
@@ -60,6 +63,7 @@ const AdminUserView = common.View.extend({
               headers: auth.getTokenHeader(),
               data: { role: 'admin' },
               success() {
+                Radio.channel('admin').request('reRender');
                 new OkModalView().show(
                   'Success',
                   'Successfully change user data',
@@ -78,6 +82,7 @@ const AdminUserView = common.View.extend({
               headers: auth.getTokenHeader(),
               data: { role: 'user' },
               success() {
+                Radio.channel('admin').request('reRender');
                 new OkModalView().show(
                   'Success',
                   'Successfully change user data',
