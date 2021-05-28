@@ -22,15 +22,26 @@ class GameQueue < ApplicationRecord
 
   def self.push(params)
     if %w[ladder_tournament friendly].include?(params[:game_type]) && params[:target_id].blank?
-      # you accepted the game, but requested user canceled!
       raise RequestedUserCanceled
     end
 
     queue = GameQueue.create!(params)
-    # TODO : request queue time out duration to variable or const.
-    QueueTimeoverJob.set(wait: 30).perform_later queue.id if %w[ladder_tournament friendly].include?(params[:game_type])
+    if %w[ladder_tournament friendly].include?(params[:game_type])
+      QueueTimeoverJob.set(wait: 30).perform_later queue.id
+      target_user = User.find(params[:target_id])
+      send_request_signal_when_push(target_user, params)
+    end
     User.find(params[:user_id]).status_update('ready')
-    User.find(params[:target_id]).status_update('ready') if %w[ladder_tournament friendly].include?(params[:game_type])
+  end
+
+  def self.send_request_signal_when_push(target_user, params)
+    target_user.status_update('ready')
+    request_signal = {
+      type: 'request',
+      user: { id: target_user.id, nickname: target_user.nickname },
+      game: { game_type: params[:game_type], addon: (false | params[:addon]) }
+    }
+    ApplicationController.helpers.send_signal(target_user.id, request_signal)
   end
 
   def self.pop_and_match(params, cur_user_id)
