@@ -42,7 +42,7 @@ module Api
     end
 
     def send_fetch_signal
-      send_signal current_user.id, { type: 'fetch', element: 'chatrooms' }
+      send_global_signal({ type: 'fetch', element: 'chatrooms' })
     end
 
     def serialize(chat_room)
