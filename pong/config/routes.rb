@@ -17,10 +17,11 @@ Rails.application.routes.draw do
         get 'rank'
         get 'challenge'
         get 'me'
+        get 'who'
       end
       member do
         get 'game'
-        get 'history'
+        get 'histories'
         post 'designate', controller: 'admin'
         post 'ban', controller: 'admin'
       end

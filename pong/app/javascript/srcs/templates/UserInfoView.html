@@ -1,12 +1,14 @@
 <div class="user-info row" style="max-height: 200px">
   <img
     class="profile-image"
-    style="height: 200px; width: 200px"
+    style="height: 200px; width: 200px; margin-left: 20px"
     src="<%= image.url ? image.url : '/images/default-profile.png' %>"
   />
-  <div class="profile-string">
-    <h2>name : <%= nickname %></h2>
-    <h2>rating : <%= rating %></h2>
+  <div class="profile-string" style="margin-left: 10px">
+    <h3>name : <%= nickname %></h3>
+    <h3>rating : <%= rating %></h3>
+    <h3>trophy : <%= trophy %></h3>
+    <h3>ladder rank : <%= rank %></h3>
   </div>
 </div>
 <div class="profile-buttons" style="margin-bottom: 10px">

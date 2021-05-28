@@ -12,13 +12,18 @@ import ErrorModalView from './views/ErrorModalView';
 import collection from './collections';
 import model from './models';
 import consumer from '../channels/consumer';
+import OkModalView from './views/OkModalView';
 
 const app = {
   start() {
     app.initErrorHandler();
     $(document).ajaxError(function error(_event, res, _settings, _exception) {
       if (res.status / 100 !== 2) {
-        Radio.channel('error').request('trigger', res.responseText);
+        if (res.responseText) {
+          Radio.channel('error').request('trigger', res.responseText);
+        } else {
+          Radio.channel('error').request('trigger', res);
+        }
       }
     });
 
@@ -38,6 +43,7 @@ const app = {
           $('meta[name="csrf-param"]').attr('content', res.csrf_param);
           $('meta[name="csrf-token"]').attr('content', res.csrf_token);
           Radio.channel('route').trigger('route', 'login');
+          consumer.disconnect();
         },
       });
     });
@@ -89,7 +95,49 @@ const app = {
         /* init routines after login is finished */
         app.initBlacklist();
         app.initFriendlist();
+        app.initSignalHandler();
       }
+    });
+  },
+  initSignalHandler() {
+    const login = Radio.channel('login').request('get');
+    this.channel = consumer.subscriptions.create(
+      {
+        channel: 'SignalChannel',
+        id: login.get('id'),
+      },
+      {
+        connected() {},
+        disconnected() {},
+        received(data) {
+          if (data && data.type) {
+            Radio.channel('signal').request(data.type, data);
+          }
+        },
+      },
+    );
+
+    /* redirect fetch radio to actual handler */
+    Radio.channel('signal').reply('fetch', function fetch(data) {
+      if (data && data.element) {
+        Radio.channel(data.element).request(data.type, data);
+      }
+    });
+
+    /* game connect signal (when match making was successful) */
+    Radio.channel('signal').reply('connect', function gameConnect(data) {
+      Radio.channel('route').trigger(
+        'route',
+        `play?isHost=${data.is_host}&channelId=${data.game_id}`,
+      );
+    });
+
+    /* game match making refused */
+    Radio.channel('signal').reply('refuse', function requestRefused(data) {
+      new OkModalView().show(
+        'Match Request Refused',
+        'Your game request was refused.',
+      );
     });
   },
   initErrorHandler() {
@@ -205,6 +253,9 @@ const app = {
         type: 'DELETE',
         url: `/api/users/${app.user.get('id')}/friends/${id}`,
         headers: auth.getTokenHeader(),
+        success() {
+          Radio.channel('friendView').trigger('refresh');
+        },
       });
     });
   },

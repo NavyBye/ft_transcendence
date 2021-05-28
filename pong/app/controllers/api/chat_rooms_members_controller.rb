@@ -18,14 +18,24 @@ module Api
     end
 
     def update
+      return if @chat_rooms_member.role == params[:role]
+
       @chat_rooms_member.role = params[:role]
       @chat_rooms_member.save!
+      target = @chat_rooms_member.user
+      if @chat_rooms_member.admin?
+        broadcast_notification @chat_rooms_member.chat_room, target, "#{target.nickname} is now admin"
+      else
+        broadcast_notification @chat_rooms_member.chat_room, target, "#{target.nickname} is no longer admin"
+      end
       render json: {}, status: :ok
     end
 
     def destroy
+      target_user = User.find params[:id]
       @chat_room.members.delete params[:id]
       @chat_room.destroy! if @chat_room.members.empty?
+      broadcast_notification @chat_room, target_user, "#{target_user.nickname} is kicked"
       render json: {}, status: :ok
     end
 
@@ -37,6 +47,8 @@ module Api
       @chat_rooms_member.save!
       ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
                                                                               @chat_rooms_member.ban_at
+      broadcast_notification @chat_rooms_member.chat_room, @chat_rooms_member.user,
+                             "#{@chat_rooms_member.user.nickname} is banned"
       render json: {}, status: :ok
     end
 
@@ -48,6 +60,8 @@ module Api
       @chat_rooms_member.save!
       ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
                                                                               @chat_rooms_member.mute_at
+      broadcast_notification @chat_rooms_member.chat_room, @chat_rooms_member.user,
+                             "#{@chat_rooms_member.user.nickname} is muted"
       render json: {}, status: :ok
     end
 
@@ -55,6 +69,8 @@ module Api
       @chat_rooms_member.mute_at = nil
       @chat_rooms_member.ban_at = nil
       @chat_rooms_member.save!
+      broadcast_notification @chat_rooms_member.chat_room, @chat_rooms_member.user,
+                             "#{@chat_rooms_member.user.nickname} is now free"
       render json: {}, status: :ok
     end
 
@@ -82,6 +98,13 @@ module Api
 
     def serialize(user)
       user.as_json
+    end
+
+    def broadcast_notification(room, target_user, message)
+      ChatRoomChannel.broadcast_to(room,
+                                   { type: "notification",
+                                     data: { body: message,
+                                             user: { id: target_user.id, nickname: target_user.nickname } } })
     end
   end
 end

@@ -20,11 +20,11 @@ module Api
     def cancel
       GameQueue.with_advisory_lock('queue') do
         find_queue current_user.id
-        unless @queue.target_id.nil?
+        unless @queue.nil? || @queue.target_id.nil?
           match_refuse(@queue.user_id, @queue.target_id)
           send_signal(@user.id, { type: 'refuse' })
         end
-        @queue.destroy
+        @queue&.destroy
       end
       render json: {}, status: :no_content
     end
@@ -47,6 +47,9 @@ module Api
     end
 
     def queue_params
+      raise ActiveRecord::RecordNotFound if params[:game_type].nil?
+
+      params[:addon] = false if params[:addon].nil?
       {
         game_type: params[:game_type],
         addon: params[:addon],
@@ -92,15 +95,15 @@ module Api
 
     def find_queue(id)
       @queue = if GameQueue.where(user_id: id).exists?
-                 GameQueue.where(user_id: id).first!
+                 GameQueue.where(user_id: id).first
                else
-                 GameQueue.where(target_id: id).first!
+                 GameQueue.where(target_id: id).first
                end
     end
 
     def game_start(game)
-      game.players.each do |player|
-        player.status_update 'game'
+      game.game_players.each do |player|
+        player.user.status_update 'game'
         player.send_start_signal
       end
     end

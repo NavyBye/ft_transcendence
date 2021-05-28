@@ -11,6 +11,9 @@ const INPUT_DOWN = 1;
 const INPUT_NATURAL = 0;
 const MAX_POINT = 5;
 const TOURNAMENT = 2;
+const BALL_RADIUS = 10.0;
+const BAR_HEIGHT = 100.0;
+const BAR_WIDTH = 20.0;
 
 export {
   MIN_X,
@@ -26,4 +29,7 @@ export {
   INPUT_NATURAL,
   MAX_POINT,
   TOURNAMENT,
+  BALL_RADIUS,
+  BAR_HEIGHT,
+  BAR_WIDTH,
 };

@@ -5,6 +5,7 @@ import UserInfoView from './UserInfoView';
 import UserHistoryCollectionView from './UserHistoryCollectionView';
 import model from '../models';
 import auth from '../utils/auth';
+import OkModalView from './OkModalView';
 
 const UserProfileModalView = common.View.extend({
   el: '#user-profile-modal',
@@ -66,11 +67,17 @@ const UserProfileModalView = common.View.extend({
   },
   requestPong() {},
   guildInvite() {
+    const self = this;
     $.ajax({
       type: 'POST',
       url: `/api/users/${this.userId}/invites`,
       headers: auth.getTokenHeader(),
+      success() {
+        $(self.el).modal('hide');
+        new OkModalView().show('Success', 'Successfully invite');
+      },
       error(res) {
+        $(self.el).modal('hide');
         Radio.channel('error').request('trigger', res.responseText);
       },
     });

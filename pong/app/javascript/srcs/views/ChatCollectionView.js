@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable for-direction */
 /* eslint-disable no-new */
 /* eslint-disable prefer-destructuring */
@@ -36,6 +37,16 @@ const ChatCollectionView = common.CollectionView.extend({
         connected() {},
         disconnected() {},
         received(data) {
+          /* malformed data */
+          if (!data || !data.data || !data.type) return;
+
+          /* 
+             if you are looking here, blame hyeyoo
+             I'm so sorry for poor quality of code
+
+             We have no time to update CollectionView....
+          */
+          data.data.type = data.type;
           const newModel = new model.ChatModel(data.data);
           view.add(newModel);
         },
