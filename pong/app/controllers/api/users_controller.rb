@@ -33,6 +33,7 @@ module Api
 
       @user.update!(update_params)
       @user.save!
+      send_signal @user.id, { type: 'fetch', element: 'login' }
       render json: @user, status: :ok
     end
 
