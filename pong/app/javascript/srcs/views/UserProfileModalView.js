@@ -65,7 +65,20 @@ const UserProfileModalView = common.View.extend({
     Radio.channel('chat-collection').request('fetch');
     $(this.el).modal('hide');
   },
-  requestPong() {},
+  requestPong() {
+    Radio.channel('route').trigger('route', 'loading');
+    $.ajax({
+      type: 'POST',
+      url: '/api/games',
+      headers: auth.getTokenHeader(),
+      data: {
+        game_type: 'friendly',
+        addon: false,
+        target_id: this.userId,
+      },
+    });
+    $(this.el).modal('hide');
+  },
   guildInvite() {
     const self = this;
     $.ajax({
