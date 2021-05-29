@@ -17,7 +17,8 @@ const ChatRoomView = common.View.extend({
   onRender() {
     const chatRoomId = this.model.get('id');
     const joined = this.model.get('joined');
-    const userId = Radio.channel('login').request('get').id;
+    const login = Radio.channel('login').request('get');
+    const userId = login.get('id');
     const view = this;
 
     if (!joined) {
