@@ -6,7 +6,7 @@ const AdminGuildModalView = common.View.extend({
   el: '#admin-guild-modal',
   onInitialize(obj) {
     const self = this;
-    this.addRegion('guildmember', '#guild-member');
+    this.addRegion('guildmember', '#admin-guild-member');
     this.show('guildmember', new AdminGuildMemberCollectionView(obj));
     $(this.el).modal('show');
     $(this.el).on('hide.bs.modal', function destroy() {

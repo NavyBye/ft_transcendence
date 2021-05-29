@@ -12,7 +12,7 @@ const AdminGuildMemberView = common.View.extend({
   onInitialize() {},
   onRender() {
     const self = this;
-    this.menu = new BootstrapMenu(`[member-id=${this.model.get('id')}]`, {
+    this.menu = new BootstrapMenu(`[admin-member-id=${this.model.get('id')}]`, {
       actions: [
         {
           name: 'Change to Member',
