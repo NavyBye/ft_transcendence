@@ -17,10 +17,12 @@ module Api
       sign_in user
       opposite = users(:hyekim)
       GameQueue.create(user_id: opposite.id, game_type: 'friendly', addon: false, target_id: user.id)
+      # REQUESTED USER SHOULD BE 'READY' STATE
+      opposite.update!(status: 'ready')
       assert_difference 'Game.count', 1 do
         post api_games_url, params: { game_type: 'friendly', addon: false }
+        assert_response :success
       end
-      assert_response :success
       assert_equal GamePlayer.count, 2
     end
 
