@@ -6,7 +6,7 @@ class GameQueue < ApplicationRecord
 
   # validations
   validates :game_type, inclusion: { in: Game.game_types.keys }
-  validates :user_id, uniqueness: true
+  validates :user_id, uniqueness: { message: 'cannot play 2 or more games at the same time.' }
   validate :cannot_game_with_myself
 
   # methods
