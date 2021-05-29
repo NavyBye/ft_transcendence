@@ -46,7 +46,10 @@ const ChatRoomView = common.View.extend({
           name: 'Join Room',
           onClick() {
             /* protected by password */
-            if (view.model.get('public') === false) {
+            if (
+              login.get('role') === 'user' &&
+              view.model.get('public') === false
+            ) {
               new InputPasswordModalView({ model: view.model });
             } else {
               $.ajax({
