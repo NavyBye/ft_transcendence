@@ -49,11 +49,22 @@ module Api
       assert_response :forbidden
     end
 
-    test "guild member master update is unavailable" do
+    test "guild member master update SUCCESS" do
       login :master
       member = users(:member)
+      member_gm = GuildMember.find_by(guild_id: @guild.id, user_id: member.id)
       put "/api/guilds/#{@guild.id}/members/#{member.id}", params: { role: 'master' }
-      assert_response :bad_request
+      assert_response :ok
+      assert_equal member_gm.reload.role, 'master'
+    end
+
+    test "guild member master update SUCCESS, by owner" do
+      login :owner
+      member = users(:member)
+      member_gm = GuildMember.find_by(guild_id: @guild.id, user_id: member.id)
+      put "/api/guilds/#{@guild.id}/members/#{member.id}", params: { role: 'master' }
+      assert_response :ok
+      assert_equal member_gm.reload.role, 'master'
     end
 
     # destroy

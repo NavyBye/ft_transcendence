@@ -14,7 +14,7 @@ import consumer from '../../channels/consumer';
  */
 
 class GameReceiver {
-  constructor(canvasId, channelId) {
+  constructor(canvasId, channelId, addon) {
     this.isStarted = true;
     this.winner = null;
     this.score1 = 0;
@@ -22,6 +22,11 @@ class GameReceiver {
     this.ball = new Ball();
     this.bars = [new Bar(true), new Bar(false)];
     const self = this;
+    if (addon) {
+      this.ball.fabricObj.set('fill', 'black');
+      this.bars[0].fabricObj.set('fill', 'black');
+      this.bars[1].fabricObj.set('fill', 'black');
+    }
 
     /* canvas related stuffs */
     this.canvas = new fabric.Canvas(canvasId);

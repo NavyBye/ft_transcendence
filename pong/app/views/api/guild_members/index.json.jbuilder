@@ -7,4 +7,5 @@ json.array! @members do |member|
     json.nickname member.user.nickname
     json.rating member.user.rating
   end
+  json.guild_id @guild.id
 end

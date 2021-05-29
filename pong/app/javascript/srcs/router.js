@@ -16,7 +16,7 @@ const Router = Backbone.Router.extend({
     auth: 'auth',
     admin: 'admin',
     game: 'gamePage',
-    'play?isHost=:isHost&channelId=:channelId': 'play',
+    'play?isHost=:isHost&channelId=:channelId&addon=:addon': 'play',
     loading: 'loading',
   },
   initialize() {
@@ -134,9 +134,12 @@ const Router = Backbone.Router.extend({
         .show('content', new view.AdminView({ model: login }));
     }
   },
-  play(isHost, channelId) {
+  play(isHost, channelId, addon) {
     if (typeof isHost === 'string') {
       isHost = isHost === 'true' ? true : false;
+    }
+    if (typeof addon === 'string') {
+      addon = addon === 'true' ? true : false;
     }
     if (typeof channelId === 'string') {
       channelId = parseInt(channelId);
@@ -151,7 +154,7 @@ const Router = Backbone.Router.extend({
       rootView
         .getRegion('content')
         .getView()
-        .show('content', new view.GamePlayView({ isHost, channelId }));
+        .show('content', new view.GamePlayView({ isHost, channelId, addon }));
     }
   },
   gamePage() {

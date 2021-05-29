@@ -24,7 +24,7 @@ module Api
 
     def update
       @user = User.find(params[:id])
-      raise User::PermissionDenied unless current_user.id == @user.id
+      update_permission_check
 
       if @user.is_email_auth && !@user.auth_confirmed? && params[:is_email_auth] == 'false'
         error_msg = { type: "message", message: 'you cannot disable 2FA when have to do secondary authenticate.' }
@@ -33,6 +33,7 @@ module Api
 
       @user.update!(update_params)
       @user.save!
+      send_signal @user.id, { type: 'fetch', element: 'login' }
       render json: @user, status: :ok
     end
 
@@ -65,10 +66,14 @@ module Api
 
     private
 
+    def update_permission_check
+      raise User::PermissionDenied if current_user.role == 'user' && current_user.id != params[:id].to_i
+    end
+
     def update_params
       raise User::NotNewcomer if params[:nickname] == 'newcomer'
 
-      params.permit(:nickname, :is_banned, :is_email_auth, :image)
+      params.permit(:nickname, :is_banned, :is_email_auth, :image, :role)
     end
   end
 end

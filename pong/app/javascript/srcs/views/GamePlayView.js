@@ -12,6 +12,8 @@ const GuildWarTimeModalView = common.View.extend({
   onInitialize(obj) {
     this.isHost = obj.isHost;
     this.channelId = obj.channelId;
+    this.addon = obj.addon;
+    if (!this.addon) this.addon = false;
     this.gameObjects = [];
   },
   onRender() {
@@ -22,7 +24,11 @@ const GuildWarTimeModalView = common.View.extend({
     const self = this;
     if (this.isHost) {
       const sender = new game.GameSender(this.channelId);
-      const receiver = new game.GameReceiver(canvasId, this.channelId);
+      const receiver = new game.GameReceiver(
+        canvasId,
+        this.channelId,
+        this.addon,
+      );
       self.gameObjects.push(receiver);
       self.gameObjects.push(sender);
       setTimeout(function simulate() {
@@ -34,7 +40,11 @@ const GuildWarTimeModalView = common.View.extend({
         }
       }, delay);
     } else {
-      const receiver = new game.GameReceiver(canvasId, this.channelId);
+      const receiver = new game.GameReceiver(
+        canvasId,
+        this.channelId,
+        this.addon,
+      );
       self.gameObjects.push(receiver);
     }
   },
