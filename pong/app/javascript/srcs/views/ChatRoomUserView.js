@@ -14,6 +14,11 @@ const ChatRoomUserView = common.View.extend({
     $('#chatRoomUserModal').modal('hide');
     new UserProfileModalView(id);
   },
+  onRender() {
+    if (this.model.get('role') !== 'user') {
+      this.$el.css('display', 'none');
+    }
+  },
 });
 
 export default ChatRoomUserView;
