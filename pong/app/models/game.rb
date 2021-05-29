@@ -1,4 +1,6 @@
 class Game < ApplicationRecord
+  class NotPlayable < StandardError; end
+
   # enums
   enum game_type: {
     duel: 0,

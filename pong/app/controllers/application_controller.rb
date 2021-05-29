@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
   rescue_from SignalChannel::InvalidFormat, with: :error_invalid
   # TODO : fit to valid error type.
   rescue_from GameQueue::RequestedUserCanceled, with: :error_invalid
+  rescue_from Game::NotPlayable, with: :not_playable
 
   protect_from_forgery with: :null_session
 
@@ -62,5 +63,9 @@ class ApplicationController < ActionController::Base
 
   def nickname_not_newcomer(_exception)
     render json: { type: 'message', message: 'new nickname should not be newcomer.' }, status: :bad_request
+  end
+
+  def not_playable(_exception)
+    render json: { type: 'message', message: 'someone cannot play the pong.' }, status: :conflict
   end
 end
