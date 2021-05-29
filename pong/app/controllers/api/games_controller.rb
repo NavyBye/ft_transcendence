@@ -12,7 +12,7 @@ module Api
     end
 
     def create
-      availability_check
+      Game.availability_check(params, current_user)
       match_make
       render json: {}, status: :no_content
     end
@@ -36,37 +36,6 @@ module Api
       @user = User.find user_id
       @target.status_update('online') if @target.status != 'offline'
       @user.status_update('online') if @user.status != 'offline'
-    end
-
-    def availability_check
-      self_available?
-      request_and_accept_available? if %w[ladder_tournament friendly].include(params[:game_type])
-      war_match_available? if params[:game_type] == 'war'
-      tournament_available? if params[:game_type] == 'tournament'
-    end
-
-    def request_and_accept_available?
-      target_id = params[:target_id]
-
-      if target_id.nil?
-        queue = GameQueue.find_by(target_id: current_user.id)
-        requested_user = User.find queue.user_id
-        raise Game::NotPlayable unless requested_user.status == 'ready'
-      elsif User.find(target_id).status != 'online'
-        raise Game::NotPlayable
-      end
-    end
-
-    def self_available?
-      raise Game::NotPlayable unless current_user.status == 'online'
-    end
-
-    def war_match_available?
-      # TODO : my guild | my guild is in war | war time | not duplicated queue
-    end
-
-    def tournament_available?
-      # TODO : tournament participation is open?
     end
 
     def queue_params
