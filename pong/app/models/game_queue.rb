@@ -39,7 +39,7 @@ class GameQueue < ApplicationRecord
   def self.push_war(params)
     queue = GameQueue.create!(params)
     QueueTimeoverJob.set(wait: 30).perform_later queue.id
-    # TODO ? : send a message to opposite guild about WAR MATCH
+    # TODO: ? : send a message to opposite guild about WAR MATCH
     User.find(params[:user_id]).status_update('ready')
   end
 
@@ -56,13 +56,7 @@ class GameQueue < ApplicationRecord
   def self.pop_and_match(params, cur_user_id)
     # Queue-based games.
     game = Game.create!(game_type: params[:game_type], addon: params[:addon])
-    wait_queue = if params[:game_type] == 'duel' || params[:game_type] == 'ladder'
-                   GameQueue.find_by(game_type: params[:game_type], addon: params[:addon])
-                 elsif params[:game_type] == 'war'
-                   GameQueue.find_by(game_type: params[:game_type])
-                 else
-                   GameQueue.find_by(game_type: params[:game_type], addon: params[:addon], target_id: cur_user_id)
-                 end
+    wait_queue = queue_find_by_param(params, cur_user_id)
     GamePlayer.create!(game_id: game.id, user_id: wait_queue.user_id, is_host: true)
     GamePlayer.create!(game_id: game.id, user_id: params[:user_id], is_host: false)
     # pop
@@ -74,5 +68,16 @@ class GameQueue < ApplicationRecord
 
   def cannot_game_with_myself
     errors.add(:target_id, 'you cannot play with yourself.') if user_id == target_id
+  end
+
+  private_class_method def self.queue_find_by_param(params, cur_user_id)
+    case params[:game_type]
+    when 'duel', 'ladder'
+      GameQueue.find_by(game_type: params[:game_type], addon: params[:addon])
+    when 'war'
+      GameQueue.find_by(game_type: params[:game_type])
+    else
+      GameQueue.find_by(game_type: params[:game_type], addon: params[:addon], target_id: cur_user_id)
+    end
   end
 end

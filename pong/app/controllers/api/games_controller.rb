@@ -77,7 +77,7 @@ module Api
 
     def tournament_matchmaking
       # TODO : Tournament.first
-      puts "NOT IMPLEMENTED YET (Tournament Matchmaking)"
+      # puts "NOT IMPLEMENTED YET (Tournament Matchmaking)"
     end
 
     def war_matchmaking

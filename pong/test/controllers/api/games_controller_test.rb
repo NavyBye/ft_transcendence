@@ -74,8 +74,8 @@ module Api
       one_guild = guilds(:one)
       test_guild = guilds(:test)
       war = War.create!(war_param)
-      one_wg = WarGuild.create!(war_id: war.id, guild_id: one_guild.id, war_point: 0, avoid_chance: 5)
-      test_wg = WarGuild.create!(war_id: war.id, guild_id: test_guild.id, war_point: 0, avoid_chance: 5)
+      WarGuild.create!(war_id: war.id, guild_id: one_guild.id, war_point: 0, avoid_chance: 5)
+      WarGuild.create!(war_id: war.id, guild_id: test_guild.id, war_point: 0, avoid_chance: 5)
     end
 
     def war_param
