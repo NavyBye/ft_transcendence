@@ -77,12 +77,21 @@ module Api
 
     def tournament_matchmaking
       # TODO : Tournament.first
-      render json: {}, status: :not_implemented and return
+      puts "NOT IMPLEMENTED YET (Tournament Matchmaking)"
     end
 
     def war_matchmaking
       # TODO : War.current
-      render json: {}, status: :not_implemented and return
+      GameQueue.transaction do
+        GameQueue.with_advisory_lock('war_match') do
+          if GameQueue.queue_is_empty? 'war', false, current_user.id
+            GameQueue.push_war queue_params
+          else
+            GameQueue.pop_and_match queue_params, current_user.id
+          end
+          # if not empty & guild is good, pop and match.
+        end
+      end
     end
 
     def find_queue(id)

@@ -17,6 +17,8 @@ class GameQueue < ApplicationRecord
   def self.queue_is_empty?(game_type, addon, cur_user_id)
     return where(game_type: game_type, addon: addon).empty? if %w[duel ladder].include?(game_type)
 
+    return where(game_type: game_type).empty? if %w[tournament war].include?(game_type)
+
     where(game_type: game_type, addon: addon, target_id: cur_user_id).empty?
   end
 
@@ -31,6 +33,13 @@ class GameQueue < ApplicationRecord
       target_user = User.find(params[:target_id])
       send_request_signal_when_push(target_user, params)
     end
+    User.find(params[:user_id]).status_update('ready')
+  end
+
+  def self.push_war(params)
+    queue = GameQueue.create!(params)
+    # TODO : WarMatchTimeOverJob.set(wait: 30).perform_later queue.id
+    # TODO? : send a message to opposite guild about WAR MATCH
     User.find(params[:user_id]).status_update('ready')
   end
 
@@ -49,6 +58,8 @@ class GameQueue < ApplicationRecord
     game = Game.create!(game_type: params[:game_type], addon: params[:addon])
     wait_queue = if params[:game_type] == 'duel' || params[:game_type] == 'ladder'
                    GameQueue.find_by(game_type: params[:game_type], addon: params[:addon])
+                 elsif params[:game_type] == 'war'
+                   GameQueue.find_by(game_type: params[:game_type])
                  else
                    GameQueue.find_by(game_type: params[:game_type], addon: params[:addon], target_id: cur_user_id)
                  end

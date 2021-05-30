@@ -66,6 +66,7 @@ class ApplicationController < ActionController::Base
   end
 
   def not_playable(_exception)
+    current_user.status_update('online') if current_user.status != 'offline'
     render json: { type: 'message', message: 'someone cannot play the pong.' }, status: :conflict
   end
 end

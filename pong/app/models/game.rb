@@ -49,7 +49,7 @@ class Game < ApplicationRecord
     end
   end
 
-  private_class_method def self.wat_match_available?(current_user)
+  private_class_method def self.war_match_available?(current_user)
     raise NotPlayable if current_user.guild.nil? || Game.where(game_type: 'war').exists?
 
     my_guild = current_user.guild
