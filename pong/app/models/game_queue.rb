@@ -38,8 +38,8 @@ class GameQueue < ApplicationRecord
 
   def self.push_war(params)
     queue = GameQueue.create!(params)
-    # TODO : WarMatchTimeOverJob.set(wait: 30).perform_later queue.id
-    # TODO? : send a message to opposite guild about WAR MATCH
+    QueueTimeoverJob.set(wait: 30).perform_later queue.id
+    # TODO ? : send a message to opposite guild about WAR MATCH
     User.find(params[:user_id]).status_update('ready')
   end
 
