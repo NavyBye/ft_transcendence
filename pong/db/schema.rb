@@ -219,6 +219,7 @@ ActiveRecord::Schema.define(version: 2021_05_25_070406) do
     t.integer "max_participants", default: 4, null: false
     t.boolean "is_ladder", default: false
     t.boolean "is_addon", default: false
+    t.datetime "start_at", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
