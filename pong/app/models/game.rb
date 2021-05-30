@@ -56,7 +56,7 @@ class Game < ApplicationRecord
     raise NotPlayable if my_guild.war.nil? || my_guild.war.war_time != Time.zone.now.hour
 
     wait_user = GameQueue.where(game_type: 'war')
-    raise NotPlayable if wait_user.exists? && User.find(wait_user).guild.id == current_user.guild.id
+    raise NotPlayable if wait_user.exists? && User.find(wait_user.first.user_id).guild.id == current_user.guild.id
   end
 
   private_class_method def self.tournament_available?(current_user)

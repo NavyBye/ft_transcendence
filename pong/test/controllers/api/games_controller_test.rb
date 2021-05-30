@@ -54,17 +54,29 @@ module Api
       assert_response :success
     end
 
-    test "warmatch begin" do
+    test "warmatch queue" do
       set_war
       user = users(:hyeyoo)
-      # user.update!(status: 'online')
       sign_in user
-      user.update!(status: 1)
+      user.update!(status: 'online')
       assert_difference 'GameQueue.count', 1 do
         post api_games_url, params: { game_type: 'war', addon: false }
         assert_response :success
       end
-      # TODO : check war match
+    end
+
+    test "warmatch begin" do
+      set_war
+      hyeyoo = users(:hyeyoo)
+      GameQueue.create!({ game_type: 'war', addon: 'false', user_id: hyeyoo.id })
+      hyeyoo.update!(status: 'ready')
+      member = users(:member)
+      member.update!(status: 'online')
+      sign_in member
+      assert_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'war', addon: false }
+        assert_response :success
+      end
     end
 
     private
