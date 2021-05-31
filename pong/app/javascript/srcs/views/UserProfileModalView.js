@@ -117,7 +117,6 @@ const UserProfileModalView = common.View.extend({
       url: `/api/users/${this.userId}/game`,
       headers: auth.getTokenHeader(),
       success(game) {
-        console.log(game);
         Radio.channel('route').trigger(
           'route',
           `play?isHost=false&channelId=${game.id}&addon=${game.addon}`,
