@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   rescue_from SignalChannel::InvalidFormat, with: :error_invalid
   # TODO : fit to valid error type.
   rescue_from GameQueue::RequestedUserCanceled, with: :error_invalid
-  rescue_from User::Banned, with: :check_banned
+  rescue_from User::Banned, with: :banned
 
   protect_from_forgery with: :null_session
 
@@ -31,13 +31,15 @@ class ApplicationController < ActionController::Base
   end
 
   def check_banned
+    return unless user_signed_in?
+
     raise User::Banned if current_user.is_banned
   end
 
   private
 
   def banned
-    render json: { type: 'redirect', target: 'banned' }, status: forbidden
+    render json: { type: 'redirect', target: 'banned' }, status: :forbidden
   end
 
   def error_not_found(exception)
