@@ -17,7 +17,6 @@ const ChatRoomView = common.View.extend({
   onRender() {
     const chatRoomId = this.model.get('id');
     const joined = this.model.get('joined');
-    const userId = Radio.channel('login').request('get').id;
     const view = this;
 
     if (!joined) {
@@ -30,6 +29,8 @@ const ChatRoomView = common.View.extend({
       ? {
           name: 'Exit Room',
           onClick() {
+            const login = Radio.channel('login').request('get');
+            const userId = login.get('id');
             $.ajax({
               type: 'DELETE',
               url: `/api/chatrooms/${chatRoomId}/members/${userId}`,
@@ -45,7 +46,11 @@ const ChatRoomView = common.View.extend({
           name: 'Join Room',
           onClick() {
             /* protected by password */
-            if (view.model.get('public') === false) {
+            const login = Radio.channel('login').request('get');
+            if (
+              login.get('role') === 'user' &&
+              view.model.get('public') === false
+            ) {
               new InputPasswordModalView({ model: view.model });
             } else {
               $.ajax({

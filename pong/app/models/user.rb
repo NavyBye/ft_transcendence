@@ -5,6 +5,8 @@ class User < ApplicationRecord
 
   class NotNewcomer < StandardError; end
 
+  class Banned < StandardError; end
+
   mount_uploader :image, UserImageUploader
 
   # constants & enums
@@ -78,10 +80,6 @@ class User < ApplicationRecord
 
   def newcommer?
     nickname == 'newcomer'
-  end
-
-  def email_auth?
-    is_email_auth
   end
 
   def issue_auth_code

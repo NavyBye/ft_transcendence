@@ -4,6 +4,7 @@ module Users
   class UnlocksController < Devise::UnlocksController
     skip_before_action :check_first_update
     skip_before_action :check_second_auth
+    skip_before_action :check_banned
     # GET /resource/unlock/new
     # def new
     #   super

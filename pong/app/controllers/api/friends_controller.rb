@@ -6,7 +6,7 @@ module Api
     def index
       user = User.find(params[:user_id])
       @friends = user.followings
-      render json: @friends.as_json(only: %i[id name nickname status]), status: :ok
+      render json: @friends, status: :ok
     end
 
     def create

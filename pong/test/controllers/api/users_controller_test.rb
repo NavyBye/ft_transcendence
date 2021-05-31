@@ -60,6 +60,15 @@ module Api
       assert_equal result['nickname'], @user.nickname
     end
 
+    test 'api_index with banned' do
+      login :hyeyoo
+      @user.update(is_banned: true)
+      get api_users_url
+      assert_response :forbidden
+      assert_equal result['type'], 'redirect'
+      assert_equal result['target'], 'banned'
+    end
+
     private
 
     def login(someone)

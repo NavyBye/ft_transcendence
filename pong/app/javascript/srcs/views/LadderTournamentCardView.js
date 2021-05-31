@@ -1,8 +1,9 @@
-import $ from 'jquery/src/jquery';
+/* eslint-disable no-new */
 import Radio from 'backbone.radio';
 import common from '../common';
 import template from '../templates/LadderTournamentCardView.html';
-import auth from '../utils/auth';
+import OkModalView from './OkModalView';
+import ChallengeModalView from './ChallengeModalView';
 
 const LadderTournamentCardView = common.View.extend({
   template,
@@ -10,22 +11,12 @@ const LadderTournamentCardView = common.View.extend({
   onInitialize() {},
   onRender() {},
   click() {
-    $.ajax({
-      type: 'POST',
-      url: '/api/games',
-      headers: auth.getTokenHeader(),
-      data: {
-        game_type: 'ladder_tournament',
-        addon: false,
-      },
-      async: false,
-      success() {
-        Radio.channel('route').trigger('route', 'loading');
-      },
-      error(res) {
-        Radio.channel('error').request('trigger', res.responseText);
-      },
-    });
+    const login = Radio.channel('login').request('get');
+    if (login.get('rank') === 1) {
+      new OkModalView().show('Your are king', 'Your are top! wait challenger');
+    } else {
+      new ChallengeModalView();
+    }
   },
 });
 

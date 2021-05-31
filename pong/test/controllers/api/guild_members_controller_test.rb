@@ -67,6 +67,15 @@ module Api
       assert_equal member_gm.reload.role, 'master'
     end
 
+    test "guild master master update SUCCESS, by owner" do
+      login :owner
+      master = users(:master)
+      master_gm = GuildMember.find_by(guild_id: @guild.id, user_id: master.id)
+      put "/api/guilds/#{@guild.id}/members/#{master.id}", params: { role: 'master' }
+      assert_response :ok
+      assert_equal master_gm.reload.role, 'master'
+    end
+
     # destroy
     test "guild normal member self destroy" do
       login :member
