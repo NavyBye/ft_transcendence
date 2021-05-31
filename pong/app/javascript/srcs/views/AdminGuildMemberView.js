@@ -2,7 +2,7 @@ import $ from 'jquery/src/jquery';
 import BootstrapMenu from 'bootstrap-menu';
 import common from '../common';
 import auth from '../utils/auth';
-import template from '../templates/GuildMemberView.html';
+import template from '../templates/AdminGuildMemberView.html';
 import OkModalView from './OkModalView';
 
 const AdminGuildMemberView = common.View.extend({
@@ -12,7 +12,7 @@ const AdminGuildMemberView = common.View.extend({
   onInitialize() {},
   onRender() {
     const self = this;
-    this.menu = new BootstrapMenu(`[member-id=${this.model.get('id')}]`, {
+    this.menu = new BootstrapMenu(`[admin-member-id=${this.model.get('id')}]`, {
       actions: [
         {
           name: 'Change to Member',
