@@ -18,6 +18,7 @@ class ApplicationController < ActionController::Base
 
   before_action :check_first_update
   before_action :check_second_auth
+  # before_action :check_banned (set proper skip_before_action controller filter)
 
   def check_second_auth
     return unless user_signed_in?
@@ -26,6 +27,10 @@ class ApplicationController < ActionController::Base
 
     current_user.issue_auth_code if current_user.auth.nil?
     raise EmailAuth::AuthenticationNotFinished unless current_user.auth_confirmed?
+  end
+
+  def check_banned
+    raise User::PermissionDenied if current_user.is_banned
   end
 
   private
