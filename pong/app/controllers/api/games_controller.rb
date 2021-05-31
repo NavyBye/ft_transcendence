@@ -12,9 +12,7 @@ module Api
     end
 
     def create
-      # render json: { type: 'message', message: 'not playable!' },
-      # status: :conflict and return unless availability_check
-
+      Game.availability_check(params, current_user)
       match_make
       render json: {}, status: :no_content
     end
@@ -28,6 +26,7 @@ module Api
         end
         @queue&.destroy
       end
+      current_user.status_update('online')
       render json: {}, status: :no_content
     end
 
@@ -38,16 +37,6 @@ module Api
       @user = User.find user_id
       @target.status_update('online') if @target.status != 'offline'
       @user.status_update('online') if @user.status != 'offline'
-    end
-
-    def availability_check
-      # if target is exist, check if target user is playable.
-      return false if !params[:target_id].nil? && !GameQueue.playable?(User.find(params[:target_id]))
-
-      # return GameQueue.playable?(User.find(params[:target_id])) unless params[:target_id].nil?
-
-      # self playable check
-      GameQueue.playable?(current_user)
     end
 
     def queue_params
@@ -89,12 +78,21 @@ module Api
 
     def tournament_matchmaking
       # TODO : Tournament.first
-      render json: {}, status: :not_implemented and return
+      # puts "NOT IMPLEMENTED YET (Tournament Matchmaking)"
     end
 
     def war_matchmaking
       # TODO : War.current
-      render json: {}, status: :not_implemented and return
+      GameQueue.transaction do
+        GameQueue.with_advisory_lock('war_match') do
+          if GameQueue.queue_is_empty? 'war', false, current_user.id
+            GameQueue.push_war queue_params
+          else
+            GameQueue.pop_and_match queue_params, current_user.id
+          end
+          # if not empty & guild is good, pop and match.
+        end
+      end
     end
 
     def find_queue(id)

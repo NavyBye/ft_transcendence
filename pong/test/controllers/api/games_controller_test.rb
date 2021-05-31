@@ -17,10 +17,12 @@ module Api
       sign_in user
       opposite = users(:hyekim)
       GameQueue.create(user_id: opposite.id, game_type: 'friendly', addon: false, target_id: user.id)
+      # REQUESTED USER SHOULD BE 'READY' STATE
+      opposite.update!(status: 'ready')
       assert_difference 'Game.count', 1 do
         post api_games_url, params: { game_type: 'friendly', addon: false }
+        assert_response :success
       end
-      assert_response :success
       assert_equal GamePlayer.count, 2
     end
 
@@ -50,6 +52,66 @@ module Api
         delete cancel_api_games_url
       end
       assert_response :success
+    end
+
+    test "warmatch queue" do
+      set_war
+      user = users(:hyeyoo)
+      sign_in user
+      user.update!(status: 'online')
+      assert_difference 'GameQueue.count', 1 do
+        post api_games_url, params: { game_type: 'war', addon: false }
+        assert_response :success
+      end
+    end
+
+    test "warmatch begin" do
+      set_war
+      hyeyoo = users(:hyeyoo)
+      GameQueue.create!({ game_type: 'war', addon: 'false', user_id: hyeyoo.id })
+      hyeyoo.update!(status: 'ready')
+      member = users(:member)
+      member.update!(status: 'online')
+      sign_in member
+      assert_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'war', addon: false }
+        assert_response :success
+      end
+    end
+
+    test "warmatch denied by same-guild conflict" do
+      set_war
+      hyeyoo = users(:hyeyoo)
+      GameQueue.create!({ game_type: 'war', addon: 'false', user_id: hyeyoo.id })
+      hyeyoo.update!(status: 'ready')
+      member = users(:dummy_member_one)
+      member.update!(status: 'online')
+      sign_in member
+      assert_no_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'war', addon: false }
+        assert_response :conflict
+      end
+    end
+
+    private
+
+    def set_war
+      # one(hyeyoo, dummy_member_one) vs test(master, officer, member)
+      one_guild = guilds(:one)
+      test_guild = guilds(:test)
+      war = War.create!(war_param)
+      WarGuild.create!(war_id: war.id, guild_id: one_guild.id, war_point: 0, avoid_chance: 5)
+      WarGuild.create!(war_id: war.id, guild_id: test_guild.id, war_point: 0, avoid_chance: 5)
+    end
+
+    def war_param
+      {
+        end_at: Time.zone.now + 3600,
+        war_time: Time.zone.now.hour,
+        prize_point: 999,
+        is_extended: true,
+        is_addon: true
+      }
     end
   end
 end
