@@ -80,10 +80,6 @@ class User < ApplicationRecord
     nickname == 'newcomer'
   end
 
-  def email_auth?
-    is_email_auth
-  end
-
   def issue_auth_code
     auth&.destroy
     random_code = (1..6).map { ('0'..'9').to_a[rand(10)] }.join
