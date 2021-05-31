@@ -28,7 +28,7 @@ class Game < ApplicationRecord
   end
 
   def self.availability_check(params, current_user)
-    self_available? current_user
+    self_available? current_user if GameQueue.where(target_id: current_user.id).empty?
     request_and_accept_available? current_user, params[:target_id] if %w[ladder_tournament
                                                                          friendly].include?(params[:game_type])
     war_match_available? current_user if params[:game_type] == 'war'
