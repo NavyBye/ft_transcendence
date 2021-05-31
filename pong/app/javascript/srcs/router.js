@@ -16,6 +16,7 @@ const Router = Backbone.Router.extend({
     auth: 'auth',
     admin: 'admin',
     game: 'gamePage',
+    banned: 'banned',
     'play?isHost=:isHost&channelId=:channelId&addon=:addon': 'play',
     loading: 'loading',
   },
@@ -183,6 +184,20 @@ const Router = Backbone.Router.extend({
         .getRegion('content')
         .getView()
         .show('content', new view.LoadingView());
+    }
+  },
+  banned() {
+    const rootView = Radio.channel('app').request('rootView');
+    const login = Radio.channel('login').request('get');
+    if (!login) {
+      Radio.channel('route').trigger('route', 'login');
+    } else {
+      if (!rootView.getRegion('content').getView())
+        rootView.show('content', new view.MainView());
+      rootView
+        .getRegion('content')
+        .getView()
+        .show('content', new view.BannedView());
     }
   },
 });
