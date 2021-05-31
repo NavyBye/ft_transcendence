@@ -13,11 +13,13 @@ class ApplicationController < ActionController::Base
   rescue_from SignalChannel::InvalidFormat, with: :error_invalid
   # TODO : fit to valid error type.
   rescue_from GameQueue::RequestedUserCanceled, with: :error_invalid
+  rescue_from User::Banned, with: :banned
 
   protect_from_forgery with: :null_session
 
   before_action :check_first_update
   before_action :check_second_auth
+  before_action :check_banned
 
   def check_second_auth
     return unless user_signed_in?
@@ -28,7 +30,17 @@ class ApplicationController < ActionController::Base
     raise EmailAuth::AuthenticationNotFinished unless current_user.auth_confirmed?
   end
 
+  def check_banned
+    return unless user_signed_in?
+
+    raise User::Banned if current_user.is_banned
+  end
+
   private
+
+  def banned
+    render json: { type: 'redirect', target: 'banned' }, status: :forbidden
+  end
 
   def error_not_found(exception)
     model_name = exception.model.humanize

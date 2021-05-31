@@ -4,6 +4,8 @@ module Users
   class ConfirmationsController < Devise::ConfirmationsController
     skip_before_action :check_first_update
     skip_before_action :check_second_auth
+    skip_before_action :check_banned
+
     # GET /resource/confirmation/new
     # def new
     #   super
