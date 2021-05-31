@@ -4,11 +4,9 @@ class GameChannel < ApplicationCable::Channel
     @host = @game.game_players.where(is_host: true).first!
     stream_for @game
     stream_for @host if host?
-    @is_spectator = if @game.players.exists? current_user.id
-                      false
-                    else
-                      true
-                    end
+    @is_spectator = @game.players.exists? current_user.id ? false : true
+    current_user.status = :game
+    current_user.save!
   end
 
   def unsubscribed
@@ -46,6 +44,10 @@ class GameChannel < ApplicationCable::Channel
     return unless host?
 
     GameChannel.broadcast_to @game, data
+    @game.players.each do |player|
+      player.status = :online
+      player.save!
+    end
     @game.to_history data["scores"]
   end
 
