@@ -2,6 +2,7 @@ module Api
   class UsersController < ApplicationController
     skip_before_action :check_first_update, only: %i[me update]
     skip_before_action :check_second_auth, only: %i[me update]
+    skip_before_action :check_banned, only: %i[me]
     before_action :authenticate_user!
 
     def index
