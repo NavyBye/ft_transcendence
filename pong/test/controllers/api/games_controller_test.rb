@@ -79,6 +79,20 @@ module Api
       end
     end
 
+    test "warmatch denied by same-guild conflict" do
+      set_war
+      hyeyoo = users(:hyeyoo)
+      GameQueue.create!({ game_type: 'war', addon: 'false', user_id: hyeyoo.id })
+      hyeyoo.update!(status: 'ready')
+      member = users(:dummy_member_one)
+      member.update!(status: 'online')
+      sign_in member
+      assert_no_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'war', addon: false }
+        assert_response :conflict
+      end
+    end
+
     private
 
     def set_war
