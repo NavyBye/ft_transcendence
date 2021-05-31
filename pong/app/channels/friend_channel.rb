@@ -6,7 +6,9 @@ class FriendChannel < ApplicationCable::Channel
     stream_for @user
   end
 
-  def unsubscribed; end
+  def unsubscribed
+    current_user.status_update('offline') if @user.id == current_user.id
+  end
 
   def receive(data)
     @user.update!(status: data["status"])

@@ -2,6 +2,7 @@ module Api
   class UsersController < ApplicationController
     skip_before_action :check_first_update, only: %i[me update]
     skip_before_action :check_second_auth, only: %i[me update]
+    skip_before_action :check_banned, only: %i[me]
     before_action :authenticate_user!
 
     def index
@@ -48,9 +49,7 @@ module Api
     end
 
     def game
-      @game_player = GamePlayer.where(user_id: params[:id])
-      render json: {}, status: :ok and return if @game_player.empty?
-
+      @game_player = GamePlayer.where(user_id: params[:id]).first!
       render status: :ok
     end
 
