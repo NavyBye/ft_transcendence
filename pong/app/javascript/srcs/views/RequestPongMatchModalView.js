@@ -14,12 +14,13 @@ const RequestPongMatchModalView = common.View.extend({
     $(this.el).modal('show');
   },
   accept() {
+    const self = this;
     $.ajax({
       type: 'POST',
       url: '/api/games',
       headers: auth.getTokenHeader(),
       data: {
-        game_type: 'friendly',
+        game_type: self.game.game_type,
         addon: false,
       },
     });
