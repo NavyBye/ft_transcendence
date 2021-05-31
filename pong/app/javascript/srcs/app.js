@@ -44,6 +44,8 @@ const app = {
           app.user = null;
           $('meta[name="csrf-param"]').attr('content', res.csrf_param);
           $('meta[name="csrf-token"]').attr('content', res.csrf_token);
+          app.signalChannel.unsubscribe();
+          app.friendChannel.unsubscribe();
           Radio.channel('route').trigger('route', 'login');
           consumer.disconnect();
         },
@@ -95,21 +97,17 @@ const app = {
       });
       app.rootView.render();
       app.router = new Router();
-      /* only when logged in */
-      if (app.user.get('is_banned')) {
-        Radio.channel('route').trigger('route', 'banned');
-      }
-      if (app.user) {
-        /* init routines after login is finished */
-        app.initBlacklist();
-        app.initFriendlist();
-        app.initSignalHandler();
-      }
+    });
+
+    Radio.channel('app').reply('login', function login() {
+      app.initBlacklist();
+      app.initFriendlist();
+      app.initSignalHandler();
     });
   },
   initSignalHandler() {
     const login = Radio.channel('login').request('get');
-    this.channel = consumer.subscriptions.create(
+    this.signalChannel = consumer.subscriptions.create(
       {
         channel: 'SignalChannel',
         id: login.get('id'),
@@ -221,7 +219,7 @@ const app = {
   initFriendlist() {
     /* subscribe my friend channel */
     const login = Radio.channel('login').request('get');
-    this.channel = consumer.subscriptions.create(
+    this.friendConnection = consumer.subscriptions.create(
       {
         channel: 'FriendChannel',
         id: login.get('id'),

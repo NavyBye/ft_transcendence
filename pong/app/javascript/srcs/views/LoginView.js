@@ -37,6 +37,7 @@ const LoginView = common.View.extend({
         $('meta[name="csrf-param"]').attr('content', res.csrf_param);
         $('meta[name="csrf-token"]').attr('content', res.csrf_token);
         Radio.channel('login').request('fetch');
+        Radio.channel('app').request('login');
         Radio.channel('route').trigger('route', 'home');
       },
     });
