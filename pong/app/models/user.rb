@@ -5,6 +5,8 @@ class User < ApplicationRecord
 
   class NotNewcomer < StandardError; end
 
+  class Banned < StandardError; end
+
   mount_uploader :image, UserImageUploader
 
   # constants & enums

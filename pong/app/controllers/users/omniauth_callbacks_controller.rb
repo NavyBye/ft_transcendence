@@ -2,6 +2,8 @@ module Users
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     skip_before_action :check_first_update
     skip_before_action :check_second_auth
+    skip_before_action :check_banned
+
     def marvin
       @user = User.from_omniauth(request.env["omniauth.auth"])
 
