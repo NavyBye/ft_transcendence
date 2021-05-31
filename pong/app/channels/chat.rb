@@ -20,7 +20,7 @@ module Chat
   private
 
   def serialize(message)
-    message.as_json only: %i[id user body created_at], include: { user: { only: %i[id nickname] } }
+    message.as_json only: %i[id user body created_at], include: { user: { only: %i[id nickname image] } }
   end
 
   def find_room!(); end
