@@ -17,11 +17,16 @@ module ApplicationHelper
     SignalChannel.broadcast_to user, data
   end
 
+  def send_global_signal(data)
+    check_signal_format data
+    ActionCable.server.broadcast "signal:global", data
+  end
+
   private
 
   def check_signal_format(data)
     type = data[:type]
-    raise SignalChannel::InvalidFormat unless %w[connect fetch refuse].include?(type)
+    raise SignalChannel::InvalidFormat unless %w[connect fetch refuse request].include?(type)
 
     raise SignalChannel::InvalidFormat if type == 'connect' && data[:game_id].nil?
 

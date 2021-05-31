@@ -17,8 +17,13 @@ const ChatRoomCollectionView = common.CollectionView.extend({
   CollectionType: collection.ChatRoomCollection,
   onInitialize() {
     const chatRoomCollection = this.collection;
+    const self = this;
     Radio.channel('chatrooms').reply('fetch', function fetch() {
-      chatRoomCollection.fetch();
+      chatRoomCollection.fetch({
+        success() {
+          self.reRender();
+        },
+      });
     });
   },
   showAddChatRoomModalView() {

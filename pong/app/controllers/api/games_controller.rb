@@ -12,7 +12,9 @@ module Api
     end
 
     def create
-      availability_check
+      # render json: { type: 'message', message: 'not playable!' },
+      # status: :conflict and return unless availability_check
+
       match_make
       render json: {}, status: :no_content
     end
@@ -40,7 +42,9 @@ module Api
 
     def availability_check
       # if target is exist, check if target user is playable.
-      return GameQueue.playable?(User.find(params[:target_id])) unless params[:target_id].nil?
+      return false if !params[:target_id].nil? && !GameQueue.playable?(User.find(params[:target_id]))
+
+      # return GameQueue.playable?(User.find(params[:target_id])) unless params[:target_id].nil?
 
       # self playable check
       GameQueue.playable?(current_user)
@@ -64,9 +68,9 @@ module Api
       when 'duel', 'ladder', 'ladder_tournament', 'friendly'
         basic_matchmaking
       when 'tournament'
-        tournament_matchmaking
-      else # war
-        war_matchmaking
+        tournament_matchmaking and return
+      else
+        war_matchmaking and return
       end
       game_start(@game) unless @game.nil?
     end
@@ -85,12 +89,12 @@ module Api
 
     def tournament_matchmaking
       # TODO : Tournament.first
-      render json: {}, status: :not_implemented
+      render json: {}, status: :not_implemented and return
     end
 
     def war_matchmaking
       # TODO : War.current
-      render json: {}, status: :not_implemented
+      render json: {}, status: :not_implemented and return
     end
 
     def find_queue(id)

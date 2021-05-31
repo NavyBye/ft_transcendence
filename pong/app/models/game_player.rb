@@ -4,7 +4,7 @@ class GamePlayer < ApplicationRecord
   belongs_to :game, class_name: "Game", foreign_key: :game_id, inverse_of: :game_players
 
   # validations
-  validates :user_id, uniqueness: true
+  validates :user_id, uniqueness: { message: 'cannot wait 2 or more games at the same time.' }
 
   # methods
   def status_update(status)
@@ -14,7 +14,13 @@ class GamePlayer < ApplicationRecord
   end
 
   def send_start_signal
-    ApplicationController.helpers.send_signal(user_id, { type: 'connect', game_id: game_id, is_host: is_host })
+    connect_signal = {
+      type: 'connect',
+      game_id: game_id,
+      is_host: is_host,
+      addon: game.addon
+    }
+    ApplicationController.helpers.send_signal(user_id, connect_signal)
   end
 
   private
