@@ -20,7 +20,7 @@ const FriendView = common.View.extend({
         connected() {},
         disconnected() {},
         received(data) {
-          self.model.set({ status: JSON.parse(data.data).status });
+          self.model.set({ status: data.data.status });
           self.render();
         },
       },
