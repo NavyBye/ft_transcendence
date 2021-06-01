@@ -66,5 +66,8 @@ Rails.application.routes.draw do
       put '/members', to: 'dm_rooms_members#update'
       resources :dm_room_messages, path: 'messages', only: %i[index]
     end
+    resources :tournaments, only: [] do
+      resources :tournament_participants, path: 'participants', only: %i[create]
+    end
   end
 end
