@@ -1,4 +1,78 @@
 class GameChannel < ApplicationCable::Channel
+  class GameResult
+    def self.result_apply(game, data)
+      rating_apply(game, data) if %w[ladder ladder_tournament].include? game.game_type
+      guild_point_apply(game, data)
+      war_point_apply(game, data)
+      rank_apply(game, data) if game.game_type == 'ladder_tournament'
+    end
+
+    private_class_method def self.rating_apply(game, data)
+      game.game_players.each do |player|
+        my_score = player.is_host ? data['scores'][0] : data['scores'][1]
+        if my_score >= 3
+          player.user.rating += 42
+        else
+          player.user.rating -= 42
+        end
+        player.user.save!
+      end
+    end
+
+    private_class_method def self.guild_point_apply(game, data)
+      game.game_players.each do |player|
+        my_score = player.is_host ? data['scores'][0] : data['scores'][1]
+        player.user.guild.point += 1 if !player.user.guild.nil? && my_score >= 3
+        player.user.guild.save! unless player.user.guild.nil?
+      end
+    end
+
+    private_class_method def self.war_point_apply(game, data)
+      game.game_players.each do |player|
+        my_score = player.is_host ? data['scores'][0] : data['scores'][1]
+        if my_score >= 3 && war_point_possible(game)
+          player.user.guild.war_relation.war_point += 10
+          player.user.guild.war_relation.save!
+        end
+      end
+    end
+
+    private_class_method def self.war_point_possible(game)
+      return true if game.game_type == 'war'
+
+      first = game.players.first
+      second = game.players.second
+      return false unless at_wars(first, second)
+
+      war = first.guild.war
+      return false if !war.is_extended || war.is_addon != game.addon
+
+      war.id == second.guild.war.id
+    end
+
+    private_class_method def self.at_wars(first, second)
+      return false if first.guild.nil? || second.guild.nil?
+
+      return false if first.guild.war.nil? || second.guild.war.nil?
+
+      true
+    end
+
+    private_class_method def self.rank_apply(game, data)
+      game.game_players.each do |player|
+        my_score = player.is_host ? data['scores'][0] : data['scores'][1]
+        my_rank = player.user.rank
+        opposite_player = GamePlayer.where('game_id = ? AND user_id != ?', game.id, player.user.id).first!
+        if my_rank > opposite_player.user.rank && my_score >= 3
+          player.user.update!(rank: opposite_player.user.rank)
+          opposite_player.user.update!(rank: my_rank)
+        end
+      end
+    end
+  end
+end
+
+class GameChannel < ApplicationCable::Channel
   def subscribed
     @game = Game.find params[:id]
     @host = @game.game_players.where(is_host: true).first!
@@ -27,16 +101,10 @@ class GameChannel < ApplicationCable::Channel
       receive_frame(data)
     when "end"
       receive_end(data)
-    when "info"
-      receive_info(data)
     end
   end
 
   private
-
-  def receive_info(data)
-    GameChannel.broadcast_to @game, data
-  end
 
   def receive_frame(data)
     GameChannel.broadcast_to @game, data
@@ -57,6 +125,7 @@ class GameChannel < ApplicationCable::Channel
     when "tournament"
       end_tournament_match(data)
     else
+      GameResult.result_apply(@game, data)
       @game.to_history data["scores"]
       GameChannel.broadcast_to @game, data
     end

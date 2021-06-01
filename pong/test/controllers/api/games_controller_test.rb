@@ -23,6 +23,50 @@ module Api
       end
     end
 
+    test "result of ladder match" do
+      user = users(:game_test_user)
+      sign_in user
+      hyeyoo = users(:hyeyoo)
+      hyeyoo.update!(status: 'ready')
+      GameQueue.create!(user_id: hyeyoo.id, game_type: 'ladder', addon: false)
+      assert_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'ladder', addon: false }
+      end
+      assert_difference 'user.reload.rating', 42 do
+        game = Game.first
+        gp = GamePlayer.find_by(game_id: game.id, user_id: user.id)
+        data = { 'scores' => [0, 0] }
+        if gp.is_host
+          data['scores'][0] = 3
+        else
+          data['scores'][1] = 3
+        end
+        GameChannel::GameResult.result_apply(game, data)
+      end
+    end
+
+    test "result of ladder_tournament match" do
+      user = users(:game_test_user)
+      member = users(:member)
+      sign_in member
+      user.update!(status: 'ready')
+      GameQueue.create!(user_id: user.id, game_type: 'ladder_tournament', target_id: member.id)
+      assert_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'ladder_tournament', addon: false }
+      end
+      assert_difference 'user.reload.rank', -1 do
+        game = Game.first
+        gp = GamePlayer.find_by(game_id: game.id, user_id: user.id)
+        data = { 'scores' => [0, 0] }
+        if gp.is_host
+          data['scores'][0] = 3
+        else
+          data['scores'][1] = 3
+        end
+        GameChannel::GameResult.result_apply(game, data)
+      end
+    end
+
     test "begin duel match with addon nil" do
       user = users(:game_test_user)
       sign_in user
@@ -90,7 +134,7 @@ module Api
       end
     end
 
-    test "warmatch begin" do
+    test "warmatch begin and win test" do
       set_war
       hyeyoo = users(:hyeyoo)
       GameQueue.create!({ game_type: 'war', addon: 'false', user_id: hyeyoo.id })
@@ -101,7 +145,71 @@ module Api
       assert_difference 'Game.count', 1 do
         post api_games_url, params: { game_type: 'war' }
         assert_response :success
-        assert_equal true, Game.first.addon
+        assert_equal War.first.is_addon, Game.first.addon
+      end
+      assert_difference 'hyeyoo.guild.reload.war_relation.war_point', 10 do
+        game = Game.first
+        gp = GamePlayer.find_by(game_id: game.id, user_id: hyeyoo.id)
+        data = { 'scores' => [0, 0] }
+        if gp.is_host
+          data['scores'][0] = 3
+        else
+          data['scores'][1] = 3
+        end
+        GameChannel::GameResult.result_apply(game, data)
+        assert_equal 0, member.guild.reload.war_relation.war_point
+      end
+    end
+
+    test "war begin and extended match win test" do
+      set_war
+      hyeyoo = users(:hyeyoo)
+      GameQueue.create!({ game_type: 'duel', addon: 'true', user_id: hyeyoo.id })
+      hyeyoo.update!(status: 'ready')
+      member = users(:member)
+      member.update!(status: 'online')
+      sign_in member
+      assert_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'duel', addon: 'true', user_id: member.id }
+        assert_response :success
+      end
+      assert_difference 'hyeyoo.guild.reload.war_relation.war_point', 10 do
+        game = Game.first
+        gp = GamePlayer.find_by(game_id: game.id, user_id: hyeyoo.id)
+        data = { 'scores' => [0, 0] }
+        if gp.is_host
+          data['scores'][0] = 3
+        else
+          data['scores'][1] = 3
+        end
+        GameChannel::GameResult.result_apply(game, data)
+        assert_equal 0, member.guild.reload.war_relation.war_point
+      end
+    end
+
+    test "war begin but not extended match" do
+      set_war
+      hyeyoo = users(:hyeyoo)
+      GameQueue.create!({ game_type: 'duel', addon: 'false', user_id: hyeyoo.id })
+      hyeyoo.update!(status: 'ready')
+      member = users(:member)
+      member.update!(status: 'online')
+      sign_in member
+      assert_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'duel', addon: 'false', user_id: member.id }
+        assert_response :success
+      end
+      assert_no_difference 'hyeyoo.guild.reload.war_relation.war_point', 10 do
+        game = Game.first
+        gp = GamePlayer.find_by(game_id: game.id, user_id: hyeyoo.id)
+        data = { 'scores' => [0, 0] }
+        if gp.is_host
+          data['scores'][0] = 3
+        else
+          data['scores'][1] = 3
+        end
+        GameChannel::GameResult.result_apply(game, data)
+        assert_equal 0, member.guild.reload.war_relation.war_point
       end
     end
 

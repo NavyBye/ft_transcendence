@@ -23,11 +23,11 @@ class Tournament < ApplicationRecord
   def start
     start_index = Math.log(tournament_participants.count, 2).ceil.pow(2)
     tournament_participants.shuffle.each_with_index do |participant, index|
-      participant.index = start_index + index + 1
-      participant.save!
+      participant.update! index: start_index + index + 1
     end
     tournament_participants.each do |participant|
-      participant.win while participant.index != 0 && participant.unearned_win? == true
+      participant.win while participant.unearned_win? == true
+      participant.victory if participant.victoryous?
       next if participant.index.odd? || !participant.opponent?
 
       participant.create_game

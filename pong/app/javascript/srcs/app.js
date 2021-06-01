@@ -109,6 +109,17 @@ const app = {
       app.initFriendlist();
       app.initSignalHandler();
     });
+
+    /*
+      Used to pass from signal to router....
+       Sorry, but this is less dirty way to implement it
+    */
+    Radio.channel('game').reply('get', function get() {
+      return app.gameData;
+    });
+    Radio.channel('game').reply('set', function set(data) {
+      app.gameData = data;
+    });
   },
   initSignalHandler() {
     const login = Radio.channel('login').request('get');
@@ -144,10 +155,8 @@ const app = {
 
     /* game connect signal (when match making was successful) */
     Radio.channel('signal').reply('connect', function gameConnect(data) {
-      Radio.channel('route').trigger(
-        'route',
-        `play?isHost=${data.is_host}&channelId=${data.game_id}&addon=${data.addon}`,
-      );
+      Radio.channel('game').request('set', data);
+      Radio.channel('route').trigger('route', 'play');
     });
 
     /* game match making refused */
