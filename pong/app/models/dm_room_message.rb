@@ -18,8 +18,9 @@ class DmRoomMessage < ApplicationRecord
     dm_signal = {
       type: "notify",
       elements: "dm",
-      dm_room_id: id
+      dm_room_id: dm_room_id
     }
-    ApplicationController.helpers.send_signal(user_id, dm_signal)
+    opponent_user_id = dm_room.dm_rooms_members.where.not(user_id: user_id).first.user_id
+    ApplicationController.helpers.send_signal(opponent_user_id, dm_signal)
   end
 end
