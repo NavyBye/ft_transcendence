@@ -17,6 +17,8 @@ class GamePlayer < ApplicationRecord
     connect_signal = {
       type: 'connect',
       game_id: game_id,
+      left: game.game_players.find_by(is_host: true).user.as_json(only: %i[id nickname image]),
+      right: game.game_players.find_by(is_host: false).user.as_json(only: %i[id nickname image]),
       is_host: is_host,
       addon: game.addon
     }
