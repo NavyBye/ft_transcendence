@@ -27,6 +27,10 @@ class Game < ApplicationRecord
     history
   end
 
+  def send_start_signal
+    game_players.each(&:send_start_signal)
+  end
+
   def self.availability_check(params, current_user)
     self_available? current_user
     request_and_accept_available? current_user, params[:target_id] if %w[ladder_tournament
