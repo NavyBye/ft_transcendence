@@ -45,8 +45,6 @@ const app = {
           $('meta[name="csrf-param"]').attr('content', res.csrf_param);
           $('meta[name="csrf-token"]').attr('content', res.csrf_token);
           Radio.channel('route').trigger('route', 'login');
-          app.signalChannel.unsubscribe();
-          app.friendChannel.unsubscribe();
           consumer.disconnect();
         },
       });
