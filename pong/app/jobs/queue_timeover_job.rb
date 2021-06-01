@@ -10,7 +10,7 @@ class QueueTimeoverJob < ApplicationJob
     queue.destroy!
 
     requested_user.status_update('online') if requested_user.reload.status != 'offline'
-    send_signal(requested_user.id, { type: 'refuse' })
+    ApplicationController.helpers.send_signal(requested_user.id, { type: 'refuse' })
   end
 
   def war_avoid(req_user)

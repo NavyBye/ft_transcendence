@@ -95,21 +95,24 @@ const app = {
       });
       app.rootView.render();
       app.router = new Router();
-      /* only when logged in */
-      if (app.user.get('is_banned')) {
-        Radio.channel('route').trigger('route', 'banned');
-      }
+
+      /* Do not subscribe if not logged in, it will subscribe in app.login reply */
       if (app.user) {
-        /* init routines after login is finished */
         app.initBlacklist();
         app.initFriendlist();
         app.initSignalHandler();
       }
     });
+
+    Radio.channel('app').reply('login', function login() {
+      app.initBlacklist();
+      app.initFriendlist();
+      app.initSignalHandler();
+    });
   },
   initSignalHandler() {
     const login = Radio.channel('login').request('get');
-    this.channel = consumer.subscriptions.create(
+    this.signalChannel = consumer.subscriptions.create(
       {
         channel: 'SignalChannel',
         id: login.get('id'),
@@ -221,7 +224,7 @@ const app = {
   initFriendlist() {
     /* subscribe my friend channel */
     const login = Radio.channel('login').request('get');
-    this.channel = consumer.subscriptions.create(
+    this.friendConnection = consumer.subscriptions.create(
       {
         channel: 'FriendChannel',
         id: login.get('id'),
@@ -242,13 +245,6 @@ const app = {
       });
       return found ? true : false;
     });
-
-    Radio.channel('friendlist').reply(
-      'follow',
-      function follow(follow_user_id) {
-        app.friendlist.create({ follow_user_id, user_id: app.user.get('id') });
-      },
-    );
 
     Radio.channel('friendlist').reply('follow', function follow(id) {
       $.ajax({
