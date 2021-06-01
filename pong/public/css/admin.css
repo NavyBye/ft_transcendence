@@ -41,3 +41,8 @@
 .admin-list::-webkit-scrollbar {
   display: none;
 }
+
+#admin-tournament {
+  padding: 0px 50px;
+  margin-top: 50px;
+}
