@@ -35,6 +35,8 @@ module Api
     def create
       @master = current_user
       if @master.guild.nil?
+        params[:name] = CGI.escapeHTML(params[:name])
+        params[:anagram] = CGI.escapeHTML(params[:anagram])
         @guild = Guild.create!(name: params[:name], anagram: params[:anagram], point: 4200)
         @guild_master_join = GuildMember.create!(user_id: @master.id, guild_id: @guild.id, role: 2)
         @master.invitations.destroy_all
