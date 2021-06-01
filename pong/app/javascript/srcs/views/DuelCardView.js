@@ -26,9 +26,6 @@ const DuelCardView = common.View.extend({
       success() {
         Radio.channel('route').trigger('route', 'loading');
       },
-      error(res) {
-        Radio.channel('error').request('trigger', res.responseText);
-      },
     });
   },
 });
