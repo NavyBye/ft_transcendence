@@ -5,7 +5,7 @@ class GameChannel < ApplicationCable::Channel
     stream_for @game
     stream_for current_user
     stream_for @host if host?
-    @is_spectator = @game.players.exists? current_user.id ? false : true
+    @is_spectator = @game.players.exists?(current_user.id) ? false : true
     current_user.status_update :game
   end
 
@@ -48,8 +48,8 @@ class GameChannel < ApplicationCable::Channel
 
     update_players_status :online
     case @game.game_type
-    when :tournament
-      end_tournament_match
+    when "tournament"
+      end_tournament_match(data)
     else
       @game.to_history data["scores"]
       GameChannel.broadcast_to @game, data
@@ -82,12 +82,12 @@ class GameChannel < ApplicationCable::Channel
     end
   end
 
-  def end_tournament_match
-    winner = get_winner params[scores]
-    loser = @game.game_players.find_by! is_host: winner.is_host
-    win_tournament_match winner
+  def end_tournament_match(data)
+    winner = get_winner data["scores"]
+    loser = @game.game_players.find_by! is_host: !winner.is_host
+    @game.to_history data["scores"]
     lose_tournament_match loser
-    @game
+    win_tournament_match winner
   end
 
   def get_winner(scores)
