@@ -62,6 +62,9 @@ const app = {
         headers: auth.getTokenHeader(),
         success(data) {
           app.user = new model.UserModel(data);
+          if (app.user.get('is_banned')) {
+            Radio.channel('route').trigger('route', 'banned');
+          }
         },
         async: false,
       });
@@ -93,6 +96,9 @@ const app = {
       app.rootView.render();
       app.router = new Router();
       /* only when logged in */
+      if (app.user.get('is_banned')) {
+        Radio.channel('route').trigger('route', 'banned');
+      }
       if (app.user) {
         /* init routines after login is finished */
         app.initBlacklist();

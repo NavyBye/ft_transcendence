@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable prefer-destructuring */
 import Radio from 'backbone.radio';
 import $ from 'jquery/src/jquery';
 import common from '../common';
@@ -6,13 +8,15 @@ import UserHistoryCollectionView from './UserHistoryCollectionView';
 import model from '../models';
 import auth from '../utils/auth';
 import OkModalView from './OkModalView';
+import consumer from '../../channels/consumer';
+import ErrorModalView from './ErrorModalView';
 
 const UserProfileModalView = common.View.extend({
   el: '#user-profile-modal',
   events: {
     'click #add-friend-button': 'addFriend',
     'click #block-button': 'block',
-    'click #request-pong-button': 'requestPong',
+    'click #request-pong-or-spectate-button': 'requestPongOrSpectate',
     'click #guild-invite-button': 'guildInvite',
     'click #dm-button': 'dm',
   },
@@ -24,9 +28,27 @@ const UserProfileModalView = common.View.extend({
 
     const self = this;
     user.fetch({
-      success() {
+      success(data) {
         self.show('userinfo', new UserInfoView({ model: user }));
         self.show('userhistory', new UserHistoryCollectionView(self.userId));
+        self.updateStatus(data.get('status'));
+        self.friend = consumer.subscriptions.create(
+          {
+            channel: 'FriendChannel',
+            id: self.userId,
+          },
+          {
+            connected() {},
+            disconnected() {},
+            received(res) {
+              if (typeof res.data === 'string') {
+                res.data = JSON.parse(res.data);
+              }
+              const status = res.data.status;
+              self.updateStatus(status);
+            },
+          },
+        );
       },
     });
     $(this.el).modal('show');
@@ -34,7 +56,18 @@ const UserProfileModalView = common.View.extend({
       self.destroy();
     });
   },
-  onRender() {},
+  updateStatus(status) {
+    this.status = status;
+    if (this.status === 'online') {
+      $('#request-pong-or-spectate-button').text('Match');
+    } else if (this.status === 'offline') {
+      $('#request-pong-or-spectate-button').text('Offline');
+    } else if (this.status === 'game') {
+      $('#request-pong-or-spectate-button').text('Spectate');
+    } else if (this.status === 'ready') {
+      $('#request-pong-or-spectate-button').text('Ready');
+    }
+  },
   onDestroy() {},
   addFriend() {
     const isFriend = Radio.channel('friendlist').request(
@@ -65,6 +98,33 @@ const UserProfileModalView = common.View.extend({
     Radio.channel('chat-collection').request('fetch');
     $(this.el).modal('hide');
   },
+  requestPongOrSpectate() {
+    if (this.status === 'online') {
+      this.requestPong();
+    } else if (this.status === 'game') {
+      this.spectate();
+    } else {
+      new ErrorModalView().show(
+        'Error',
+        'Cannot request pong match, or spectate the user',
+      );
+    }
+    $(this.el).modal('hide');
+  },
+  spectate() {
+    $.ajax({
+      type: 'GET',
+      url: `/api/users/${this.userId}/game`,
+      headers: auth.getTokenHeader(),
+      success(game) {
+        game = game.game;
+        Radio.channel('route').trigger(
+          'route',
+          `play?isHost=false&channelId=${game.id}&addon=${game.addon}`,
+        );
+      },
+    });
+  },
   requestPong() {
     Radio.channel('route').trigger('route', 'loading');
     $.ajax({
@@ -77,7 +137,6 @@ const UserProfileModalView = common.View.extend({
         target_id: this.userId,
       },
     });
-    $(this.el).modal('hide');
   },
   guildInvite() {
     const self = this;

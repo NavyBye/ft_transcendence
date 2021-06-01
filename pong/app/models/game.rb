@@ -1,4 +1,6 @@
 class Game < ApplicationRecord
+  class NotPlayable < StandardError; end
+
   # enums
   enum game_type: {
     duel: 0,
@@ -23,5 +25,41 @@ class Game < ApplicationRecord
     end
     destroy!
     history
+  end
+
+  def self.availability_check(params, current_user)
+    self_available? current_user
+    request_and_accept_available? current_user, params[:target_id] if %w[ladder_tournament
+                                                                         friendly].include?(params[:game_type])
+    war_match_available? current_user if params[:game_type] == 'war'
+    tournament_available? current_user if params[:game_type] == 'tournament'
+  end
+
+  private_class_method def self.self_available?(current_user)
+    raise NotPlayable unless current_user.status == 'online'
+  end
+
+  private_class_method def self.request_and_accept_available?(current_user, target_id)
+    if target_id.nil?
+      queue = GameQueue.find_by!(target_id: current_user.id)
+      requested_user = User.find queue.user_id
+      raise NotPlayable unless requested_user.status == 'ready'
+    elsif User.find(target_id).status != 'online'
+      raise NotPlayable
+    end
+  end
+
+  private_class_method def self.war_match_available?(current_user)
+    raise NotPlayable if current_user.guild.nil? || Game.where(game_type: 'war').exists?
+
+    my_guild = current_user.guild
+    raise NotPlayable if my_guild.war.nil? || my_guild.war.war_time != Time.zone.now.hour
+
+    wait_user = GameQueue.where(game_type: 'war')
+    raise NotPlayable if wait_user.exists? && User.find(wait_user.first.user_id).guild.id == current_user.guild.id
+  end
+
+  private_class_method def self.tournament_available?(current_user)
+    # TODO : tournament check
   end
 end
