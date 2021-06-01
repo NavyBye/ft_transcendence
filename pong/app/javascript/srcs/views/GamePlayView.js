@@ -29,6 +29,7 @@ const GuildWarTimeModalView = common.View.extend({
         canvasId,
         this.channelId,
         this.addon,
+        true,
       );
       self.gameObjects.push(receiver);
       self.gameObjects.push(sender);
@@ -45,6 +46,7 @@ const GuildWarTimeModalView = common.View.extend({
         canvasId,
         this.channelId,
         this.addon,
+        false,
       );
       self.gameObjects.push(receiver);
     }
