@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_19_070405) do
+ActiveRecord::Schema.define(version: 2021_06_01_045252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -204,6 +204,27 @@ ActiveRecord::Schema.define(version: 2021_05_19_070405) do
     t.index ["user_id"], name: "index_invites_on_user_id"
   end
 
+  create_table "tournament_participants", force: :cascade do |t|
+    t.bigint "tournament_id", null: false
+    t.bigint "user_id", null: false
+    t.integer "index"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["index", "tournament_id"], name: "index_tournament_participants_on_index_and_tournament_id", unique: true
+    t.index ["tournament_id"], name: "index_tournament_participants_on_tournament_id"
+    t.index ["user_id"], name: "index_tournament_participants_on_user_id", unique: true
+  end
+
+  create_table "tournaments", force: :cascade do |t|
+    t.string "title", null: false
+    t.integer "max_participants", default: 4, null: false
+    t.boolean "is_ladder", default: false
+    t.boolean "addon", default: false
+    t.datetime "start_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -288,6 +309,8 @@ ActiveRecord::Schema.define(version: 2021_05_19_070405) do
   add_foreign_key "history_users", "users"
   add_foreign_key "invites", "guilds"
   add_foreign_key "invites", "users"
+  add_foreign_key "tournament_participants", "tournaments"
+  add_foreign_key "tournament_participants", "users"
   add_foreign_key "war_guilds", "guilds"
   add_foreign_key "war_guilds", "wars"
 end

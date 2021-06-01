@@ -12,6 +12,7 @@ module Api
     end
 
     def create
+      addon_adjust
       Game.availability_check(params, current_user)
       match_make
       render json: {}, status: :no_content
@@ -32,6 +33,16 @@ module Api
 
     private
 
+    def addon_adjust
+      params[:addon] = if params[:game_type] == 'war'
+                         false
+                       elsif params[:addon].nil?
+                         false
+                       else
+                         params[:addon]
+                       end
+    end
+
     def match_refuse(user_id, target_id)
       @target = User.find target_id
       @user = User.find user_id
@@ -42,7 +53,6 @@ module Api
     def queue_params
       raise ActiveRecord::RecordNotFound if params[:game_type].nil?
 
-      params[:addon] = false if params[:addon].nil?
       {
         game_type: params[:game_type],
         addon: params[:addon],

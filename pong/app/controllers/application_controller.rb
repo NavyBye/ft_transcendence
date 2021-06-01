@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   rescue_from Friend::PermissionDenied, with: :error_permission_denied
   rescue_from Block::PermissionDenied, with: :error_permission_denied
   rescue_from User::PermissionDenied, with: :error_permission_denied
+  rescue_from Tournament::PermissionDenied, with: :error_permission_denied
   rescue_from EmailAuth::AuthenticationNotFinished, with: :need_second_authenticate
   rescue_from User::NeedFirstUpdate, with: :need_first_update
   rescue_from User::NotNewcomer, with: :nickname_not_newcomer

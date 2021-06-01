@@ -1,5 +1,6 @@
 /* eslint-disable prefer-destructuring */
 import $ from 'jquery/src/jquery';
+import { Radio } from 'backbone';
 import common from '../common';
 import template from '../templates/MyPageView.html';
 import OkModalView from './OkModalView';
@@ -47,6 +48,7 @@ const MyPageView = common.View.extend({
       success() {
         self.model.fetch();
         new OkModalView().show('Success', 'Successfully saved user data');
+        Radio.channel('side').request('refresh');
       },
     });
   },
