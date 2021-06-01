@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
 import $ from 'jquery/src/jquery';
@@ -53,8 +54,10 @@ class GameReceiver {
             self.bars[0].fromHash(data.bars[0]);
             self.bars[1].fromHash(data.bars[1]);
             self.winner = data.winner;
-            self.score1 = data.score1;
-            self.score2 = data.score2;
+            self.score1 = data.scores[0];
+            self.score2 = data.scores[1];
+            $('#player1-score').text(self.score1);
+            $('#player2-score').text(self.score2);
             self.isStarted = data.isStarted;
             self.ball.update();
             self.bars[0].update();
