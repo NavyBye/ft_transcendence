@@ -5,7 +5,7 @@ class TournamentParticipant < ApplicationRecord
 
   # validations
   validates :user_id, uniqueness: true
-  validates :index, uniqueness: { scope: :tournament_id }
+  validates :index, uniqueness: { scope: :tournament_id }, allow_nil: true
 
   def unearned_win?(_index = index)
     opponent_index = index / 2 * 2 + (index.even? ? 1 : 0)

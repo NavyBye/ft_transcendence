@@ -207,7 +207,7 @@ ActiveRecord::Schema.define(version: 2021_06_01_045251) do
   create_table "tournament_participants", force: :cascade do |t|
     t.bigint "tournament_id", null: false
     t.bigint "user_id", null: false
-    t.integer "index", null: false
+    t.integer "index"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["index", "tournament_id"], name: "index_tournament_participants_on_index_and_tournament_id", unique: true
