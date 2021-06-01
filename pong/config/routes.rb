@@ -50,6 +50,7 @@ Rails.application.routes.draw do
 
     # (war) declaration
     resources :declarations, only: %i[index create update destroy]
+    resources :wars, only: %i[index]
     get 'wartimes', to: 'wars#timetable'
     get 'warmatch', to: 'wars#warmatch'
 

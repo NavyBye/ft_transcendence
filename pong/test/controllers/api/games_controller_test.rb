@@ -12,12 +12,37 @@ module Api
       end
     end
 
+    test "begin duel match" do
+      user = users(:game_test_user)
+      sign_in user
+      hyeyoo = users(:hyeyoo)
+      hyeyoo.update!(status: 'ready')
+      GameQueue.create!(user_id: hyeyoo.id, game_type: 'duel', addon: false)
+      assert_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'duel', addon: false }
+      end
+    end
+
+    test "begin duel match with addon nil" do
+      user = users(:game_test_user)
+      sign_in user
+      hyeyoo = users(:hyeyoo)
+      hyeyoo.update!(status: 'ready')
+      GameQueue.create!(user_id: hyeyoo.id, game_type: 'duel', addon: false)
+      assert_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'duel', addon: nil }
+        GameQueue.all.each do |q|
+          puts "#{q.user_id} , #{q.game_type}, #{q.addon}"
+        end
+        assert_equal 0, GameQueue.count
+      end
+    end
+
     test "accept friendly game" do
       user = users(:game_test_user)
       sign_in user
       opposite = users(:hyekim)
       GameQueue.create(user_id: opposite.id, game_type: 'friendly', addon: false, target_id: user.id)
-      # REQUESTED USER SHOULD BE 'READY' STATE
       opposite.update!(status: 'ready')
       assert_difference 'Game.count', 1 do
         post api_games_url, params: { game_type: 'friendly', addon: false }
@@ -60,7 +85,7 @@ module Api
       sign_in user
       user.update!(status: 'online')
       assert_difference 'GameQueue.count', 1 do
-        post api_games_url, params: { game_type: 'war', addon: false }
+        post api_games_url, params: { game_type: 'war' }
         assert_response :success
       end
     end
@@ -74,8 +99,24 @@ module Api
       member.update!(status: 'online')
       sign_in member
       assert_difference 'Game.count', 1 do
-        post api_games_url, params: { game_type: 'war', addon: false }
+        post api_games_url, params: { game_type: 'war' }
         assert_response :success
+        assert_equal true, Game.first.addon
+      end
+    end
+
+    test "warmatch begin2 addon minsokim" do
+      set_war
+      hyeyoo = users(:hyeyoo)
+      GameQueue.create!({ game_type: 'war', addon: 'true', user_id: hyeyoo.id })
+      hyeyoo.update!(status: 'ready')
+      member = users(:member)
+      member.update!(status: 'online')
+      sign_in member
+      assert_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'war', addon: 'false' }
+        assert_response :success
+        assert_equal true, Game.first.addon
       end
     end
 
