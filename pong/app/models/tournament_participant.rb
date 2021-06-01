@@ -8,7 +8,7 @@ class TournamentParticipant < ApplicationRecord
   validates :index, uniqueness: { scope: :tournament_id }, allow_nil: true
 
   def unearned_win?(_index = index)
-    opponent_index = index / 2 * 2 + (index.even? ? 1 : 0)
+    opponent_index = (index.even? ? index + 1 : index - 1)
     check_unearned_win_recursively opponent_index
   end
 
@@ -25,7 +25,7 @@ class TournamentParticipant < ApplicationRecord
   end
 
   def victoryous?
-    index.zero?
+    index == 1
   end
 
   def victory
@@ -42,7 +42,7 @@ class TournamentParticipant < ApplicationRecord
     GamePlayer.create! game_id: game.id, user_id: user_id, is_host: true
     GamePlayer.create! game_id: game.id, user_id: opponent.user_id, is_host: false
     game.game_players.each do |player|
-      next unless player.user.status != :online
+      next if player.user.online?
 
       player.is_host ? game.to_history([0, 3]) : game.to_history([3, 0])
       return TournamentParticipant.find_by(user_id: player.user_id).unearned_lose
@@ -51,8 +51,7 @@ class TournamentParticipant < ApplicationRecord
   end
 
   def unearned_lose
-    opponent.win
-    opponent.victory if opponent.victoryous?
+    opponent.index == 1 ? opponent.victory : opponent.win
     destroy
   end
 
