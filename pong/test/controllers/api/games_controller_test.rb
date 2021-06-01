@@ -23,6 +23,28 @@ module Api
       end
     end
 
+    test "begin ladder match" do
+      user = users(:game_test_user)
+      sign_in user
+      hyeyoo = users(:hyeyoo)
+      hyeyoo.update!(status: 'ready')
+      GameQueue.create!(user_id: hyeyoo.id, game_type: 'ladder', addon: false)
+      assert_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'ladder', addon: false }
+      end
+      assert_difference 'user.reload.rating', 42 do
+        game = Game.first
+        gp = GamePlayer.find_by(game_id: game.id, user_id: user.id)
+        data = { 'scores' => [0, 0] }
+        if gp.is_host
+          data['scores'][0] = 3
+        else
+          data['scores'][1] = 3
+        end
+        GameChannel::GameResult.result_apply(game, data)
+      end
+    end
+
     test "begin duel match with addon nil" do
       user = users(:game_test_user)
       sign_in user
