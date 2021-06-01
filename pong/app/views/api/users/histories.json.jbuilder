@@ -1,4 +1,5 @@
 json.array! @history_relations do |hr|
+  json.id hr.id
   json.game_type hr.history.game_type
   json.is_addon hr.history.is_addon
   json.my_score hr.score
