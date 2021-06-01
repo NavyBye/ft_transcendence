@@ -8,6 +8,7 @@ class Declaration < ApplicationRecord
   validates :from_id, uniqueness: { scope: :to_id }
   validates :war_time, inclusion: { in: 0..23 }
   validates :avoid_chance, :prize_point, numericality: { greater_than: -1 }
+  validates :tta, numericality: { greater_than_or_equal_to: 20 }
 
   def accept
     new_war = []
@@ -32,7 +33,8 @@ class Declaration < ApplicationRecord
       war_time: war_time,
       prize_point: prize_point,
       is_extended: is_extended,
-      is_addon: is_addon
+      is_addon: is_addon,
+      tta: tta
     }
   end
 
