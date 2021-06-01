@@ -149,6 +149,7 @@ const app = {
         'Match Request Refused',
         'Your game request was refused.',
       );
+      Radio.channel('route').trigger('route', 'home');
     });
 
     /* someone requested pong match to me */
