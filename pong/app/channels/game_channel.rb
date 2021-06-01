@@ -63,7 +63,7 @@ class GameChannel < ApplicationCable::Channel
         my_score = player.is_host ? data['scores'][0] : data['scores'][1]
         my_rank = player.user.rank
         opposite_player = GamePlayer.where('game_id = ? AND user_id != ?', game.id, player.user.id).first!
-        if my_rank < opposite_player.user.rank && my_score >= 3
+        if my_rank > opposite_player.user.rank && my_score >= 3
           player.user.update!(rank: opposite_player.user.rank)
           opposite_player.user.update!(rank: my_rank)
         end

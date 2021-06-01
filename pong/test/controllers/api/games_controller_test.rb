@@ -23,7 +23,7 @@ module Api
       end
     end
 
-    test "begin ladder match" do
+    test "result of ladder match" do
       user = users(:game_test_user)
       sign_in user
       hyeyoo = users(:hyeyoo)
@@ -33,6 +33,28 @@ module Api
         post api_games_url, params: { game_type: 'ladder', addon: false }
       end
       assert_difference 'user.reload.rating', 42 do
+        game = Game.first
+        gp = GamePlayer.find_by(game_id: game.id, user_id: user.id)
+        data = { 'scores' => [0, 0] }
+        if gp.is_host
+          data['scores'][0] = 3
+        else
+          data['scores'][1] = 3
+        end
+        GameChannel::GameResult.result_apply(game, data)
+      end
+    end
+
+    test "result of ladder_tournament match" do
+      user = users(:game_test_user)
+      member = users(:member)
+      sign_in member
+      user.update!(status: 'ready')
+      GameQueue.create!(user_id: user.id, game_type: 'ladder_tournament', target_id: member.id)
+      assert_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'ladder_tournament', addon: false }
+      end
+      assert_difference 'user.reload.rank', -1 do
         game = Game.first
         gp = GamePlayer.find_by(game_id: game.id, user_id: user.id)
         data = { 'scores' => [0, 0] }

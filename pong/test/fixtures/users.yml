@@ -80,7 +80,7 @@ member:
     name: member
     nickname: 'member'
     email: member@airforcebye.com
-    status: 0
+    status: 1
     is_banned: false
     is_email_auth: false
     rating: 5548
@@ -126,7 +126,7 @@ admin:
     name: admin_user
     nickname: 'admin_u'
     email: admin@airforcebye.com
-    status: 0
+    status: 1
     is_banned: false
     is_email_auth: false
     rating: 5498
