@@ -71,7 +71,7 @@ module Api
 
     def update_params
       raise User::NotNewcomer if params[:nickname] == 'newcomer'
-
+      params[:nickname] = CGI.escapeHTML(params[:nickname])
       params.permit(:nickname, :is_banned, :is_email_auth, :image, :role)
     end
   end
