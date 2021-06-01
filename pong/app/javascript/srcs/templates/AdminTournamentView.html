@@ -1,1 +1,57 @@
-<div>TODO</div>
+<h4 style="text-align: center">Tournament</h4>
+<div id="admin-tournament">
+  <div class="form-group row">
+    <label for="guild-name" class="col-4 col-form-label">Name</label>
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="tournament-name"
+        id="tournament-name"
+      />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="tournament-start-time" class="col-4 col-form-label"
+      >start time</label
+    >
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="datetime-local"
+        id="tournament-start-time"
+      />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="option" class="col-4 col-form-label">Option</label>
+    <div class="col-8">
+      <label for="tournament-add-on">add on</label>
+      <input type="checkbox" id="tournament-add-on" />
+      <label for="tournament-ladder">ladder</label>
+      <input type="checkbox" id="tournament-ladder" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="max-participants" class="col-4 col-form-label"
+      >Max Participants</label
+    >
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="number"
+        min="4"
+        value="4"
+        id="max-participants"
+      />
+    </div>
+  </div>
+  <button
+    class="btn btn-primary btn-block"
+    type="submit"
+    id="admin-tournament-summit-btn"
+    style="margin: auto; margin-top: 20px; width: 100px"
+  >
+    SUMMIT
+  </button>
+</div>
