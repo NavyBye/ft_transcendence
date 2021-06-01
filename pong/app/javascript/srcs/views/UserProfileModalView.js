@@ -70,6 +70,11 @@ const UserProfileModalView = common.View.extend({
   },
   onDestroy() {},
   addFriend() {
+    const login = Radio.channel('login').request('get');
+    if (!login) {
+      $(this.el).modal('hide');
+      return;
+    }
     const isFriend = Radio.channel('friendlist').request(
       'isFriend',
       this.userId,
@@ -83,6 +88,11 @@ const UserProfileModalView = common.View.extend({
     $(this.el).modal('hide');
   },
   block() {
+    const login = Radio.channel('login').request('get');
+    if (!login) {
+      $(this.el).modal('hide');
+      return;
+    }
     const isBlocked = Radio.channel('blacklist').request(
       'isBlocked',
       this.userId,
@@ -99,6 +109,11 @@ const UserProfileModalView = common.View.extend({
     $(this.el).modal('hide');
   },
   requestPongOrSpectate() {
+    const login = Radio.channel('login').request('get');
+    if (!login) {
+      $(this.el).modal('hide');
+      return;
+    }
     if (this.status === 'online') {
       this.requestPong();
     } else if (this.status === 'game') {
@@ -139,6 +154,11 @@ const UserProfileModalView = common.View.extend({
     });
   },
   guildInvite() {
+    const login = Radio.channel('login').request('get');
+    if (!login) {
+      $(this.el).modal('hide');
+      return;
+    }
     const self = this;
     $.ajax({
       type: 'POST',
@@ -156,6 +176,11 @@ const UserProfileModalView = common.View.extend({
   },
   dm() {
     /* create DM if not exists */
+    const login = Radio.channel('login').request('get');
+    if (!login) {
+      $(this.el).modal('hide');
+      return;
+    }
     $.ajax({
       type: 'POST',
       url: '/api/dmrooms',
