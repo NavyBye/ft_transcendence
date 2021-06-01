@@ -34,7 +34,6 @@ const GuildWarTimeModalView = common.View.extend({
       self.gameObjects.push(sender);
       setTimeout(function simulate() {
         sender.simulate(1 / delay);
-        console.log(`sender: isEnd: ${sender.isEnd}`);
         if (sender.isEnd) {
           sender.endGame();
         } else {
