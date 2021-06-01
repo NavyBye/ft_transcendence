@@ -69,5 +69,6 @@ Rails.application.routes.draw do
     end
     resources :tournaments, only: %i[create index]
     resources :tournament_participants, path: 'tournaments/participants', only: %i[create]
+    get 'tournaments/start', to: 'tournaments#start'
   end
 end
