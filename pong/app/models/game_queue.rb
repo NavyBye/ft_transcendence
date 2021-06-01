@@ -54,6 +54,7 @@ class GameQueue < ApplicationRecord
   end
 
   def self.pop_and_match(params, cur_user_id)
+    params[:addon] = addon_adjust_when_war(params, cur_user_id)
     # Queue-based games.
     game = Game.create!(game_type: params[:game_type], addon: params[:addon])
     wait_queue = queue_find_by_param(params, cur_user_id)
@@ -62,6 +63,15 @@ class GameQueue < ApplicationRecord
     # pop
     wait_queue.destroy!
     game
+  end
+
+  private_class_method def self.addon_adjust_when_war(params, cur_user_id)
+    cur_user = User.find cur_user_id
+    if params[:game_type] == 'war'
+      cur_user.guild.war.is_addon
+    else
+      params[:addon]
+    end
   end
 
   private
