@@ -1,4 +1,3 @@
-import { Radio } from 'backbone';
 import $ from 'jquery/src/jquery';
 import common from '../common';
 import auth from '../utils/auth';
@@ -30,9 +29,6 @@ const InputPasswordModalView = common.View.extend({
       data,
       success() {
         view.model.set('joined', true);
-      },
-      error(res) {
-        Radio.channel('error').request('trigger', res.responseText);
       },
     });
     $(this.el).modal('hide');
