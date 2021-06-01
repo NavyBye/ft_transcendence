@@ -44,6 +44,7 @@ module Api
     end
 
     def chat_room_params
+      params[:name] = CGI.escapeHTML(params[:name])
       params.permit :name, :password
     end
 
