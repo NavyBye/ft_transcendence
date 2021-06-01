@@ -23,9 +23,23 @@ class GameReceiver {
     this.bars = [new Bar(true), new Bar(false)];
     const self = this;
     if (addon) {
-      this.ball.fabricObj.set('fill', 'black');
-      this.bars[0].fabricObj.set('fill', 'black');
-      this.bars[1].fabricObj.set('fill', 'black');
+      (function toggle() {
+        const css =
+          'html {-webkit-filter: invert(100%);' +
+          '-moz-filter: invert(100%);' +
+          '-o-filter: invert(100%);' +
+          '-ms-filter: invert(100%); }';
+        const head = document.getElementsByTagName('head')[0];
+        const style = document.createElement('style');
+        style.setAttribute('id', 'toggle');
+        style.type = 'text/css';
+        if (style.styleSheet) {
+          style.styleSheet.cssText = css;
+        } else {
+          style.appendChild(document.createTextNode(css));
+        }
+        head.appendChild(style);
+      })();
     }
 
     /* canvas related stuffs */
@@ -48,6 +62,23 @@ class GameReceiver {
           if (data.type === 'end') {
             self.connection.unsubscribe();
             Radio.channel('route').trigger('route', 'home');
+            (function toggle() {
+              const css =
+                'html {-webkit-filter: invert(0%);' +
+                '-moz-filter: invert(0%);' +
+                '-o-filter: invert(0%);' +
+                '-ms-filter: invert(0%); }';
+              const head = document.getElementsByTagName('head')[0];
+              const style = document.createElement('style');
+              style.setAttribute('id', 'toggle');
+              style.type = 'text/css';
+              if (style.styleSheet) {
+                style.styleSheet.cssText = css;
+              } else {
+                style.appendChild(document.createTextNode(css));
+              }
+              head.appendChild(style);
+            })();
           } else if (data.type === 'frame') {
             self.ball.fromHash(data.ball);
             self.bars[0].fromHash(data.bars[0]);
