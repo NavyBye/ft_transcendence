@@ -43,7 +43,7 @@ module Api
       {
         from_id: @guild.id, to_id: @opposite_guild.id,
         end_at: params[:end_at],
-        war_time: params[:war_time],
+        war_time: params[:war_time], tta: params[:tta],
         avoid_chance: params[:avoid_chance], prize_point: params[:prize_point],
         is_extended: params[:is_extended], is_addon: params[:is_addon]
       }

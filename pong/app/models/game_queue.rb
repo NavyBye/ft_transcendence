@@ -38,8 +38,8 @@ class GameQueue < ApplicationRecord
 
   def self.push_war(params)
     queue = GameQueue.create!(params)
-    QueueTimeoverJob.set(wait: 30).perform_later queue.id
     user = User.find(queue.user_id)
+    QueueTimeoverJob.set(wait: user.guild.war.tta).perform_later queue.id
     opposite_guild = WarGuild.where('war_id = ? AND guild_id != ?', user.guild.war, user.guild).first!.guild
     opposite_guild.members.each do |member|
       ApplicationController.helpers.send_signal(member.id, { type: 'notify', element: 'guildwar' })
