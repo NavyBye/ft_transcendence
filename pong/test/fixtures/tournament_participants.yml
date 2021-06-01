@@ -9,5 +9,4 @@
 user<%= n %>_in_tournament:
     user:  <%= "user#{n}" %>
     tournament: tournament1
-    index: -1
 <% end %>
