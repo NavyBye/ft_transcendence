@@ -39,9 +39,20 @@ class GameResult < ApplicationRecord
 
     first = game.users.first
     second = game.users.second
-    return false if first.guild.nil? || second.guild.nil? || first.guild.war.nil? || second.guild.war.nil?
+    return false unless at_wars(first, second)
 
-    first.guild.war.id == second.guild.war.id
+    war = first.guild.war
+    return false if !war.is_extended || war.is_addon != game.addon
+
+    war.id == second.guild.war.id
+  end
+
+  private_class_method def self.at_wars(first, second)
+    return false if first.guild.nil? || second.guild.nil?
+
+    return false if first.guild.war.nil? || second.guild.war.nil?
+
+    true
   end
 
   private_class_method def self.rank_apply(game, data)
