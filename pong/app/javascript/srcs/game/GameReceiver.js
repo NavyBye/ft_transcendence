@@ -7,6 +7,7 @@ import { Radio } from 'backbone';
 import Ball from './Ball';
 import Bar from './Bar';
 import consumer from '../../channels/consumer';
+import view from '../views';
 
 /*
  * This code was originally written in April 2020 by hyekim, written in python.
@@ -50,7 +51,6 @@ class GameReceiver {
     this.canvas.add(this.bars[1].fabricObj);
     this.canvas.renderAll();
 
-    const login = Radio.channel('login').request('get');
     this.connection = consumer.subscriptions.create(
       {
         channel: 'GameChannel',
@@ -63,6 +63,14 @@ class GameReceiver {
           if (!data || !data.type) return;
           if (data.type === 'end') {
             self.connection.unsubscribe();
+            if (
+              (isHost && data.winner === 1) ||
+              (!isHost && data.winner === 2)
+            ) {
+              new view.OkModalView().show('You win!', 'Congratulations!');
+            } else {
+              new view.OkModalView().show('You lose!', '( T . T )');
+            }
             Radio.channel('route').trigger('route', 'home');
             (function toggle() {
               const css =
@@ -95,32 +103,11 @@ class GameReceiver {
             self.bars[0].update();
             self.bars[1].update();
             self.simulate();
-          } else if (data.type === 'info') {
-            if (typeof data.isHost === 'string') {
-              data.isHost = data.isHost === 'true';
-            }
-            if (data.isHost) {
-              $('#player1-image').attr('src', data.url);
-              $('#player1-name').text(data.nickname);
-            } else {
-              $('#player2-image').attr('src', data.url);
-              $('#player2-name').text(data.nickname);
-            }
           }
         },
       },
     );
 
-    /* TODO: There will be better way than sending it 5 secs later... */
-    setTimeout(function anonymous() {
-      /* send player's info */
-      self.connection.send({
-        type: 'info',
-        isHost,
-        nickname: login.get('nickname'),
-        url: login.get('image').url,
-      });
-    }, 5);
     function keyDown(event) {
       const data = { type: 'input' };
       if (event.key === 'ArrowUp') {

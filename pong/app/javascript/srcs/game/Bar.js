@@ -7,6 +7,7 @@ class Bar extends Entity {
   constructor(isLeft) {
     const bar = new fabric.Rect({
       fill: 'white',
+      stroke: 'black',
       width: (BAR_WIDTH * $('#game-play').width()) / MAX_X,
       height: (BAR_HEIGHT * $('#game-play').height()) / MAX_Y,
     });
