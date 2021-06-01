@@ -3,7 +3,8 @@ module Api
     before_action :authenticate_user!
 
     def index
-      render json: War.all, status: :ok
+      @current_war = War.where(war_time: Time.zone.now.hour)
+      render status: :ok
     end
 
     def timetable
