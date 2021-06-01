@@ -97,6 +97,13 @@ const app = {
       });
       app.rootView.render();
       app.router = new Router();
+
+      /* Do not subscribe if not logged in, it will subscribe in app.login reply */
+      if (app.user) {
+        app.initBlacklist();
+        app.initFriendlist();
+        app.initSignalHandler();
+      }
     });
 
     Radio.channel('app').reply('login', function login() {
