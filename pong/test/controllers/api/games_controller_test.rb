@@ -134,7 +134,7 @@ module Api
       end
     end
 
-    test "warmatch begin" do
+    test "warmatch begin and win test" do
       set_war
       hyeyoo = users(:hyeyoo)
       GameQueue.create!({ game_type: 'war', addon: 'false', user_id: hyeyoo.id })
@@ -145,7 +145,19 @@ module Api
       assert_difference 'Game.count', 1 do
         post api_games_url, params: { game_type: 'war' }
         assert_response :success
-        assert_equal true, Game.first.addon
+        assert_equal War.first.is_addon, Game.first.addon
+      end
+      assert_difference 'hyeyoo.guild.reload.war_relation.war_point', 10 do
+        game = Game.first
+        gp = GamePlayer.find_by(game_id: game.id, user_id: hyeyoo.id)
+        data = { 'scores' => [0, 0] }
+        if gp.is_host
+          data['scores'][0] = 3
+        else
+          data['scores'][1] = 3
+        end
+        GameChannel::GameResult.result_apply(game, data)
+        assert_equal 0, member.guild.reload.war_relation.war_point
       end
     end
 
