@@ -120,6 +120,22 @@ module Api
       end
     end
 
+    test "warmatch begin addon minsokim three" do
+      set_war
+      War.first.update!(is_addon: false)
+      hyeyoo = users(:hyeyoo)
+      GameQueue.create!({ game_type: 'war', addon: 'true', user_id: hyeyoo.id })
+      hyeyoo.update!(status: 'ready')
+      member = users(:member)
+      member.update!(status: 'online')
+      sign_in member
+      assert_difference 'Game.count', 1 do
+        post api_games_url, params: { game_type: 'war', addon: 'true' }
+        assert_response :success
+        assert_equal War.first.is_addon, Game.first.addon
+      end
+    end
+
     test "warmatch denied by same-guild conflict" do
       set_war
       hyeyoo = users(:hyeyoo)
