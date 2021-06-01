@@ -66,6 +66,7 @@ class GameSender {
     this.checkGoal();
 
     this.connection.send(this.toHash());
+    this.checkEnd();
     if (!this.isEnd) {
       this.isEnd = this.winner !== null;
     }
