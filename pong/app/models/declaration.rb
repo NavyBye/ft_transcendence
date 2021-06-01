@@ -13,8 +13,8 @@ class Declaration < ApplicationRecord
     new_war = []
     WarGuild.transaction do
       new_war = War.create!(war_params)
-      WarGuild.create!(guild_id: from_id, war_id: new_war.id)
-      WarGuild.create!(guild_id: to_id, war_id: new_war.id)
+      WarGuild.create!(guild_id: from_id, war_id: new_war.id, avoid_chance: avoid_chance)
+      WarGuild.create!(guild_id: to_id, war_id: new_war.id, avoid_chance: avoid_chance)
     end
     new_war
   end

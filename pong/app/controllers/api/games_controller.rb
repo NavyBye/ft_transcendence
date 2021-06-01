@@ -67,9 +67,9 @@ module Api
       when 'duel', 'ladder', 'ladder_tournament', 'friendly'
         basic_matchmaking
       when 'tournament'
-        tournament_matchmaking and return
-      else
-        war_matchmaking and return
+        tournament_matchmaking
+      when 'war'
+        war_matchmaking
       end
       game_start(@game) unless @game.nil?
     end
@@ -98,7 +98,7 @@ module Api
           if GameQueue.queue_is_empty? 'war', false, current_user.id
             GameQueue.push_war queue_params
           else
-            GameQueue.pop_and_match queue_params, current_user.id
+            @game = GameQueue.pop_and_match queue_params, current_user.id
           end
           # if not empty & guild is good, pop and match.
         end
