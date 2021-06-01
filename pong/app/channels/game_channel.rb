@@ -1,3 +1,62 @@
+class GameResult < ApplicationRecord
+  def self.result_apply(game, data)
+    rating_apply(game, data) if %w[ladder ladder_tournament].include? game.game_type
+    guild_point_apply(game, data)
+    war_point_apply(game, data)
+    rank_apply(game, data) if game.game_type == 'ladder_tournament'
+  end
+
+  private_class_method def self.rating_apply(game, data)
+    game.game_players.each do |player|
+      my_score = player.is_host ? data['scores'][0] : data['scores'][1]
+      if my_score >= 3
+        player.user.rating += 42
+      else
+        player.user.rating -= 42
+      end
+      player.user.save!
+    end
+  end
+
+  private_class_method def self.guild_point_apply(game, data)
+    game.game_players.each do |player|
+      my_score = player.is_host ? data['scores'][0] : data['scores'][1]
+      player.user.guild.point += 1 if !player.user.guild.nil? && my_score >= 3
+      player.user.guild.save!
+    end
+  end
+
+  private_class_method def self.war_point_apply(game, data)
+    game.game_players.each do |player|
+      my_score = player.is_host ? data['scores'][0] : data['scores'][1]
+      player.user.guild.war_relation.war_point += 10 if my_score >= 3 && war_point_possible(game)
+      player.user.guild.war_relation.save!
+    end
+  end
+
+  private_class_method def self.war_point_possible(game)
+    return true if game.game_type == 'war'
+
+    first = game.users.first
+    second = game.users.second
+    return false if first.guild.nil? || second.guild.nil? || first.guild.war.nil? || second.guild.war.nil?
+
+    first.guild.war.id == second.guild.war.id
+  end
+
+  private_class_method def self.rank_apply(game, data)
+    game.game_players.each do |player|
+      my_score = player.is_host ? data['scores'][0] : data['scores'][1]
+      my_rank = player.user.rank
+      opposite_player = GamePlayer.where('game_id = ? AND user_id != ?', game.id, player.user.id).first!
+      if my_rank < opposite_player.user.rank && my_score >= 3
+        player.user.update!(rank: opposite_player.user.rank)
+        opposite_player.user.update!(rank: my_rank)
+      end
+    end
+  end
+end
+
 class GameChannel < ApplicationCable::Channel
   def subscribed
     @game = Game.find params[:id]
@@ -51,6 +110,7 @@ class GameChannel < ApplicationCable::Channel
     when :tournament
       end_tournament_match
     else
+      GameResult.result_apply(@game, data)
       @game.to_history data["scores"]
       GameChannel.broadcast_to @game, data
     end
