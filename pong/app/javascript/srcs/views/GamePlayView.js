@@ -24,6 +24,7 @@ const GuildWarTimeModalView = common.View.extend({
     const self = this;
     if (this.isHost) {
       const sender = new game.GameSender(this.channelId);
+      this.sender = sender;
       const receiver = new game.GameReceiver(
         canvasId,
         this.channelId,
@@ -32,8 +33,9 @@ const GuildWarTimeModalView = common.View.extend({
       self.gameObjects.push(receiver);
       self.gameObjects.push(sender);
       setTimeout(function simulate() {
-        const isEnd = sender.simulate(1 / delay);
-        if (isEnd) {
+        sender.simulate(1 / delay);
+        console.log(`sender: isEnd: ${sender.isEnd}`);
+        if (sender.isEnd) {
           sender.endGame();
         } else {
           setTimeout(simulate, delay);
@@ -53,6 +55,9 @@ const GuildWarTimeModalView = common.View.extend({
     _.forEach(this.gameObjects, function disconnect(obj) {
       obj.connection.unsubscribe();
     });
+    if (this.sender) {
+      this.sender.isEnd = true;
+    }
   },
 });
 
