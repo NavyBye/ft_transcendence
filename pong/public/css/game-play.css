@@ -1,3 +1,6 @@
+#game-play {
+  border: 1px solid white;
+}
 .game {
   width: calc(100% - 400px);
 }
