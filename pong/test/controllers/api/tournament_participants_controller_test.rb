@@ -9,7 +9,7 @@ module Api
       @current_user = users(:hyekim)
       sign_in @current_user
     end
-  
+
     test "create" do
       tournament = tournaments :tournament1
       before_conut = tournament.participants.count
