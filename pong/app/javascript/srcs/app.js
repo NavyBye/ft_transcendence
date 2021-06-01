@@ -104,7 +104,7 @@ const app = {
       }
     });
 
-    Radio.channel('app').reply('login', function login() {
+    Radio.channel('app').reply('subscribe', function login() {
       app.initBlacklist();
       app.initFriendlist();
       app.initSignalHandler();
