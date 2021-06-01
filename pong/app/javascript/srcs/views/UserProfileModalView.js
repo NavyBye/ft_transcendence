@@ -140,7 +140,6 @@ const UserProfileModalView = common.View.extend({
     });
   },
   requestPong() {
-    Radio.channel('route').trigger('route', 'loading');
     $.ajax({
       type: 'POST',
       url: '/api/games',
@@ -149,6 +148,9 @@ const UserProfileModalView = common.View.extend({
         game_type: 'friendly',
         addon: false,
         target_id: this.userId,
+      },
+      success() {
+        Radio.channel('route').trigger('route', 'loading');
       },
     });
   },
