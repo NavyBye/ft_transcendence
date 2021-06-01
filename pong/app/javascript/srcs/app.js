@@ -248,13 +248,6 @@ const app = {
       return found ? true : false;
     });
 
-    Radio.channel('friendlist').reply(
-      'follow',
-      function follow(follow_user_id) {
-        app.friendlist.create({ follow_user_id, user_id: app.user.get('id') });
-      },
-    );
-
     Radio.channel('friendlist').reply('follow', function follow(id) {
       $.ajax({
         type: 'POST',
