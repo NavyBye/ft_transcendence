@@ -15,6 +15,7 @@ class Ball extends Entity {
 
     const circle = new fabric.Ellipse({
       fill: 'red',
+      stroke: 'black',
       left: MAX_X / 2,
       top: MAX_Y / 2,
       rx: (BALL_RADIUS * $('#game-play').width()) / MAX_X,

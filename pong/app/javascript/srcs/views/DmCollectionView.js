@@ -1,6 +1,7 @@
 /* eslint-disable no-new */
 /* eslint-disable prefer-destructuring */
 import $ from 'jquery/src/jquery';
+import { Radio } from 'backbone';
 import collection from '../collections';
 import common from '../common';
 import template from '../templates/DmCollectionView.html';
@@ -21,6 +22,7 @@ const DmCollectionView = common.CollectionView.extend({
   onInitialize() {
     const dmRoomId = this.collection.dmRoomId;
     const view = this;
+    Radio.channel('dm').request('delete', dmRoomId);
     this.channel = consumer.subscriptions.create(
       {
         channel: 'DmRoomChannel',

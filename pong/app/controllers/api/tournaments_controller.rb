@@ -20,7 +20,7 @@ module Api
 
     # TODO: tournaments/start is just for test. please delete it
     def start
-      Tournament.first.start
+      Tournament.first!.start
     end
 
     private
@@ -28,6 +28,7 @@ module Api
     def serialize(tournament)
       data = tournament.as_json
       data["participants_count"] = tournament.participants.count
+      data
     end
 
     def tournament_params

@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import $ from 'jquery/src/jquery';
 import { Radio } from 'backbone';
 import _ from 'underscore';
 import common from '../common';
@@ -10,24 +11,31 @@ const GuildWarTimeModalView = common.View.extend({
   template,
   events: {},
   onInitialize(obj) {
-    this.isHost = obj.isHost;
-    this.channelId = obj.channelId;
+    this.left = obj.left;
+    this.right = obj.right;
+    this.is_host = obj.is_host;
+    this.game_id = obj.game_id;
     this.addon = obj.addon;
-    if (!this.addon) this.addon = false;
     this.gameObjects = [];
   },
   onRender() {
+    /* draw player info */
+    $('#player1-image').attr('src', this.left.image.url);
+    $('#player1-name').text(this.left.nickname);
+    $('#player2-image').attr('src', this.right.image.url);
+    $('#player2-name').text(this.right.nickname);
+
     const login = Radio.channel('login').request('get');
     const moderator = 1;
     const canvasId = 'game-play';
     const delay = 40;
     const self = this;
-    if (this.isHost) {
-      const sender = new game.GameSender(this.channelId);
+    if (this.is_host) {
+      const sender = new game.GameSender(this.game_id);
       this.sender = sender;
       const receiver = new game.GameReceiver(
         canvasId,
-        this.channelId,
+        this.game_id,
         this.addon,
         true,
       );
@@ -44,7 +52,7 @@ const GuildWarTimeModalView = common.View.extend({
     } else {
       const receiver = new game.GameReceiver(
         canvasId,
-        this.channelId,
+        this.game_id,
         this.addon,
         false,
       );

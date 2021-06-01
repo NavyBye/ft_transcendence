@@ -136,7 +136,11 @@ class GameSender {
   }
 
   endGame() {
-    this.connection.send({ type: 'end', scores: [this.score1, this.score2] });
+    this.connection.send({
+      type: 'end',
+      scores: [this.score1, this.score2],
+      winner: this.winner,
+    });
   }
 
   toHash() {

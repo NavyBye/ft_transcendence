@@ -11,11 +11,24 @@ const SideView = common.View.extend({
   },
   onInitialize() {
     const channel = Radio.channel('side');
+    this.save_notify = new Set();
     this.listenTo(channel, 'enter-chatroom', this.enterChatRoom);
     this.listenTo(channel, 'enter-dmroom', this.enterDmRoom);
     this.addRegion('content', '#side .content');
     const self = this;
-
+    Radio.channel('dm').reply('notify', function notifiy(data) {
+      if (self.currentTab !== 'dm-tab') {
+        const dmtab = document.getElementById('dm-notify');
+        dmtab.style.display = 'inline-block';
+      }
+      self.save_notify.add(data.dm_room_id);
+    });
+    Radio.channel('dm').reply('delete', function del(data) {
+      self.save_notify.delete(data);
+    });
+    Radio.channel('dm').reply('get', function get() {
+      return self.save_notify;
+    });
     Radio.channel('side').reply('changeTab', function changeTab(target) {
       /* attach view to region */
       self.$(`#${self.currentTab}`).removeClass('active');

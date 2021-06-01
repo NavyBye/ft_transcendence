@@ -27,26 +27,31 @@ const YesGuildView = common.View.extend({
   showTab(event) {
     event.preventDefault();
     const user = Radio.channel('login').request('get');
-    if (user.id === this.model.get('master').id) {
-      const target = event.target.getAttribute('id');
-      this.$(`#${this.currentTab}`).removeClass('active');
-      this.$(`#${target}`).addClass('active');
-      this.currentTab = target;
-
-      if (target === 'info-tab') {
-        this.getRegion('guildContent').show(
-          new GuildInfoView({ model: this.model }),
-        );
-      } else if (target === 'manage-tab') {
-        this.getRegion('guildContent').show(
-          new GuildManageView({ model: this.model }),
-        );
-      } else if (target === 'guild-history-tab') {
-        this.getRegion('guildContent').show(
-          new GuildHistoryCollectionView(this.model.get('id')),
-        );
-      }
+    const target = event.target.getAttribute('id');
+    if (target === 'info-tab') {
+      this.changeActive(target);
+      this.getRegion('guildContent').show(
+        new GuildInfoView({ model: this.model }),
+      );
+    } else if (target === 'guild-history-tab') {
+      this.changeActive(target);
+      this.getRegion('guildContent').show(
+        new GuildHistoryCollectionView(this.model.get('id')),
+      );
+    } else if (
+      target === 'manage-tab' &&
+      user.id === this.model.get('master').id
+    ) {
+      this.changeActive(target);
+      this.getRegion('guildContent').show(
+        new GuildManageView({ model: this.model }),
+      );
     }
+  },
+  changeActive(target) {
+    this.$(`#${this.currentTab}`).removeClass('active');
+    this.$(`#${target}`).addClass('active');
+    this.currentTab = target;
   },
 });
 
