@@ -13,6 +13,7 @@ module Chat
   def receive(data)
     return if check_permission
 
+    data["body"] = CGI.escapeHTML(data["body"])
     message = @room.messages.create! user_id: current_user.id, body: data["body"]
     self.class.broadcast_to @room, { data: serialize(message), type: "message" }
   end
@@ -20,7 +21,8 @@ module Chat
   private
 
   def serialize(message)
-    message.as_json only: %i[id user body created_at], include: { user: { only: %i[id nickname image] } }
+    message.as_json only: %i[id user body created_at], include: { user: { only: %i[id nickname image],
+                                                                          include: { guild: { only: %i[anagram] } } } }
   end
 
   def find_room!(); end

@@ -85,10 +85,10 @@ module Api
     end
 
     def check_permission!
-      return if check_destroy_self
-
       @chat_rooms_member = ChatRoomsMember.find_by! user_id: (params[:chat_rooms_member_id] || params[:id]),
                                                     chat_room_id: params[:chat_room_id]
+      return if !current_user.user? || check_destroy_self
+
       chat_rooms_current_user = ChatRoomsMember.find_by! user_id: current_user.id, chat_room_id: params[:chat_room_id]
       if chat_rooms_current_user.read_attribute_before_type_cast(:role) <=
          @chat_rooms_member.read_attribute_before_type_cast(:role)

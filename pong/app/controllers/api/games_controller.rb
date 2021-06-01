@@ -12,6 +12,7 @@ module Api
     end
 
     def create
+      addon_adjust
       Game.availability_check(params, current_user)
       match_make
       render json: {}, status: :no_content
@@ -32,6 +33,16 @@ module Api
 
     private
 
+    def addon_adjust
+      params[:addon] = if params[:game_type] == 'war'
+                         false
+                       elsif params[:addon].nil?
+                         false
+                       else
+                         params[:addon]
+                       end
+    end
+
     def match_refuse(user_id, target_id)
       @target = User.find target_id
       @user = User.find user_id
@@ -42,7 +53,6 @@ module Api
     def queue_params
       raise ActiveRecord::RecordNotFound if params[:game_type].nil?
 
-      params[:addon] = false if params[:addon].nil?
       {
         game_type: params[:game_type],
         addon: params[:addon],
@@ -57,9 +67,9 @@ module Api
       when 'duel', 'ladder', 'ladder_tournament', 'friendly'
         basic_matchmaking
       when 'tournament'
-        tournament_matchmaking and return
-      else
-        war_matchmaking and return
+        tournament_matchmaking
+      when 'war'
+        war_matchmaking
       end
       game_start(@game) unless @game.nil?
     end
@@ -88,7 +98,7 @@ module Api
           if GameQueue.queue_is_empty? 'war', false, current_user.id
             GameQueue.push_war queue_params
           else
-            GameQueue.pop_and_match queue_params, current_user.id
+            @game = GameQueue.pop_and_match queue_params, current_user.id
           end
           # if not empty & guild is good, pop and match.
         end

@@ -1,9 +1,12 @@
 <div class="recv-chat mb-3" chat-id="<%= id %>">
   <div>
     <!-- User Profile -->
-    <img src="/images/chat-icon.png" width="50" class="rounded-circle" />
+    <img src="<%= user.image.url %>" width="50" class="rounded-circle" />
     <!-- UserName -->
-    <span class="small small-text"><%= user.nickname %></span>
+    <span class="small small-text"
+      ><%= user.nickname %><%= user.guild ? ` (${user.guild.anagram})` : ""
+      %></span
+    >
   </div>
   <!-- <div class="recv-media-body"> -->
   <div class="bg-light rounded py-2 px-3">

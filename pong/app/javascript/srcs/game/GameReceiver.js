@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-param-reassign */
 /* eslint-disable class-methods-use-this */
 import $ from 'jquery/src/jquery';
@@ -14,7 +15,7 @@ import consumer from '../../channels/consumer';
  */
 
 class GameReceiver {
-  constructor(canvasId, channelId, addon) {
+  constructor(canvasId, channelId, addon, isHost) {
     this.isStarted = true;
     this.winner = null;
     this.score1 = 0;
@@ -23,9 +24,23 @@ class GameReceiver {
     this.bars = [new Bar(true), new Bar(false)];
     const self = this;
     if (addon) {
-      this.ball.fabricObj.set('fill', 'black');
-      this.bars[0].fabricObj.set('fill', 'black');
-      this.bars[1].fabricObj.set('fill', 'black');
+      (function toggle() {
+        const css =
+          'html {-webkit-filter: invert(100%);' +
+          '-moz-filter: invert(100%);' +
+          '-o-filter: invert(100%);' +
+          '-ms-filter: invert(100%); }';
+        const head = document.getElementsByTagName('head')[0];
+        const style = document.createElement('style');
+        style.setAttribute('id', 'toggle');
+        style.type = 'text/css';
+        if (style.styleSheet) {
+          style.styleSheet.cssText = css;
+        } else {
+          style.appendChild(document.createTextNode(css));
+        }
+        head.appendChild(style);
+      })();
     }
 
     /* canvas related stuffs */
@@ -35,6 +50,7 @@ class GameReceiver {
     this.canvas.add(this.bars[1].fabricObj);
     this.canvas.renderAll();
 
+    const login = Radio.channel('login').request('get');
     this.connection = consumer.subscriptions.create(
       {
         channel: 'GameChannel',
@@ -48,23 +64,63 @@ class GameReceiver {
           if (data.type === 'end') {
             self.connection.unsubscribe();
             Radio.channel('route').trigger('route', 'home');
+            (function toggle() {
+              const css =
+                'html {-webkit-filter: invert(0%);' +
+                '-moz-filter: invert(0%);' +
+                '-o-filter: invert(0%);' +
+                '-ms-filter: invert(0%); }';
+              const head = document.getElementsByTagName('head')[0];
+              const style = document.createElement('style');
+              style.setAttribute('id', 'toggle');
+              style.type = 'text/css';
+              if (style.styleSheet) {
+                style.styleSheet.cssText = css;
+              } else {
+                style.appendChild(document.createTextNode(css));
+              }
+              head.appendChild(style);
+            })();
           } else if (data.type === 'frame') {
             self.ball.fromHash(data.ball);
             self.bars[0].fromHash(data.bars[0]);
             self.bars[1].fromHash(data.bars[1]);
             self.winner = data.winner;
-            self.score1 = data.score1;
-            self.score2 = data.score2;
+            self.score1 = data.scores[0];
+            self.score2 = data.scores[1];
+            $('#player1-score').text(self.score1);
+            $('#player2-score').text(self.score2);
             self.isStarted = data.isStarted;
             self.ball.update();
             self.bars[0].update();
             self.bars[1].update();
             self.simulate();
+          } else if (data.type === 'info') {
+            if (typeof data.isHost === 'string') {
+              data.isHost = data.isHost === 'true';
+            }
+            if (data.isHost) {
+              $('#player1-image').attr('src', data.url);
+              $('#player1-name').text(data.nickname);
+            } else {
+              $('#player2-image').attr('src', data.url);
+              $('#player2-name').text(data.nickname);
+            }
           }
         },
       },
     );
 
+    /* TODO: There will be better way than sending it 5 secs later... */
+    setTimeout(function anonymous() {
+      /* send player's info */
+      self.connection.send({
+        type: 'info',
+        isHost,
+        nickname: login.get('nickname'),
+        url: login.get('image').url,
+      });
+    }, 5);
     function keyDown(event) {
       const data = { type: 'input' };
       if (event.key === 'ArrowUp') {
@@ -90,7 +146,9 @@ class GameReceiver {
     const isDiplayNone = $('#side').css('display') === 'none';
     if (isDiplayNone) this.canvas.setWidth($('body').width());
     else this.canvas.setWidth($('body').width() - $('#side').width());
-    this.canvas.setHeight($('body').height() - $('#nav').height());
+    this.canvas.setHeight(
+      $('body').height() - $('#nav').height() - 50 - 70 - 30,
+    );
 
     this.ball.render();
     this.bars[0].render();

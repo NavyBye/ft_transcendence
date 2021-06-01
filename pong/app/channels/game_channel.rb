@@ -1,22 +1,95 @@
 class GameChannel < ApplicationCable::Channel
+  class GameResult
+    def self.result_apply(game, data)
+      rating_apply(game, data) if %w[ladder ladder_tournament].include? game.game_type
+      guild_point_apply(game, data)
+      war_point_apply(game, data)
+      rank_apply(game, data) if game.game_type == 'ladder_tournament'
+    end
+
+    private_class_method def self.rating_apply(game, data)
+      game.game_players.each do |player|
+        my_score = player.is_host ? data['scores'][0] : data['scores'][1]
+        if my_score >= 3
+          player.user.rating += 42
+        else
+          player.user.rating -= 42
+        end
+        player.user.save!
+      end
+    end
+
+    private_class_method def self.guild_point_apply(game, data)
+      game.game_players.each do |player|
+        my_score = player.is_host ? data['scores'][0] : data['scores'][1]
+        player.user.guild.point += 1 if !player.user.guild.nil? && my_score >= 3
+        player.user.guild.save! unless player.user.guild.nil?
+      end
+    end
+
+    private_class_method def self.war_point_apply(game, data)
+      game.game_players.each do |player|
+        my_score = player.is_host ? data['scores'][0] : data['scores'][1]
+        if my_score >= 3 && war_point_possible(game)
+          player.user.guild.war_relation.war_point += 10
+          player.user.guild.war_relation.save!
+        end
+      end
+    end
+
+    private_class_method def self.war_point_possible(game)
+      return true if game.game_type == 'war'
+
+      first = game.players.first
+      second = game.players.second
+      return false unless at_wars(first, second)
+
+      war = first.guild.war
+      return false if !war.is_extended || war.is_addon != game.addon
+
+      war.id == second.guild.war.id
+    end
+
+    private_class_method def self.at_wars(first, second)
+      return false if first.guild.nil? || second.guild.nil?
+
+      return false if first.guild.war.nil? || second.guild.war.nil?
+
+      true
+    end
+
+    private_class_method def self.rank_apply(game, data)
+      game.game_players.each do |player|
+        my_score = player.is_host ? data['scores'][0] : data['scores'][1]
+        my_rank = player.user.rank
+        opposite_player = GamePlayer.where('game_id = ? AND user_id != ?', game.id, player.user.id).first!
+        if my_rank > opposite_player.user.rank && my_score >= 3
+          player.user.update!(rank: opposite_player.user.rank)
+          opposite_player.user.update!(rank: my_rank)
+        end
+      end
+    end
+  end
+end
+
+class GameChannel < ApplicationCable::Channel
   def subscribed
     @game = Game.find params[:id]
     @host = @game.game_players.where(is_host: true).first!
     stream_for @game
+    stream_for current_user
     stream_for @host if host?
-    @is_spectator = @game.players.exists? current_user.id ? false : true
-    current_user.status = :game
-    current_user.save!
+    @is_spectator = @game.players.exists?(current_user.id) ? false : true
+    current_user.status_update :game
   end
 
   def unsubscribed
     return if @game.nil?
 
-    GameChannel.broadcast_to @game, { type: "end" }
     if host?
-      @game.to_history [0, 3]
+      receive_end({ scores: [0, 3], type: "end" })
     else
-      @game.to_history [3, 0]
+      receive_end({ scores: [3, 0], type: "end" })
     end
   end
 
@@ -28,7 +101,15 @@ class GameChannel < ApplicationCable::Channel
       receive_frame(data)
     when "end"
       receive_end(data)
+    when "info"
+      receive_info(data)
     end
+  end
+
+  private
+
+  def receive_info(data)
+    GameChannel.broadcast_to @game, data
   end
 
   def receive_frame(data)
@@ -36,6 +117,8 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def receive_input(data)
+    return if spectator?
+
     data["is_host"] = host?
     GameChannel.broadcast_to @host, data unless spectator?
   end
@@ -43,12 +126,15 @@ class GameChannel < ApplicationCable::Channel
   def receive_end(data)
     return unless host?
 
-    GameChannel.broadcast_to @game, data
-    @game.players.each do |player|
-      player.status = :online
-      player.save!
+    update_players_status :online
+    case @game.game_type
+    when "tournament"
+      end_tournament_match(data)
+    else
+      GameResult.result_apply(@game, data)
+      @game.to_history data["scores"]
+      GameChannel.broadcast_to @game, data
     end
-    @game.to_history data["scores"]
   end
 
   def spectator?
@@ -57,5 +143,47 @@ class GameChannel < ApplicationCable::Channel
 
   def host?
     current_user.id == @host.user_id
+  end
+
+  def lose_tournament_match(player)
+    tournament_participant = TournamentParticipant.find_by! user_id: player.user_id
+    tournament_participant.destroy!
+    GameChannel.broadcast_to player.user, { type: "end" }
+  end
+
+  def win_tournament_match(player)
+    tournament_participant = TournamentParticipant.find_by! user_id: player.user_id
+    tournament_participant.win
+    if tournament_participant.victoryous?
+      tournament_participant.victory
+      GameChannel.broadcast_to player.user, { type: "end" }
+    else
+      GameChannel.broadcast_to player.user, { type: "continue" }
+      tournament_participant.create_game if tournament_participant.opponent?
+    end
+  end
+
+  def end_tournament_match(data)
+    winner = get_winner data["scores"]
+    loser = @game.game_players.find_by! is_host: !winner.is_host
+    @game.to_history data["scores"]
+    lose_tournament_match loser
+    win_tournament_match winner
+  end
+
+  def get_winner(scores)
+    if scores[0] > scores[1]
+      @host
+    else
+      @game.game_players.find_by! is_host: false
+    end
+  end
+
+  def update_players_status(status)
+    @game.players.each do |user|
+      next if user.offline?
+
+      user.status_update status
+    end
   end
 end

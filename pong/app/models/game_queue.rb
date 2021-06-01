@@ -39,8 +39,12 @@ class GameQueue < ApplicationRecord
   def self.push_war(params)
     queue = GameQueue.create!(params)
     QueueTimeoverJob.set(wait: 30).perform_later queue.id
-    # TODO: ? : send a message to opposite guild about WAR MATCH
-    User.find(params[:user_id]).status_update('ready')
+    user = User.find(queue.user_id)
+    opposite_guild = WarGuild.where('war_id = ? AND guild_id != ?', user.guild.war, user.guild).first!.guild
+    opposite_guild.members.each do |member|
+      ApplicationController.helpers.send_signal(member.id, { type: 'notify', element: 'guildwar' })
+    end
+    user.status_update('ready')
   end
 
   def self.send_request_signal_when_push(target_user, params)
@@ -54,6 +58,7 @@ class GameQueue < ApplicationRecord
   end
 
   def self.pop_and_match(params, cur_user_id)
+    params[:addon] = addon_adjust_when_war(params, cur_user_id)
     # Queue-based games.
     game = Game.create!(game_type: params[:game_type], addon: params[:addon])
     wait_queue = queue_find_by_param(params, cur_user_id)
@@ -62,6 +67,15 @@ class GameQueue < ApplicationRecord
     # pop
     wait_queue.destroy!
     game
+  end
+
+  private_class_method def self.addon_adjust_when_war(params, cur_user_id)
+    cur_user = User.find cur_user_id
+    if params[:game_type] == 'war'
+      cur_user.guild.war.is_addon
+    else
+      params[:addon]
+    end
   end
 
   private

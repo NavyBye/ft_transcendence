@@ -1,6 +1,5 @@
 #my-page .body .profile {
   height: 100%;
-  padding: 50px 100px;
 }
 
 #my-page .upload-image img {
@@ -33,7 +32,7 @@
 }
 
 #my-page .body {
-  min-width: 760px;
+  min-width: 400px;
 }
 
 #my-page label {

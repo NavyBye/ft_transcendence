@@ -30,8 +30,8 @@ const GuildManageView = common.View.extend({
     data.war_time = $('#war-time').attr('time');
     data.avoid_chance = $('#avoid-chance').val();
     data.prize_point = $('#prize').val();
-    data.is_extended = $('#is-extended').is('checked');
-    data.is_addon = $('#is-add-on').is('checked');
+    data.is_extended = $('#is-extended').is(':checked');
+    data.is_addon = $('#is-add-on').is(':checked');
     $.ajax({
       type: 'POST',
       url: `/api/declarations`,

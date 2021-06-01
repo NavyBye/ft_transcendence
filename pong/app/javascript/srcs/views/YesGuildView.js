@@ -3,6 +3,7 @@ import common from '../common';
 import template from '../templates/YesGuildView.html';
 import GuildInfoView from './GuildInfoView';
 import GuildManageView from './GuildManageView';
+import GuildHistoryCollectionView from './GuildHistoryCollectionView';
 
 const YesGuildView = common.View.extend({
   el: '#guild-body',
@@ -39,6 +40,10 @@ const YesGuildView = common.View.extend({
       } else if (target === 'manage-tab') {
         this.getRegion('guildContent').show(
           new GuildManageView({ model: this.model }),
+        );
+      } else if (target === 'guild-history-tab') {
+        this.getRegion('guildContent').show(
+          new GuildHistoryCollectionView(this.model.get('id')),
         );
       }
     }
