@@ -19,7 +19,9 @@ module Api
       paginated_messages = room.messages.order(created_at: :asc).page(page)
       {
         messages: paginated_messages.as_json(only: %i[id user body created_at],
-                                             include: { user: { only: %i[id nickname image] } }), page: page.to_i
+                                             include: { user: { only: %i[id nickname image],
+                                                                include: { guild: { only: %i[anagram] } } } }),
+        page: page.to_i
       }
     end
   end
