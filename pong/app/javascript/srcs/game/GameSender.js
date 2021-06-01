@@ -66,7 +66,10 @@ class GameSender {
     this.checkGoal();
 
     this.connection.send(this.toHash());
-    return this.checkEnd();
+    this.checkEnd();
+    if (!this.isEnd) {
+      this.isEnd = this.winner !== null;
+    }
   }
 
   checkWallConflictWithBall() {
@@ -148,10 +151,6 @@ class GameSender {
 
   isStarted() {
     return this.isStarted;
-  }
-
-  isEnd() {
-    return this.winner !== null;
   }
 
   pushBar(playerIdx, input) {
