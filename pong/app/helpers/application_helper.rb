@@ -32,6 +32,8 @@ module ApplicationHelper
 
     raise SignalChannel::InvalidFormat if type == 'fetch' && data[:element].nil?
 
+    raise SignalChannel::InvalidFormat if type == 'notify'
+
     true
   end
 end
