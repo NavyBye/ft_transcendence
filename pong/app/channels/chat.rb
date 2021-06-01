@@ -12,7 +12,7 @@ module Chat
 
   def receive(data)
     return if check_permission
-
+    data["body"] = CGI.escapeHTML(data["body"])
     message = @room.messages.create! user_id: current_user.id, body: data["body"]
     self.class.broadcast_to @room, { data: serialize(message), type: "message" }
   end
