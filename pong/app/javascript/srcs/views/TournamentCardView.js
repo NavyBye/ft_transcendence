@@ -12,7 +12,7 @@ const TournamentCardView = common.View.extend({
   click() {
     $.ajax({
       type: 'POST',
-      url: '/api/tournament/participant',
+      url: '/api/tournaments/participants',
       headers: auth.getTokenHeader(),
       success() {
         new OkModalView().show('Success', 'Success apply tournament');
