@@ -135,6 +135,13 @@ const app = {
       }
     });
 
+    /* redirect notify radio */
+    Radio.channel('signal').reply('notify', function notification(data) {
+      if (data && data.element) {
+        Radio.channel(data.element).request(data.type, data);
+      }
+    });
+
     /* game connect signal (when match making was successful) */
     Radio.channel('signal').reply('connect', function gameConnect(data) {
       Radio.channel('route').trigger(
