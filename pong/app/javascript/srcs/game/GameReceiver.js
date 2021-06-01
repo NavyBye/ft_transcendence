@@ -103,6 +103,8 @@ class GameReceiver {
             self.bars[0].update();
             self.bars[1].update();
             self.simulate();
+          } else if (data.type === 'continue') {
+            Radio.channel('route').trigger('route', 'loading');
           }
         },
       },
