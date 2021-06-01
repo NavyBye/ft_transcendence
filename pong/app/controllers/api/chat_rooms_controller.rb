@@ -30,11 +30,15 @@ module Api
     private
 
     def check_update_permission!
+      return unless current_user.user?
+
       member = @chat_room.chat_rooms_members.find_by user: current_user
       raise ChatRoomsMember::PermissionDenied if member.nil? || member.user?
     end
 
     def check_destroy_permission!
+      return unless current_user.user?
+
       member = @chat_room.chat_rooms_members.find_by user: current_user
       raise ChatRoomsMember::PermissionDenied if member.nil? || !member.owner?
     end
