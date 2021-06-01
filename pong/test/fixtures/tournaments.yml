@@ -7,6 +7,6 @@
 tournament1:
     title: "tournament1"
     is_ladder: false
-    is_addon: false
+    addon: false
     max_participants: 8
     start_at: <%= 5.hours.after %>

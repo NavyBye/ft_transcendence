@@ -13,7 +13,7 @@ module Api
     test "create" do
       tournament = tournaments :tournament1
       before_conut = tournament.participants.count
-      post api_tournament_tournament_participants_path(tournament.id), as: :json
+      post api_tournament_participants_path(tournament.id), as: :json
       assert_response :created
       after_count = tournament.participants.count
       assert_equal before_conut + 1, after_count

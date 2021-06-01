@@ -38,7 +38,7 @@ class TournamentParticipant < ApplicationRecord
   end
 
   def create_game
-    game = Game.create! game_type: :tournament, addon: tournament.is_addon
+    game = Game.create! game_type: :tournament, addon: tournament.addon
     GamePlayer.create! game_id: game.id, user_id: user_id, is_host: true
     GamePlayer.create! game_id: game.id, user_id: opponent.user_id, is_host: false
     game.game_players.each do |player|

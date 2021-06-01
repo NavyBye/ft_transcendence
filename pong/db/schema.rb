@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_01_045251) do
+ActiveRecord::Schema.define(version: 2021_06_01_045252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -219,7 +219,7 @@ ActiveRecord::Schema.define(version: 2021_06_01_045251) do
     t.string "title", null: false
     t.integer "max_participants", default: 4, null: false
     t.boolean "is_ladder", default: false
-    t.boolean "is_addon", default: false
+    t.boolean "addon", default: false
     t.datetime "start_at", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
