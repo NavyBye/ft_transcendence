@@ -21,9 +21,9 @@ class Tournament < ApplicationRecord
   validates_with ExistsValidator, on: :create
   # validates_with StartAtValidator
   def start
-    start_index = Math.sqrt(tournament_participants.count).ceil.pow(2)
+    start_index = Math.log(tournament_participants.count, 2).ceil.pow(2)
     tournament_participants.shuffle.each_with_index do |participant, index|
-      participant.index = start_index + index
+      participant.index = start_index + index + 1
       participant.save!
     end
     tournament_participants.each do |participant|
