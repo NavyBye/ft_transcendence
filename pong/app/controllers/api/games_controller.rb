@@ -46,6 +46,7 @@ module Api
     def match_refuse(user_id, target_id)
       @target = User.find target_id
       @user = User.find user_id
+      GameChannel::GameResult.rank_change(@queue.user_id, @queue.target_id) if @queue.game_type == 'ladder_tournament'
       @target.status_update('online') if @target.status != 'offline'
       @user.status_update('online') if @user.status != 'offline'
     end
@@ -66,8 +67,6 @@ module Api
       case params[:game_type]
       when 'duel', 'ladder', 'ladder_tournament', 'friendly'
         basic_matchmaking
-      when 'tournament'
-        tournament_matchmaking
       when 'war'
         war_matchmaking
       end
@@ -86,13 +85,7 @@ module Api
       end
     end
 
-    def tournament_matchmaking
-      # TODO : Tournament.first
-      # puts "NOT IMPLEMENTED YET (Tournament Matchmaking)"
-    end
-
     def war_matchmaking
-      # TODO : War.current
       GameQueue.transaction do
         GameQueue.with_advisory_lock('war_match') do
           if GameQueue.queue_is_empty? 'war', false, current_user.id
@@ -100,7 +93,6 @@ module Api
           else
             @game = GameQueue.pop_and_match queue_params, current_user.id
           end
-          # if not empty & guild is good, pop and match.
         end
       end
     end

@@ -69,6 +69,19 @@ class GameChannel < ApplicationCable::Channel
         end
       end
     end
+
+    def self.rank_change(req_id, target_id)
+      req = User.find req_id
+      target = User.find target_id
+      if req.rank == target.rank + 1
+        lower = req.rank
+        req.update!(rank: target.rank)
+        target.update!(rank: lower)
+        true
+      else
+        false
+      end
+    end
   end
 end
 
