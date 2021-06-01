@@ -35,8 +35,7 @@ module Api
     def create
       @master = current_user
       if @master.guild.nil?
-        params[:name] = CGI.escapeHTML(params[:name])
-        params[:anagram] = CGI.escapeHTML(params[:anagram])
+        create_escape
         @guild = Guild.create!(name: params[:name], anagram: params[:anagram], point: 4200)
         @guild_master_join = GuildMember.create!(user_id: @master.id, guild_id: @guild.id, role: 2)
         @master.invitations.destroy_all
@@ -54,6 +53,13 @@ module Api
       else
         render json: { type: "message", message: "You have no right to destroy this guild." }, status: :forbidden
       end
+    end
+
+    private
+
+    def create_escape
+      params[:name] = CGI.escapeHTML(params[:name])
+      params[:anagram] = CGI.escapeHTML(params[:anagram])
     end
   end
 end
