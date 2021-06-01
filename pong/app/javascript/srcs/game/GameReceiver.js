@@ -93,7 +93,9 @@ class GameReceiver {
     const isDiplayNone = $('#side').css('display') === 'none';
     if (isDiplayNone) this.canvas.setWidth($('body').width());
     else this.canvas.setWidth($('body').width() - $('#side').width());
-    this.canvas.setHeight($('body').height() - $('#nav').height());
+    this.canvas.setHeight(
+      $('body').height() - $('#nav').height() - 50 - 70 - 30,
+    );
 
     this.ball.render();
     this.bars[0].render();
