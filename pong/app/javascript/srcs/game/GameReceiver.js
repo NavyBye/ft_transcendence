@@ -7,6 +7,7 @@ import { Radio } from 'backbone';
 import Ball from './Ball';
 import Bar from './Bar';
 import consumer from '../../channels/consumer';
+import view from '../views';
 
 /*
  * This code was originally written in April 2020 by hyekim, written in python.
@@ -63,6 +64,14 @@ class GameReceiver {
           if (!data || !data.type) return;
           if (data.type === 'end') {
             self.connection.unsubscribe();
+            if (
+              (isHost && data.winner === 1) ||
+              (!isHost && data.winner === 2)
+            ) {
+              new view.OkModalView().show('You win!', 'Congratulations!');
+            } else {
+              new view.OkModalView().show('You lose!', '( T . T )');
+            }
             Radio.channel('route').trigger('route', 'home');
             (function toggle() {
               const css =
