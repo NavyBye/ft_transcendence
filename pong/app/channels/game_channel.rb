@@ -27,16 +27,10 @@ class GameChannel < ApplicationCable::Channel
       receive_frame(data)
     when "end"
       receive_end(data)
-    when "info"
-      receive_info(data)
     end
   end
 
   private
-
-  def receive_info(data)
-    GameChannel.broadcast_to @game, data
-  end
 
   def receive_frame(data)
     GameChannel.broadcast_to @game, data
