@@ -39,10 +39,13 @@ const GuildWarTimeModalView = common.View.extend({
         this.addon,
         true,
       );
+      self.disconnected = false;
       self.gameObjects.push(receiver);
       self.gameObjects.push(sender);
       setTimeout(function simulate() {
         sender.simulate(1 / delay);
+        if (self.disconnected) return;
+
         if (sender.isEnd) {
           sender.endGame();
         } else {
@@ -65,6 +68,7 @@ const GuildWarTimeModalView = common.View.extend({
       obj.connection.unsubscribe();
     });
     if (this.sender) {
+      this.disconnected = true;
       this.sender.isEnd = true;
     }
   },
