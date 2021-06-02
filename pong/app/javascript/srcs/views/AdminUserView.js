@@ -58,8 +58,8 @@ const AdminUserView = common.View.extend({
           classNames: 'dropdown-item',
           onClick() {
             $.ajax({
-              type: 'PUT',
-              url: `/api/users/${self.model.get('id')}`,
+              type: 'POST',
+              url: `/api/users/${self.model.get('id')}/designate`,
               headers: auth.getTokenHeader(),
               data: { role: 'admin' },
               success() {
@@ -77,8 +77,8 @@ const AdminUserView = common.View.extend({
           classNames: 'dropdown-item',
           onClick() {
             $.ajax({
-              type: 'PUT',
-              url: `/api/users/${self.model.get('id')}`,
+              type: 'POST',
+              url: `/api/users/${self.model.get('id')}/designate`,
               headers: auth.getTokenHeader(),
               data: { role: 'user' },
               success() {
