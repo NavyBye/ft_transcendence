@@ -5,6 +5,7 @@ import GuildWarCardView from './GuildWarCardView';
 import LadderCardView from './LadderCardView';
 import LadderTournamentCardView from './LadderTournamentCardView';
 import TournamentCardView from './TournamentCardView';
+import RuleSetModalView from './RuleSetModalView';
 
 const GamePageView = common.View.extend({
   el: '#content',
@@ -21,6 +22,7 @@ const GamePageView = common.View.extend({
     'click #box3': function click() {
       this.getRegion('box3').getView().click();
     },
+    'click #rule-btn': 'showRuleModal',
   },
   onInitialize() {
     this.arr = [
@@ -48,6 +50,9 @@ const GamePageView = common.View.extend({
     const right = this.arr.pop();
     this.arr.unshift(right);
     this.render();
+  },
+  showRuleModal() {
+    new RuleSetModalView().show();
   },
 });
 
