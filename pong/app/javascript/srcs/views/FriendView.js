@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable no-new */
 import UserProfileModalView from './UserProfileModalView';
 import common from '../common';
@@ -20,6 +21,7 @@ const FriendView = common.View.extend({
         connected() {},
         disconnected() {},
         received(data) {
+          if (typeof data.data === 'string') data.data = JSON.parse(data.data);
           self.model.set({ status: data.data.status });
           self.render();
         },
