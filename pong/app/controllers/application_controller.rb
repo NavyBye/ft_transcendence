@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   rescue_from GameQueue::RequestedUserCanceled, with: :error_invalid
   rescue_from Game::NotPlayable, with: :not_playable
   rescue_from User::Banned, with: :banned
+  rescue_from ActionController::RoutingError, with: :not_found_cover
 
   protect_from_forgery with: :null_session
 
@@ -64,6 +65,10 @@ class ApplicationController < ActionController::Base
       type: "message",
       message: "Permssion denied"
     }, status: :forbidden
+  end
+
+  def not_found_cover
+    render file: Rails.public_path.join('404.html'), status: :not_found, layout: false
   end
 
   def need_second_authenticate(_exception)
