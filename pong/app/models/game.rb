@@ -36,7 +36,6 @@ class Game < ApplicationRecord
     request_and_accept_available? current_user, params[:target_id] if %w[ladder_tournament
                                                                          friendly].include?(params[:game_type])
     war_match_available? current_user if params[:game_type] == 'war'
-    tournament_available? current_user if params[:game_type] == 'tournament'
   end
 
   private_class_method def self.self_available?(current_user)
@@ -61,9 +60,5 @@ class Game < ApplicationRecord
 
     wait_user = GameQueue.where(game_type: 'war')
     raise NotPlayable if wait_user.exists? && User.find(wait_user.first.user_id).guild.id == current_user.guild.id
-  end
-
-  private_class_method def self.tournament_available?(current_user)
-    # TODO : tournament check
   end
 end

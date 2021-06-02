@@ -12,7 +12,6 @@ class ApplicationController < ActionController::Base
   rescue_from User::NeedFirstUpdate, with: :need_first_update
   rescue_from User::NotNewcomer, with: :nickname_not_newcomer
   rescue_from SignalChannel::InvalidFormat, with: :error_invalid
-  # TODO : fit to valid error type.
   rescue_from GameQueue::RequestedUserCanceled, with: :error_invalid
   rescue_from Game::NotPlayable, with: :not_playable
   rescue_from User::Banned, with: :banned
