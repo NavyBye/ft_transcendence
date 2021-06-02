@@ -50,7 +50,16 @@ module Api
 
     def game
       @game_player = GamePlayer.where(user_id: params[:id]).first!
-      render status: :ok
+      game = @game_player.game
+      game_info = {
+        game_id: game.id,
+        left: game.game_players.find_by(is_host: true).user.as_json(only: %i[id nickname image]),
+        right: game.game_players.find_by(is_host: false).user.as_json(only: %i[id nickname image]),
+        is_host: false,
+        addon: game.addon
+      }
+      puts game_info
+      render json: game_info, status: :ok
     end
 
     def histories
