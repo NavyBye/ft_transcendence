@@ -28,7 +28,7 @@ const AdminGuildMemberView = common.View.extend({
                 $('#admin-guild-modal').modal('hide');
                 new OkModalView().show('Success', 'Successfully change');
               },
-              errer() {
+              error() {
                 $('#admin-guild-modal').modal('hide');
               },
             });
@@ -49,7 +49,7 @@ const AdminGuildMemberView = common.View.extend({
                 $('#admin-guild-modal').modal('hide');
                 new OkModalView().show('Success', 'Successfully change');
               },
-              errer() {
+              error() {
                 $('#admin-guild-modal').modal('hide');
               },
             });
@@ -70,7 +70,7 @@ const AdminGuildMemberView = common.View.extend({
                 $('#admin-guild-modal').modal('hide');
                 new OkModalView().show('Success', 'Successfully change');
               },
-              errer() {
+              error() {
                 $('#admin-guild-modal').modal('hide');
               },
             });
