@@ -7,6 +7,7 @@ class QueueTimeoverJob < ApplicationJob
     queue = GameQueue.where(id: queue_id).first!
     requested_user = User.find queue.user_id
     war_avoid requested_user if queue.game_type == 'war'
+    ladder_tournament_avoid if queue.game_type == 'ladder_tournament'
     queue.destroy!
 
     requested_user.status_update('online') if requested_user.reload.status != 'offline'
@@ -23,5 +24,9 @@ class QueueTimeoverJob < ApplicationJob
       req_user.guild.war_relation.war_point -= 10
       req_user.guild.war_relation.save!
     end
+  end
+
+  def ladder_tournament_avoid(queue)
+    GameChannel::GameResult.rank_change queue.user_id, queue.target_id
   end
 end
