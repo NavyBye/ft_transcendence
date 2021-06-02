@@ -21,10 +21,9 @@ class Tournament < ApplicationRecord
   validates_with ExistsValidator, on: :create
   # validates_with StartAtValidator
   def start
-    start_index = Math.log(tournament_participants.count, 2).ceil.pow(2)
-    tournament_participants.shuffle.each_with_index do |participant, index|
-      participant.update! index: start_index + index + 1
-    end
+    destroy_not_playable_users
+    tournament_participants.reload
+    set_indexes
     tournament_participants.each do |participant|
       participant.win while participant.unearned_win? == true
       participant.victory if participant.victoryous?
@@ -35,6 +34,19 @@ class Tournament < ApplicationRecord
   end
 
   private
+
+  def destroy_not_playable_users
+    tournament_participants.each do |participant|
+      participant.destroy! unless participant.user.online?
+    end
+  end
+
+  def set_indexes
+    start_index = Math.log(tournament_participants.count, 2).ceil.pow(2)
+    tournament_participants.shuffle.each_with_index do |participant, index|
+      participant.update! index: start_index + index + 1
+    end
+  end
 
   def start_later
     TournamentStartJob.set(wait_until: start_at).perform_later id
