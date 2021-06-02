@@ -98,7 +98,8 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    return if spectator? || @game.reload.nil?
+    return current_user.status_update(:online) if spectator?
+    return if @game.reload.nil?
 
     if host?
       receive_end({ "scores" => [0, 3], "type" => "end", "winner" => 2 })
