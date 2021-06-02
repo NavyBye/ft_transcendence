@@ -94,6 +94,7 @@ class GameChannel < ApplicationCable::Channel
     stream_for current_user
     stream_for @host if host?
     @is_spectator = @game.players.exists?(current_user.id) ? false : true
+    stream_from "GameChannel:#{@game.id}:spectator" if spectator?
     current_user.status_update :game
   end
 
@@ -176,6 +177,7 @@ class GameChannel < ApplicationCable::Channel
     loser = @game.game_players.find_by! is_host: !winner.is_host
     GameResult.rating_apply @game, data
     @game.to_history data["scores"]
+    ActionCable.server.broadcast "GameChannel:#{@game.id}:spectator", { type: "end" }
     lose_tournament_match loser, data
     win_tournament_match winner, data
   end
