@@ -27,7 +27,7 @@ module Api
         end
         @queue&.destroy
       end
-      current_user.status_update('online')
+      current_user.status_update('online') if current_user.status == 'ready'
       render json: {}, status: :no_content
     end
 
