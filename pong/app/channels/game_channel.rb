@@ -7,9 +7,9 @@ class GameChannel < ApplicationCable::Channel
       rank_apply(game, data) if game.game_type == 'ladder_tournament'
     end
 
-    private_class_method def self.rating_apply(game, data)
+    def self.rating_apply(game, data)
       game.game_players.each do |player|
-        my_score = player.is_host ? data['scores'][0] : data['scores'][1]
+        my_score = player.is_host ? data["scores"][0] : data["scores"][1]
         if my_score >= 3
           player.user.rating += 42
         else
@@ -60,6 +60,7 @@ class GameChannel < ApplicationCable::Channel
 
     private_class_method def self.rank_apply(game, data)
       game.game_players.each do |player|
+        ApplicationController.helpers.send_signal player.user_id, { type: 'fetch', element: 'login' }
         my_score = player.is_host ? data['scores'][0] : data['scores'][1]
         my_rank = player.user.rank
         opposite_player = GamePlayer.where('game_id = ? AND user_id != ?', game.id, player.user.id).first!
@@ -97,12 +98,12 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def unsubscribed
-    return if @game.nil?
+    return if @game.reload.nil?
 
     if host?
-      receive_end({ scores: [0, 3], type: "end" })
+      receive_end({ "scores" => [0, 3], "type" => "end", "winner" => 2 })
     else
-      receive_end({ scores: [3, 0], type: "end" })
+      receive_end({ "scores" => [3, 0], "type" => "end", "winner" => 1 })
     end
   end
 
@@ -113,7 +114,7 @@ class GameChannel < ApplicationCable::Channel
     when "frame"
       receive_frame(data)
     when "end"
-      receive_end(data)
+      receive_end(data) if host?
     end
   end
 
@@ -131,8 +132,7 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def receive_end(data)
-    return unless host?
-
+    @game.reload
     update_players_status :online
     case @game.game_type
     when "tournament"
@@ -152,18 +152,18 @@ class GameChannel < ApplicationCable::Channel
     current_user.id == @host.user_id
   end
 
-  def lose_tournament_match(player)
+  def lose_tournament_match(player, data)
     tournament_participant = TournamentParticipant.find_by! user_id: player.user_id
     tournament_participant.destroy!
-    GameChannel.broadcast_to player.user, { type: "end" }
+    GameChannel.broadcast_to player.user, data
   end
 
-  def win_tournament_match(player)
+  def win_tournament_match(player, data)
     tournament_participant = TournamentParticipant.find_by! user_id: player.user_id
     tournament_participant.win
     if tournament_participant.victoryous?
       tournament_participant.victory
-      GameChannel.broadcast_to player.user, { type: "end" }
+      GameChannel.broadcast_to player.user, data
     else
       GameChannel.broadcast_to player.user, { type: "continue" }
       tournament_participant.create_game if tournament_participant.opponent?
@@ -173,9 +173,10 @@ class GameChannel < ApplicationCable::Channel
   def end_tournament_match(data)
     winner = get_winner data["scores"]
     loser = @game.game_players.find_by! is_host: !winner.is_host
+    GameResult.rating_apply @game, data
     @game.to_history data["scores"]
-    lose_tournament_match loser
-    win_tournament_match winner
+    lose_tournament_match loser, data
+    win_tournament_match winner, data
   end
 
   def get_winner(scores)

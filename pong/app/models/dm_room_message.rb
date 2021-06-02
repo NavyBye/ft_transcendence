@@ -17,7 +17,7 @@ class DmRoomMessage < ApplicationRecord
   def send_signal
     dm_signal = {
       type: "notify",
-      elements: "dm",
+      element: "dm",
       dm_room_id: dm_room_id
     }
     opponent_user_id = dm_room.dm_rooms_members.where.not(user_id: user_id).first.user_id
