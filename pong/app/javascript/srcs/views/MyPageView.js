@@ -11,29 +11,33 @@ const MyPageView = common.View.extend({
   template,
   events: {
     'click .submit-button': 'submit',
+    'change #upload-image': 'preview',
+  },
+  onInitialize() {
+    this.reader = new FileReader();
+    this.reader.onload = function onload(e) {
+      $('#my-page img').attr('src', e.target.result);
+    };
+    this.formData = new FormData();
+  },
+  preview() {
+    const file = $('#upload-image').get(0).files[0];
+    if (file) {
+      this.formData.append('image', file);
+      /* image preview */
+      this.reader.readAsDataURL(file);
+    }
   },
   submit(event) {
     event.preventDefault();
     const nickname = $('#my-page input[name=nickname]').val();
     const enable2FA = $('#my-page input[name=2fa]').is(':checked');
-    const file = $('#my-page #upload-image').get(0).files[0];
 
     this.model.set('nickname', nickname);
     this.model.set('is_email_auth', enable2FA);
 
-    const formData = new FormData();
-    if (file) {
-      formData.append('image', file);
-      /* image preview */
-      const reader = new FileReader();
-      reader.onload = function onload(e) {
-        $('#my-page img').attr('src', e.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
-
-    formData.append('nickname', nickname);
-    formData.append('is_email_auth', enable2FA);
+    this.formData.append('nickname', nickname);
+    this.formData.append('is_email_auth', enable2FA);
 
     /* upload */
     const self = this;
@@ -41,7 +45,7 @@ const MyPageView = common.View.extend({
       type: 'PUT',
       url: `/api/users/${this.model.get('id')}`,
       headers: auth.getTokenHeader(),
-      data: formData,
+      data: self.formData,
       enctype: 'multipart/form-data',
       processData: false,
       contentType: false,
