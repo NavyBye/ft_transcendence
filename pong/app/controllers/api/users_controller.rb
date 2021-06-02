@@ -58,7 +58,6 @@ module Api
         is_host: false,
         addon: game.addon
       }
-      puts game_info
       render json: game_info, status: :ok
     end
 
