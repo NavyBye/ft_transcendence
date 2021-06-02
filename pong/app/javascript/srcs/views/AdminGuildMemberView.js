@@ -28,6 +28,9 @@ const AdminGuildMemberView = common.View.extend({
                 $('#admin-guild-modal').modal('hide');
                 new OkModalView().show('Success', 'Successfully change');
               },
+              errer() {
+                $('#admin-guild-modal').modal('hide');
+              },
             });
           },
           classNames: 'dropdown-item',
@@ -46,6 +49,9 @@ const AdminGuildMemberView = common.View.extend({
                 $('#admin-guild-modal').modal('hide');
                 new OkModalView().show('Success', 'Successfully change');
               },
+              errer() {
+                $('#admin-guild-modal').modal('hide');
+              },
             });
           },
           classNames: 'dropdown-item',
@@ -63,6 +69,9 @@ const AdminGuildMemberView = common.View.extend({
               success() {
                 $('#admin-guild-modal').modal('hide');
                 new OkModalView().show('Success', 'Successfully change');
+              },
+              errer() {
+                $('#admin-guild-modal').modal('hide');
               },
             });
           },
