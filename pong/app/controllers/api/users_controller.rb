@@ -15,12 +15,12 @@ module Api
 
     def show
       @user = User.find(params[:id])
-      render json: @user, status: :ok
+      render json: @user.as_json(methods: :stats), status: :ok
     end
 
     def me
       @user = User.find(current_user.id)
-      render json: @user, status: :ok
+      render json: @user.as_json(methods: :stats), status: :ok
     end
 
     def update
