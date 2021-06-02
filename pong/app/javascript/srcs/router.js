@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable radix */
 /* eslint-disable no-param-reassign */
@@ -17,7 +19,7 @@ const Router = Backbone.Router.extend({
     admin: 'admin',
     game: 'gamePage',
     banned: 'banned',
-    play: 'play',
+    'play?game_id=:game_id': 'play',
     loading: 'loading',
   },
   initialize() {
@@ -135,7 +137,8 @@ const Router = Backbone.Router.extend({
         .show('content', new view.AdminView({ model: login }));
     }
   },
-  play() {
+  /* game_id: dummy parameter to make route unique */
+  play(game_id) {
     const data = Radio.channel('game').request('get');
     const rootView = Radio.channel('app').request('rootView');
     const login = Radio.channel('login').request('get');
