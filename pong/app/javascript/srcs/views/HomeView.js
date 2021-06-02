@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable prefer-destructuring */
+import { Radio } from 'backbone';
 import $ from 'jquery/src/jquery';
 import common from '../common';
 import template from '../templates/HomeView.html';
@@ -8,6 +9,10 @@ import auth from '../utils/auth';
 const HomeView = common.View.extend({
   template,
   onRender() {
+    Radio.channel('guildwar').reply('notify', function notify() {
+      $('#guild-war-text').text('SOMEONE IS WAITING FOR GUILD WAR!');
+    });
+
     $.ajax({
       type: 'GET',
       url: '/api/wars',
@@ -18,7 +23,6 @@ const HomeView = common.View.extend({
           const text = `it's war time.
           ${data.guilds[0].name} vs ${data.guilds[1].name}`;
           $('#guild-war-text').text(text);
-          $('#guild-war-img').attr('src', '/images/war.png');
         }
       },
     });
@@ -29,10 +33,8 @@ const HomeView = common.View.extend({
       headers: auth.getTokenHeader(),
       success(data) {
         if (data && data.id) {
-          const text = `There's active tournament.
-          start_at: ${data.start_at}`;
+          const text = `There's active tournament.`;
           $('#tournament-text').text(text);
-          $('#tournament-img').attr('src', '/images/tournament.jpg');
         }
       },
     });
