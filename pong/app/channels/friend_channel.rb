@@ -4,10 +4,11 @@ class FriendChannel < ApplicationCable::Channel
   def subscribed
     @user = User.find(params[:id])
     stream_for @user
+    current_user.status_update('online') if @user.id == current_user.id && current_user.status == 'offline'
   end
 
   def unsubscribed
-    # current_user.status_update('offline') if @user.id == current_user.id
+    current_user.status_update('offline') if @user.id == current_user.id
   end
 
   def receive(data)
