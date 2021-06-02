@@ -87,22 +87,24 @@ const app = {
           app.user = new model.UserModel(data);
         },
       }),
-    ]).finally(function then() {
-      /* reply rootView */
-      app.rootView = new view.RootView();
-      Radio.channel('app').reply('rootView', function getRootView() {
-        return app.rootView;
-      });
-      app.rootView.render();
-      app.router = new Router();
+    ])
+      .catch(function noop() {})
+      .finally(function then() {
+        /* reply rootView */
+        app.rootView = new view.RootView();
+        Radio.channel('app').reply('rootView', function getRootView() {
+          return app.rootView;
+        });
+        app.rootView.render();
+        app.router = new Router();
 
-      /* Do not subscribe if not logged in, it will subscribe in app.login reply */
-      if (app.user) {
-        app.initBlacklist();
-        app.initFriendlist();
-        app.initSignalHandler();
-      }
-    });
+        /* Do not subscribe if not logged in, it will subscribe in app.login reply */
+        if (app.user) {
+          app.initBlacklist();
+          app.initFriendlist();
+          app.initSignalHandler();
+        }
+      });
 
     Radio.channel('app').reply('subscribe', function login() {
       app.initBlacklist();
