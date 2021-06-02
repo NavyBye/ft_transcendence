@@ -6,12 +6,14 @@ module Api
     def designate
       check_designate_permission
       @user.update!(role: params[:role])
+      send_signal @user.id, { type: 'fetch', element: 'login' }
       render json: @user, status: :ok
     end
 
     def ban
       check_ban_permission
       @user.update!(is_banned: params[:is_banned])
+      send_signal @user.id, { type: 'fetch', element: 'login' }
       render json: @user, status: :ok
     end
 
