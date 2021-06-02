@@ -132,10 +132,8 @@ const UserProfileModalView = common.View.extend({
       url: `/api/users/${this.userId}/game`,
       headers: auth.getTokenHeader(),
       success(game) {
-        Radio.channel('route').trigger(
-          'route',
-          `play?isHost=false&channelId=${game.game_id}&addon=false`,
-        );
+        Radio.channel('game').request('set', game);
+        Radio.channel('route').trigger('route', `play`);
       },
     });
   },
