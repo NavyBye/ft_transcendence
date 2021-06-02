@@ -4,6 +4,6 @@ class DmRoom < ApplicationRecord
   has_many :messages, dependent: :destroy, class_name: "DmRoomMessage"
 
   def name
-    @name ||= "##{members.find_by!('user_id != :id', id: id).nickname}"
+    "#{members.first.nickname}, #{members.second.nickname}"
   end
 end
