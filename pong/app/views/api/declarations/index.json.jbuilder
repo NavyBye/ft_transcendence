@@ -11,4 +11,5 @@ json.array! @guild.declaration_received do |declaration|
   json.prize_point declaration.prize_point
   json.is_extended declaration.is_extended
   json.is_addon declaration.is_addon
+  json.tta declaration.tta
 end

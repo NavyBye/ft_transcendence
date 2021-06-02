@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_01_045252) do
+ActiveRecord::Schema.define(version: 2021_06_01_212731) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 2021_06_01_045252) do
     t.boolean "is_addon", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "tta", default: 20
     t.index ["from_id", "to_id"], name: "index_declarations_on_from_id_and_to_id", unique: true
     t.index ["from_id"], name: "index_declarations_on_from_id"
     t.index ["to_id"], name: "index_declarations_on_to_id"
@@ -280,6 +281,7 @@ ActiveRecord::Schema.define(version: 2021_06_01_045252) do
     t.boolean "is_addon"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "tta", default: 20
   end
 
   add_foreign_key "blocks", "users"

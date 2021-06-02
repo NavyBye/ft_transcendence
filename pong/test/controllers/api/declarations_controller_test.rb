@@ -32,7 +32,7 @@ module Api
         post api_declarations_url, params: {
           to_guild: opposite_guild.name,
           end_at: Time.zone.now + 10_000,
-          war_time: 0,
+          war_time: 0, tta: 20,
           avoid_chance: 3, prize_point: 420, is_extended: false, is_addon: false
         }
       end
@@ -47,7 +47,7 @@ module Api
         post api_declarations_url, params: {
           to_guild: opposite_guild.name,
           end_at: Time.zone.now + 10_000,
-          war_time: 0,
+          war_time: 0, tta: 20,
           avoid_chance: 3, prize_point: 420, is_extended: false, is_addon: false
         }
       end
