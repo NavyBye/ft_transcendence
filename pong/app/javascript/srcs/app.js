@@ -158,7 +158,7 @@ const app = {
     /* game connect signal (when match making was successful) */
     Radio.channel('signal').reply('connect', function gameConnect(data) {
       Radio.channel('game').request('set', data);
-      Radio.channel('route').trigger('route', 'play');
+      Radio.channel('route').trigger('route', `play?game_id=${data.game_id}`);
     });
 
     /* game match making refused */
