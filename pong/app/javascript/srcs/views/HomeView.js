@@ -15,10 +15,24 @@ const HomeView = common.View.extend({
       success(data) {
         if (data.length > 0) {
           data = data[0];
-          const text = `it's war time. <br>
+          const text = `it's war time.
           ${data.guilds[0].name} vs ${data.guilds[1].name}`;
           $('#guild-war-text').text(text);
           $('#guild-war-img').attr('src', '/images/war.png');
+        }
+      },
+    });
+
+    $.ajax({
+      type: 'GET',
+      url: '/api/tournaments',
+      headers: auth.getTokenHeader(),
+      success(data) {
+        if (data && data.id) {
+          const text = `There's active tournament.
+          start_at: ${data.start_at}`;
+          $('#tournament-text').text(text);
+          $('#tournament-img').attr('src', '/images/tournament.jpg');
         }
       },
     });
