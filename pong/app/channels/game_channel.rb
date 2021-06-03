@@ -27,7 +27,7 @@ class GameChannel < ApplicationCable::Channel
       end
     end
 
-    private_class_method def self.war_point_apply(game, data)
+    def self.war_point_apply(game, data)
       game.game_players.each do |player|
         my_score = player.is_host ? data['scores'][0] : data['scores'][1]
         if my_score >= 3 && war_point_possible(game)
@@ -173,7 +173,8 @@ class GameChannel < ApplicationCable::Channel
   def end_tournament_match(data)
     winner = get_winner data["scores"]
     loser = @game.game_players.find_by! is_host: !winner.is_host
-    GameResult.rating_apply @game, data
+    GameResult.rating_apply(@game, data) if Tournament.first!.is_ladder
+    GameResult.war_point_apply(@game, data)
     @game.to_history data["scores"]
     ActionCable.server.broadcast "GameChannel:#{@game.id}:spectator", { type: "end" }
     lose_tournament_match loser, data
