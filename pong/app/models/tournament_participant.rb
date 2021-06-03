@@ -1,3 +1,12 @@
+class ParticipantsCountValidator < ActiveModel::Validator
+  def validate(record)
+    tournament = record.tournament
+    return unless !tournament.nil? && tournament.max_participants <= tournament.participants.count
+
+    record.errors.add :base, "Too many participants"
+  end
+end
+
 class TournamentParticipant < ApplicationRecord
   # associations
   belongs_to :tournament
@@ -6,6 +15,7 @@ class TournamentParticipant < ApplicationRecord
   # validations
   validates :user_id, uniqueness: true
   validates :index, uniqueness: { scope: :tournament_id }, allow_nil: true
+  validates_with ParticipantsCountValidator, on: :create
 
   def unearned_win?
     return false if index <= 1

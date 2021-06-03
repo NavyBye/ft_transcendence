@@ -6,7 +6,9 @@ end
 
 class StartAtValidator < ActiveModel::Validator
   def validate(record)
-    record.errors.add :base, "start_at must be future" if record.start_at <= Time.zone.now + 1.minute
+    return unless !record.start_at.nil? && record.start_at <= Time.zone.now + 1.minute
+
+    record.errors.add :base, "start_at must be future"
   end
 end
 
@@ -18,8 +20,11 @@ class Tournament < ApplicationRecord
 
   after_create :start_later
   validates :max_participants, numericality: { greater_than_or_equal_to: 4 }
+  validates :title, presence: true
+  validates :start_at, presence: true
   validates_with ExistsValidator, on: :create
-  # validates_with StartAtValidator
+  validates_with StartAtValidator
+
   def start
     destroy_not_playable_users
     tournament_participants.reload

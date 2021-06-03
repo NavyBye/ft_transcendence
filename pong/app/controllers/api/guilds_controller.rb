@@ -16,14 +16,14 @@ module Api
         render json: { type: "message", message: "You have no guild." }, status: :not_found
       else
         @guild = current_user.guild
-        @master = GuildMember.find_by(guild_id: @guild.id, role: 'master').user
+        @master = GuildMember.find_by!(guild_id: @guild.id, role: 'master').user
         render status: :ok
       end
     end
 
     def show
       @guild = Guild.find(params[:id])
-      @master = GuildMember.find_by(guild_id: @guild.id, role: 'master').user
+      @master = GuildMember.find_by!(guild_id: @guild.id, role: 'master').user
       render status: :ok
     end
 
