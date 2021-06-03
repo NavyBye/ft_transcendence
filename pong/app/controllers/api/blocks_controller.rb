@@ -9,12 +9,12 @@ module Api
     end
 
     def create
-      @new_block = Block.create(block_params)
+      @new_block = Block.create!(block_params)
       render json: @new_block, status: :created
     end
 
     def destroy
-      @cancel_block = Block.find_by(block_params)
+      @cancel_block = Block.find_by!(block_params)
       @cancel_block.destroy!
       render json: {}, status: :no_content
     end
