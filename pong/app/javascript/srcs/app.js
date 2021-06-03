@@ -6,6 +6,7 @@
 import $ from 'jquery/src/jquery';
 import Backbone from 'backbone';
 import Radio from 'backbone.radio';
+import { Mutex } from 'async-mutex';
 import view from './views';
 import Router from './router';
 import auth from './utils/auth';
@@ -157,8 +158,13 @@ const app = {
 
     /* game connect signal (when match making was successful) */
     Radio.channel('signal').reply('connect', function gameConnect(data) {
-      Radio.channel('game').request('set', data);
-      Radio.channel('route').trigger('route', `play?game_id=${data.game_id}`);
+      const mutex = new Mutex();
+
+      mutex.acquire().then(function foo(release) {
+        Radio.channel('game').request('set', data);
+        Radio.channel('route').trigger('route', `play?game_id=${data.game_id}`);
+        release();
+      });
     });
 
     /* game match making refused */
