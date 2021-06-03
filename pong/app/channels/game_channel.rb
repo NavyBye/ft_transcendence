@@ -1,7 +1,8 @@
 class GameChannel < ApplicationCable::Channel
   class GameResult
     def self.result_apply(game, data)
-      rating_apply(game, data) if %w[ladder ladder_tournament].include?(game.game_type) || Tournament.first!.is_ladder
+      rating_apply(game, data) if %w[ladder ladder_tournament].include?(game.game_type)
+      rating_apply(game, data) if game.game_type == 'tournament' && Tournament.first!.is_ladder
       guild_point_apply(game, data)
       war_point_apply(game, data)
       rank_apply(game, data) if game.game_type == 'ladder_tournament'
