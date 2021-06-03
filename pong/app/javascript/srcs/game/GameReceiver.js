@@ -45,7 +45,7 @@ class GameReceiver {
     }
 
     /* canvas related stuffs */
-    this.canvas = new fabric.Canvas(canvasId);
+    this.canvas = new fabric.StaticCanvas(canvasId);
     this.canvas.add(this.ball.fabricObj);
     this.canvas.add(this.bars[0].fabricObj);
     this.canvas.add(this.bars[1].fabricObj);
