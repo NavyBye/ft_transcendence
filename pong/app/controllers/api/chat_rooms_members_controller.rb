@@ -45,6 +45,7 @@ module Api
 
       @chat_rooms_member.ban_at = Time.zone.now
       @chat_rooms_member.save!
+      @chat_rooms_member.reload
       ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
                                                                               @chat_rooms_member.ban_at
       broadcast_notification @chat_rooms_member.chat_room, @chat_rooms_member.user,
@@ -58,8 +59,9 @@ module Api
 
       @chat_rooms_member.mute_at = Time.zone.now
       @chat_rooms_member.save!
-      ChatRoomsMemberBanRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
-                                                                              @chat_rooms_member.mute_at
+      @chat_rooms_member.reload
+      ChatRoomsMemberMuteRecoveryJob.set(wait: duration.minutes).perform_later @chat_rooms_member.id,
+                                                                               @chat_rooms_member.mute_at
       broadcast_notification @chat_rooms_member.chat_room, @chat_rooms_member.user,
                              "#{@chat_rooms_member.user.nickname} is muted"
       render json: {}, status: :ok
