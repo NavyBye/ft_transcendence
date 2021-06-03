@@ -1,13 +1,13 @@
 class GameChannel < ApplicationCable::Channel
   class GameResult
     def self.result_apply(game, data)
-      rating_apply(game, data) if %w[ladder ladder_tournament].include? game.game_type
+      rating_apply(game, data) if %w[ladder ladder_tournament].include?(game.game_type) || Tournament.first!.is_ladder
       guild_point_apply(game, data)
       war_point_apply(game, data)
       rank_apply(game, data) if game.game_type == 'ladder_tournament'
     end
 
-    def self.rating_apply(game, data)
+    private_class_method def self.rating_apply(game, data)
       game.game_players.each do |player|
         my_score = player.is_host ? data["scores"][0] : data["scores"][1]
         if my_score >= 3
@@ -27,7 +27,7 @@ class GameChannel < ApplicationCable::Channel
       end
     end
 
-    def self.war_point_apply(game, data)
+    private_class_method def self.war_point_apply(game, data)
       game.game_players.each do |player|
         my_score = player.is_host ? data['scores'][0] : data['scores'][1]
         if my_score >= 3 && war_point_possible(game)
@@ -173,8 +173,7 @@ class GameChannel < ApplicationCable::Channel
   def end_tournament_match(data)
     winner = get_winner data["scores"]
     loser = @game.game_players.find_by! is_host: !winner.is_host
-    GameResult.rating_apply(@game, data) if Tournament.first!.is_ladder
-    GameResult.war_point_apply(@game, data)
+    GameResult.result_apply @game, data
     @game.to_history data["scores"]
     ActionCable.server.broadcast "GameChannel:#{@game.id}:spectator", { type: "end" }
     lose_tournament_match loser, data
