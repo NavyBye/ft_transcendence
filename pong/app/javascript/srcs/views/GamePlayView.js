@@ -16,6 +16,7 @@ const GuildWarTimeModalView = common.View.extend({
     this.is_host = obj.is_host;
     this.game_id = obj.game_id;
     this.addon = obj.addon;
+    this.is_spectator = obj.is_spectator;
     this.gameObjects = [];
   },
   onRender() {
@@ -38,6 +39,7 @@ const GuildWarTimeModalView = common.View.extend({
         this.game_id,
         this.addon,
         true,
+        this.is_spectator,
       );
       self.disconnected = false;
       self.gameObjects.push(receiver);
@@ -58,6 +60,7 @@ const GuildWarTimeModalView = common.View.extend({
         this.game_id,
         this.addon,
         false,
+        this.is_spectator,
       );
       self.gameObjects.push(receiver);
     }
