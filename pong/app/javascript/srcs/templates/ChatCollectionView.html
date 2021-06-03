@@ -1,78 +1,18 @@
 <div class="chat">
-  <div id="chat-setting">
-    <button type="button" class="btn btn-dark btn-lg btn-block">
+  <div id="chat-top-button">
+    <button
+      type="button"
+      id="chatroom-setting-button"
+      class="col btn-dark btn-lg"
+    >
       Setting Room
     </button>
+    <button type="button" id="chat-user-button" class="col btn-dark btn-lg">
+      User
+    </button>
   </div>
-  <div id="chat-box">
-    <!-- receive Message-->
-    <!-- need img-->
-    <div class="recv-chat mb-3">
-      <div>
-        <img src="/images/send-icon.png" width="50" class="rounded-circle" />
-        <span class="small small-text">hyeyoo</span>
-      </div>
-      <!-- <div class="recv-media-body"> -->
-      <div class="bg-light rounded py-2 px-3">
-        <!-- Msg-->
-        <p class="text-small mb-0 text-muted">
-          반갑다 테스트다sssssssssssssssssssssssssssssss.
-        </p>
-      </div>
-      <!-- 12:00 PM | Aug 13 -->
-      <p class="small small-text">12:00PM</p>
-      <!-- </div> -->
-    </div>
-    <!-- send Message-->
-    <!-- ml-auto -->
-    <div class="send-chat ml-auto mb-3">
-      <div class="send-media-body">
-        <div class="bg-primary rounded py-2 px-3">
-          <!-- Msg-->
-          <p class="text-small mb-0 text-white">
-            안녕하세요 테ssssssssssssssssssssssssssssssss스트입니다.
-          </p>
-        </div>
-        <!-- 12:00 PM | Aug 14-->
-        <p class="small small-text">12:00PM</p>
-      </div>
-    </div>
-    <div class="send-chat ml-auto mb-3">
-      <div class="send-media-body">
-        <div class="bg-primary rounded py-2 px-3">
-          <!-- Msg-->
-          <p class="text-small mb-0 text-white">
-            안녕하세요 테ssssssssssssssssssssssssssssssss스트입니다.
-          </p>
-        </div>
-        <!-- 12:00 PM | Aug 14-->
-        <p class="small small-text">12:00PM</p>
-      </div>
-    </div>
-    <div class="send-chat ml-auto mb-3">
-      <div class="send-media-body">
-        <div class="bg-primary rounded py-2 px-3">
-          <!-- Msg-->
-          <p class="text-small mb-0 text-white">
-            안녕하세요 테ssssssssssssssssssssssssssssssss스트입니다.
-          </p>
-        </div>
-        <!-- 12:00 PM | Aug 14-->
-        <p class="small small-text">12:00PM</p>
-      </div>
-    </div>
-    <div class="send-chat ml-auto mb-3">
-      <div class="send-media-body">
-        <div class="bg-primary rounded py-2 px-3">
-          <!-- Msg-->
-          <p class="text-small mb-0 text-white">
-            안녕하세요 테ssssssssssssssssssssssssssssssss스트입니다.
-          </p>
-        </div>
-        <!-- 12:00 PM | Aug 14-->
-        <p class="small small-text">12:00PM</p>
-      </div>
-    </div>
+  <div id="chat-collection">
+    <!-- message box append here -->
   </div>
   <!-- Typing area -->
   <div id="input-chat">

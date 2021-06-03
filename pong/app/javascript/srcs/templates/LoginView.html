@@ -5,9 +5,13 @@
   <div class="login-box-content">
     <div class="fb-login box-shadow"></div>
     <div class="gp-login box-shadow">
-      <a class="d-flex flex-row align-items-center social-login-link" href="#">
-        <img class="social-login-link-icon" src="/images/42.jpg">
-        Login with 42</a>
+      <a
+        class="d-flex flex-row align-items-center social-login-link"
+        href="/users/auth/marvin"
+      >
+        <img class="social-login-link-icon" src="/images/42.jpg" />
+        Login with 42</a
+      >
     </div>
   </div>
   <div class="d-flex flex-row align-items-center login-box-seperator-container">
@@ -24,23 +28,29 @@
       style="margin-top: 10px"
       required=""
       placeholder="Id"
+      id="user_email"
     /><input
       type="password"
       class="password-input form-control"
       rquired=""
       placeholder="Password"
+      id="user_password"
     />
   </div>
   <div class="submit-row">
     <button
-      class="btn btn-primary btn-block box-shadow"
-      id="submit-id-submit"
+      class="btn btn-outline-dark btn-block"
       type="submit"
+      id="login-button"
     >
       Login
     </button>
-  </div>
-  <div id="login-box-footer">
-    <p>Don't you have an account?<a id="register-link" href="#">Sign Up!</a></p>
+    <button
+      class="btn btn-outline-dark btn-block"
+      type="submit"
+      id="signup-button"
+    >
+      Sign Up
+    </button>
   </div>
 </div>

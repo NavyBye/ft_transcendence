@@ -9,6 +9,13 @@ Style/StringLiterals:
 Style/Documentation:
     Enabled: false
 
+Metrics/AbcSize:
+    Enabled: false
+
+Style/RegexpLiteral:
+    Exclude:
+        - 'app/uploaders/user_image_uploader.rb'
+
 Rails/FilePath:
     Enabled: false
 
@@ -16,7 +23,19 @@ Metrics/MethodLength:
     Exclude:
         - 'db/migrate/*.rb'
 
+Metrics/ClassLength:
+    Exclude:
+        - 'test/**/*.rb'
+
 Metrics/BlockLength:
     Exclude:
         - 'config/*.rb'
         - 'config/**/*.rb'
+
+Naming/FileName:
+    Exclude:
+        - 'config/initializers/*.rb'
+
+Rails/RedundantForeignKey:
+    Exclude:
+        - 'app/models/*.rb'

@@ -30,3 +30,32 @@
 #side .nav-item {
   padding: 0;
 }
+
+#side > .content > .container {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  overflow-y: scroll;
+  position: relative;
+  height: calc(100% - 42px);
+}
+
+#side > .content > .container::-webkit-scrollbar {
+  display: none;
+}
+
+#dm-tab .dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: none;
+  margin-left: 50px;
+}
+
+.enter-room .dot {
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  display: none;
+  margin-right: 10px;
+}

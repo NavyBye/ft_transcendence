@@ -1,0 +1,8 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+hyeyoo_blocks_member:
+    user: hyeyoo
+    blocked_user: member
+
+hyeyoo_blocks_master:
+    user: hyeyoo
+    blocked_user: master

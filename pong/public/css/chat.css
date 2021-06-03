@@ -1,13 +1,18 @@
-.chat {
+.chat,
+.dm {
   overflow: none;
   height: 100%;
 }
 
-#chat-setting {
+#chat-top-button {
   height: 55px;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+  background-color: black;
 }
 
-#chat-setting button {
+#chat-top-button button {
   height: 55px;
 }
 
@@ -15,13 +20,25 @@
   font-size: 0.9rem;
 }
 
-#chat-box {
+#chat-collection {
   overflow-y: scroll;
-  overflow-x: hidden;
   word-wrap: break-word;
   padding-right: 0;
   padding-left: 0;
   height: calc(100% - 40px - 55px - 50px);
+}
+
+#chat-collection::-webkit-scrollbar {
+  display: none;
+}
+
+#dm-collection {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  word-wrap: break-word;
+  padding-left: 0;
+  padding-right: 0;
+  height: calc(100% - 40px - 50px);
 }
 
 .recv-chat {

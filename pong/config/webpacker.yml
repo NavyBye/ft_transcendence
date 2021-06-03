@@ -33,6 +33,7 @@ default: &default
     - .woff2
 
   extensions:
+    - .html
     - .mjs
     - .js
     - .sass

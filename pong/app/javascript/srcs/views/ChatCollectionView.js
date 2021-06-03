@@ -1,0 +1,139 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable for-direction */
+/* eslint-disable no-new */
+/* eslint-disable prefer-destructuring */
+import { Radio } from 'backbone';
+import $ from 'jquery/src/jquery';
+import collection from '../collections';
+import common from '../common';
+import template from '../templates/ChatCollectionView.html';
+import ChatView from './ChatView';
+import consumer from '../../channels/consumer';
+import model from '../models';
+import ChatRoomSettingModalView from './ChatRoomSettingModalView';
+import ChatRoomUserCollectionModalView from './ChatRoomUserCollectionModalView';
+
+const ChatCollectionView = common.CollectionView.extend({
+  el: '#side .content',
+  template,
+  childContainer: '#chat-collection',
+  ViewType: ChatView,
+  CollectionType: collection.ChatCollection,
+  events: {
+    'click #chatroom-setting-button': 'showChatRoomSettingModalView',
+    'click #chat-user-button': 'showUserModal',
+    'click #input-chat .submit': 'sendMsg',
+    'keypress #input-chat input': 'sendMsgEnter',
+  },
+  onInitialize() {
+    const chatRoomId = this.collection.chatRoomId;
+    const view = this;
+    this.chatRoomId = chatRoomId;
+
+    Radio.channel('chat-collection').reply('getId', function getId() {
+      return chatRoomId;
+    });
+
+    this.channel = consumer.subscriptions.create(
+      {
+        channel: 'ChatRoomChannel',
+        id: chatRoomId,
+      },
+      {
+        connected() {},
+        disconnected() {},
+        received(data) {
+          /* malformed data */
+          if (!data || !data.data || !data.type) return;
+
+          /* 
+             if you are looking here, blame hyeyoo
+             I'm so sorry for poor quality of code
+
+             We have no time to update CollectionView....
+          */
+          data.data.type = data.type;
+          const newModel = new model.ChatModel(data.data);
+          view.add(newModel);
+        },
+      },
+    );
+  },
+  onRender() {
+    const view = this;
+    if (this.$el.scrollTop() === 0) {
+      view.pageUp();
+    }
+
+    $('#chat-collection').scroll(function scroll() {
+      const position = $(this).scrollTop();
+      if (position === 0) {
+        view.pageUp();
+      }
+    });
+
+    Radio.channel('chat-collection').stopReplying('fetch');
+    Radio.channel('chat-collection').reply('fetch', function fetch() {
+      Radio.channel('side').trigger('enter-chatroom', view.chatRoomId);
+    });
+  },
+  pageUp() {
+    if (!this.collection.page || this.collection.page <= 0) return;
+
+    /* get previous page */
+    this.collection.page -= 1;
+    const page = this.collection.page;
+    const prev = new collection.ChatCollection(
+      this.collection.chatRoomId,
+      page,
+    );
+
+    const ViewType = this.ViewType;
+    const childContainer = this.childContainer;
+    const subViews = this.subViews;
+    const scrollHeight = $('#chat-collection')[0].scrollHeight;
+    prev.fetch({
+      success() {
+        for (let i = prev.models.length - 1; i >= 0; i -= 1) {
+          const view = new ViewType({ model: prev.models[i] });
+          subViews.push(view);
+          Promise.all([$(childContainer).prepend(view.render().el)]);
+        }
+        const current = $('#chat-collection')[0].scrollHeight;
+        $('#chat-collection').scrollTop(current - scrollHeight);
+      },
+    });
+  },
+  onDestroy() {
+    Radio.channel('chat-collection').stopReplying('fetch');
+    this.channel.unsubscribe();
+  },
+  afterAdd() {
+    $('#chat-collection').scrollTop($('#chat-collection')[0].scrollHeight);
+  },
+  sendMsg() {
+    const body = $('#input-chat input').val();
+    if (body.length > 0) {
+      $('#input-chat input').val('');
+      this.channel.send({ body });
+    }
+  },
+  sendMsgEnter(event) {
+    if (event.which === 13) {
+      const body = $('#input-chat input').val();
+      if (body.length > 0) {
+        $('#input-chat input').val('');
+        this.channel.send({ body });
+      }
+    }
+  },
+  showChatRoomSettingModalView() {
+    new ChatRoomSettingModalView({ chatRoomId: this.collection.chatRoomId });
+  },
+  showUserModal() {
+    new ChatRoomUserCollectionModalView(this.collection.chatRoomId);
+    $('#chatRoomUserModal').modal('show');
+  },
+});
+
+export default ChatCollectionView;

@@ -1,0 +1,48 @@
+#admin-content {
+  height: calc(100% - 42px);
+  background-color: rgba(255, 255, 255, 0.7);
+  /* background-color: white; */
+}
+#admin-body {
+  max-width: 600px;
+  margin: auto;
+}
+
+#content .admin-nav-tabs {
+  margin: 0;
+}
+
+#admin-body .admin-nav-tabs a {
+  color: white;
+}
+
+#admin-body .admin-nav-tabs .active {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: black;
+}
+
+.admin-text-wrapper {
+  margin-top: 50px;
+  margin-left: 50px;
+  font-size: larger;
+}
+
+.admin-list {
+  margin: 0 20px;
+  padding-top: 10px;
+  padding-left: 30px;
+  background-color: white;
+  display: block;
+  height: calc(100%);
+  /* height: calc(100% - 270px); */
+  overflow-y: scroll;
+}
+
+.admin-list::-webkit-scrollbar {
+  display: none;
+}
+
+#admin-tournament {
+  padding: 0 50px;
+  margin-top: 50px;
+}

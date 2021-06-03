@@ -1,1 +1,865 @@
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="add-chatroom-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="add-chatroom-modal-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="add-chatroom-modal-title">Add ChatRoom</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-row">
+            <div class="row form-group col-12">
+              <label class="col-3 col-form-label" for="add-chatroom-name"
+                >name</label
+              >
+              <input
+                class="col-9 form-control"
+                type="email"
+                class="form-control"
+                id="add-chatroom-name"
+                placeholder="name"
+              />
+            </div>
+            <div class="row form-group col-12">
+              <div class="col-3"></div>
+              <div class="col-3 custom-checkbox p-0">
+                <input
+                  type="checkbox"
+                  id="add-chatroom-is-private"
+                  value="private room"
+                />
+                <label
+                  for="add-chatroom-is-private"
+                  style="
+                    margin: 0;
+                    padding: 0 10px;
+                    height: 38px;
+                    line-height: 38px;
+                  "
+                  >private room</label
+                >
+              </div>
+              <div class="row m-0 p-0 col-6 form-group">
+                <label class="col-3 col-form-label" for="password">pass</label>
+                <input
+                  class="col-9 form-control"
+                  type="text"
+                  id="add-chatroom-password"
+                  placeholder="password"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary close-button"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-primary create-button">
+          Create
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OkModalView -->
+<div
+  class="modal fade"
+  id="ok-modal-view"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="ok-modal-view-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ok-modal-view-title">Title Here</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">Text Here</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">
+          Ok
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ErrorModalView -->
+<div
+  class="modal fade"
+  id="error-modal-view"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="error-modal-view-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <img src="/images/error-icon.png" width="50" height="50" />
+        <h5
+          class="modal-title"
+          id="error-modal-view-title"
+          style="line-height: 50px; margin-left: 5px"
+        >
+          <div class="modal-title"></div>
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">Text Here</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">
+          Ok
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- InputPasswordModalView -->
+<div
+  class="modal fade"
+  id="input-password-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="input-password-modal-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="input-password-modal-title">
+          This chatroom is protected by password
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label for="chatroom-password" class="col-form-label col-3"
+              >password:
+            </label>
+            <input
+              class="form-control col-6"
+              id="chatroom-password"
+              type="password"
+              name="chatroom-password"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="enter-button btn btn-primary"
+          data-dismiss="modal"
+        >
+          Enter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- InputBanDurationModalView -->
+<div
+  class="modal fade"
+  id="input-ban-duration-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="input-ban-duration-modal-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="input-ban-duration-modal-title">
+          How long the user will be banned? (in minutes)
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label for="ban-duration" class="col-form-label col-3"
+              >Duration:
+            </label>
+            <input
+              class="form-control col-6"
+              id="ban-duration"
+              type="number"
+              name="ban-duration"
+              placeholder="in minutes"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="ban-button btn btn-primary"
+          data-dismiss="modal"
+        >
+          Enter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- InputMuteDurationModalView -->
+<div
+  class="modal fade"
+  id="input-mute-duration-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="input-mute-duration-modal-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="input-mute-duration-modal-title">
+          How long the user will be muted? (in minutes)
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group row">
+            <label for="mute-duration" class="col-form-label col-3"
+              >Duration:
+            </label>
+            <input
+              class="form-control col-6"
+              id="mute-duration"
+              type="number"
+              name="mute-duration"
+              placeholder="in minutes"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="mute-button btn btn-primary"
+          data-dismiss="modal"
+        >
+          Enter
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- GuildWarTimeModalView -->
+<div
+  class="modal fade"
+  id="guild-war-time-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="guild-war-time-modal-title"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    role="document"
+    style="z-index: 10"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="guild-war-time-modal-title">
+          Select War time
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="overflow-y: scroll; height: 400px">
+        <form>
+          <div class="form-group">
+            <table class="table table-hover">
+              <thead>
+                <tr class="row">
+                  <th class="col-4">Hours</th>
+                  <th class="col-8">Can Select</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="row" time="0">
+                  <td class="col-4">0:00 ~ 1:00</td>
+                  <td class="col-8" id="time-0">O</td>
+                </tr>
+                <tr class="row" time="1">
+                  <td class="col-4">1:00 ~ 2:00</td>
+                  <td class="col-8" id="time-1">O</td>
+                </tr>
+                <tr class="row" time="2">
+                  <td class="col-4">2:00 ~ 3:00</td>
+                  <td class="col-8" id="time-2">O</td>
+                </tr>
+                <tr class="row" time="3">
+                  <td class="col-4">3:00 ~ 4:00</td>
+                  <td class="col-8" id="time-3">O</td>
+                </tr>
+                <tr class="row" time="4">
+                  <td class="col-4">4:00 ~ 5:00</td>
+                  <td class="col-8" id="time-4">O</td>
+                </tr>
+                <tr class="row" time="5">
+                  <td class="col-4">5:00 ~ 6:00</td>
+                  <td class="col-8" id="time-5">O</td>
+                </tr>
+                <tr class="row" time="6">
+                  <td class="col-4">6:00 ~ 7:00</td>
+                  <td class="col-8" id="time-6">O</td>
+                </tr>
+                <tr class="row" time="7">
+                  <td class="col-4">7:00 ~ 8:00</td>
+                  <td class="col-8" id="time-7">O</td>
+                </tr>
+                <tr class="row" time="8">
+                  <td class="col-4">8:00 ~ 9:00</td>
+                  <td class="col-8" id="time-8">O</td>
+                </tr>
+                <tr class="row" time="9">
+                  <td class="col-4">9:00 ~ 10:00</td>
+                  <td class="col-8" id="time-9">O</td>
+                </tr>
+                <tr class="row" time="10">
+                  <td class="col-4">10:00 ~ 11:00</td>
+                  <td class="col-8" id="time-10">O</td>
+                </tr>
+                <tr class="row" time="11">
+                  <td class="col-4">11:00 ~ 12:00</td>
+                  <td class="col-8" id="time-11">O</td>
+                </tr>
+                <tr class="row" time="12">
+                  <td class="col-4">12:00 ~ 13:00</td>
+                  <td class="col-8" id="time-12">O</td>
+                </tr>
+                <tr class="row" time="13">
+                  <td class="col-4">13:00 ~ 14:00</td>
+                  <td class="col-8" id="time-13">O</td>
+                </tr>
+                <tr class="row" time="14">
+                  <td class="col-4">14:00 ~ 15:00</td>
+                  <td class="col-8" id="time-14">O</td>
+                </tr>
+                <tr class="row" time="15">
+                  <td class="col-4">15:00 ~ 16:00</td>
+                  <td class="col-8" id="time-15">O</td>
+                </tr>
+                <tr class="row" time="16">
+                  <td class="col-4">16:00 ~ 17:00</td>
+                  <td class="col-8" id="time-16">O</td>
+                </tr>
+                <tr class="row" time="17">
+                  <td class="col-4">17:00 ~ 18:00</td>
+                  <td class="col-8" id="time-17">O</td>
+                </tr>
+                <tr class="row" time="18">
+                  <td class="col-4">18:00 ~ 19:00</td>
+                  <td class="col-8" id="time-18">O</td>
+                </tr>
+                <tr class="row" time="19">
+                  <td class="col-4">19:00 ~ 20:00</td>
+                  <td class="col-8" id="time-19">O</td>
+                </tr>
+                <tr class="row" time="20">
+                  <td class="col-4">20:00 ~ 21:00</td>
+                  <td class="col-8" id="time-20">O</td>
+                </tr>
+                <tr class="row" time="21">
+                  <td class="col-4">21:00 ~ 22:00</td>
+                  <td class="col-8" id="time-21">O</td>
+                </tr>
+                <tr class="row" time="22">
+                  <td class="col-4">22:00 ~ 23:00</td>
+                  <td class="col-8" id="time-22">O</td>
+                </tr>
+                <tr class="row" time="23">
+                  <td class="col-4">23:00 ~ 00:00</td>
+                  <td class="col-8" id="time-23">O</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AddonSelectModalView-->
+<div
+  class="modal fade"
+  id="addon-select-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="addon-select-modal-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addon-select-modal-title">GameMode</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body no-selection">
+        <div>
+          <input
+            type="radio"
+            id="default"
+            name="radiobtn"
+            value="default"
+            checked
+          />
+          <label for="default">Default Mode</label>
+        </div>
+        <div>
+          <input type="radio" id="special" name="radiobtn" value="special" />
+          <label for="special">Special Mode</label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="enter-button btn btn-primary"
+          data-dismiss="modal"
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RequestPongMatchModalView -->
+<div
+  class="modal fade"
+  id="request-pong-match-modal-view"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="request-pong-match-modal-view-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="request-pong-match-modal-view-title">
+          Someone request pong match
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>There's no functionality to identify who requested....</p>
+        <p>Anyway, would you accept it?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="accept-button btn btn-primary"
+          data-dismiss="modal"
+        >
+          Accept
+        </button>
+        <button
+          type="button"
+          class="refuse-button btn btn-secondary"
+          data-dismiss="modal"
+        >
+          Refuse
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="admin-guild-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    style="max-width: 600px"
+    role="document"
+  >
+    <div class="modal-content" style="min-height: 500px">
+      <div class="modal-header">
+        <h5 class="modal-title">Guild Info</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="admin-guild-member"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- challenge modal -->
+<div
+  class="modal fade"
+  id="challenge-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    style="max-width: 300px"
+    role="document"
+  >
+    <div class="modal-content" style="min-height: 300px">
+      <div class="modal-header">
+        <h5 class="modal-title">Challenge</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="challenge"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ChatRoomSettingModalView -->
+<div
+  class="modal fade"
+  id="chatroom-setting-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="chatroom-setting-modal-title"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="chatroom-setting-modal-title">
+          ChatRoom Setting
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-row">
+            <div class="row form-group col-12">
+              <label class="col-3 col-form-label" for="chatroom-setting-name"
+                >name</label
+              >
+              <input
+                class="col-9 form-control"
+                type="email"
+                class="form-control"
+                id="chatroom-setting-name"
+                placeholder="name"
+              />
+            </div>
+            <div class="row form-group col-12">
+              <div class="col-3"></div>
+              <div class="col-3 custom-checkbox p-0">
+                <input
+                  type="checkbox"
+                  id="chatroom-setting-is-private"
+                  value="private room"
+                />
+                <label
+                  for="chatroom-setting-is-private"
+                  style="
+                    margin: 0;
+                    padding: 0 10px;
+                    height: 38px;
+                    line-height: 38px;
+                  "
+                  >private room</label
+                >
+              </div>
+              <div class="row m-0 p-0 col-6 form-group">
+                <label class="col-3 col-form-label" for="password">pass</label>
+                <input
+                  class="col-9 form-control"
+                  type="text"
+                  id="chatroom-setting-password"
+                  placeholder="password"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary close-button"
+          data-dismiss="modal"
+        >
+          Close
+        </button>
+        <button type="button" class="btn btn-primary create-button">
+          Update
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- chatRoomUserModal -->
+<div
+  class="modal fade"
+  id="chatRoomUserModal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    style="max-width: 300px"
+    role="document"
+  >
+    <div class="modal-content" style="min-height: 500px">
+      <div class="modal-header">
+        <h5 class="modal-title">Chat Room User</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div
+        class="modal-body"
+        id="chatroom-user-collection"
+        style="overflow-y: scroll"
+      ></div>
+    </div>
+  </div>
+</div>
+
+<!-- User profile modal-->
+<!-- chatRoomUserModal -->
+<div
+  class="modal fade"
+  id="user-profile-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    style="max-width: 600px"
+    role="document"
+  >
+    <div class="modal-content" style="min-height: 500px">
+      <div class="modal-header">
+        <h5 class="modal-title">User Profile</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="user-info"></div>
+        <div class="profile button"></div>
+        <div id="user-history"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- guild history modal -->
+<div
+  class="modal fade"
+  id="guild-history-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    style="max-width: 600px"
+    role="document"
+  >
+    <div class="modal-content" style="min-height: 500px">
+      <div class="modal-header">
+        <h5 class="modal-title" id="guild-history-modal-title"></h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="guild-history"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ruleset modal -->
+<div
+  class="modal fade"
+  id="ruleset-modal"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div
+    class="modal-dialog modal-dialog-centered"
+    style="max-width: 600px"
+    role="document"
+  >
+    <div class="modal-content" style="min-height: 500px">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ruleset-modal-title">RULE</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="overflow-y: scroll">
+        <h6>BASE RULE</h6>
+        <li>공이 당신의 바(bar)뒤로 넘어가면 상대가 1점을 획득합니다.</li>
+        <li>먼저 3점은 얻은 사람이 승리합니다.</li>
+        <li>
+          키보드의 방향키(↑,↓)로 바(bar)를 조종하여 공을 다시 상대편으로
+          보내세요.
+        </li>
+        <h6>SPECIAL MODE</h6>
+        <li>당신의 정신을 혼란하게 만드는 모드입니다.</li>
+        <h6>LADDER</h6>
+        <li>레이팅 점수가 걸린 게임입니다.</li>
+        <li>승리시 +42 패배시 -42</li>
+        <h6>LADDER TOURNAMENT</h6>
+        <li>rank라는 rating과는 다른 기준으로 평생동안 진행되는 토너먼트</li>
+        <li>
+          도전 신청을 받은 상위 rank player는 해당 신청을 거절할경우 패배로
+          인정됩니다.
+        </li>
+        <li>승리자는 rank상승, 패배자는 rank가 하락합니다.</li>
+        <h6>GUILD WARD</h6>
+        <li>길드 대항전 입니다.</li>
+        <li>
+          두 길드의 마스터들이 합의한 기간 및 시간에만 참여할 수 있습니다.
+        </li>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="content"></div>

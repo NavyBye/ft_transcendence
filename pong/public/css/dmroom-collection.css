@@ -1,0 +1,29 @@
+#dmroom-collection .chatroom {
+  height: 100px;
+  color: black;
+  background-color: white;
+  border-radius: 7px;
+  margin: 10px 0;
+  text-align: center;
+  line-height: 100px;
+
+  /* align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around; */
+}
+
+#dmroom-collection .chatroom p {
+  padding: 0 5px;
+}
+
+#dmroom-collection .chatroom img {
+  height: 70px;
+  width: 70px;
+  padding: 0;
+  margin: auto auto;
+}
+
+#dmroom-collection .not-joined {
+  background-color: gray !important;
+}

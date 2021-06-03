@@ -1,0 +1,32 @@
+class QueueTimeoverJob < ApplicationJob
+  queue_as :default
+
+  def perform(queue_id)
+    return if GameQueue.where(id: queue_id).empty?
+
+    queue = GameQueue.where(id: queue_id).first!
+    requested_user = User.find queue.user_id
+    war_avoid requested_user if queue.game_type == 'war'
+    ladder_tournament_avoid if queue.game_type == 'ladder_tournament'
+    queue.destroy!
+
+    requested_user.status_update('online') if requested_user.reload.status != 'offline'
+    ApplicationController.helpers.send_signal(requested_user.id, { type: 'refuse' })
+  end
+
+  def war_avoid(req_user)
+    war = req_user.guild.war
+    opposite_wg = WarGuild.where('war_id = ? AND guild_id != ?', war.id, req_user.guild.id).first!
+    if opposite_wg.avoid_chance.positive?
+      opposite_wg.avoid_chance -= 1
+      opposite_wg.save!
+    else
+      req_user.guild.war_relation.war_point -= 10
+      req_user.guild.war_relation.save!
+    end
+  end
+
+  def ladder_tournament_avoid(queue)
+    GameChannel::GameResult.rank_change queue.user_id, queue.target_id
+  end
+end

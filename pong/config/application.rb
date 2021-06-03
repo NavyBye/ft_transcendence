@@ -14,6 +14,7 @@ require "action_view/railtie"
 require "action_cable/engine"
 require "sprockets/railtie"
 require "rails/test_unit/railtie"
+# require "devise"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -23,6 +24,7 @@ module Pong
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
+    config.exceptions_app = routes
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -32,5 +34,7 @@ module Pong
     config.time_zone = "Seoul"
     config.active_record.default_timezone = :local
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.autoload_paths += %W[#{config.root}/lib]
   end
 end

@@ -4,6 +4,16 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
+    
+chat_room1:
+  name: "one"
+
+chat_room2:
+  name: "two"
+
 hello:
-    id: 1
-    name: hello
+  name: "hello"
+
+private_room:
+  name: "private"
+  encrypted_password: <%= ChatRoom::Password.create "password" %>

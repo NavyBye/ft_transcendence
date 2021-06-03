@@ -4,11 +4,13 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
+
+<% file_path = Rails.root.join('test/fixtures/files') %>
+
 hyeyoo:
-    id: 1
-    name: hyeyoo
+    name: hyeyoos
     nickname: 'Private'
-    email: hyeyoo@student.42seoul.kr
+    email: hyeyoos@student.42seoul.kr
     status: 0
     is_banned: false
     is_email_auth: false
@@ -17,10 +19,9 @@ hyeyoo:
     trophy: 10
 
 hyekim:
-    id: 2
-    name: hyekim
-    nickname: hyekim
-    email: hyekim@student.42seoul.kr
+    name: hyekims
+    nickname: hyekims
+    email: hyekims@student.42seoul.kr
     status: 1
     is_banned: false
     is_email_auth: false
@@ -29,7 +30,6 @@ hyekim:
     trophy: 0
 
 hyeyoo_duplicated:
-    id: 3
     name: hyeyoo3
     nickname: 'Privates'
     email: hyeyoo3@student.42seoul.kr
@@ -39,3 +39,140 @@ hyeyoo_duplicated:
     rating: 15550
     rank: 2
     trophy: 10
+
+dummy:
+    name: hello42
+    nickname: 'dummybot'
+    email: dummy@dum.my
+    status: 0
+    rank: 3
+
+dummy_member_one:
+    name: hello4242
+    nickname: 'dummybot2'
+    email: dummya@dum.mya
+    status: 0
+    rank: 3
+
+master:
+    name: master
+    nickname: 'master'
+    email: master@airforcebye.com
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 5550
+    rank: 3
+    trophy: 10
+
+officer:
+    name: officer
+    nickname: 'officer'
+    email: officer@airforcebye.com
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 5549
+    rank: 4
+    trophy: 1
+
+member:
+    name: member
+    nickname: 'member'
+    email: member@airforcebye.com
+    status: 1
+    is_banned: false
+    is_email_auth: false
+    rating: 5548
+    rank: 4
+    trophy: 0
+
+user_with_image:
+    name: image_user
+    nickname: 'image_user'
+    email: yes@image.com
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 5547
+    rank: 4
+    trophy: 0
+    image: <%= file_path.join('rails_logo.png') %>
+
+user_without_image:
+    name: not_image
+    nickname: 'noimg_user'
+    email: no@image.com
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 5546
+    rank: 4
+    trophy: 0
+
+owner:
+    name: owner_user
+    nickname: 'owner_u'
+    email: owner@airforcebye.com
+    status: 0
+    is_banned: false
+    is_email_auth: false
+    rating: 5499
+    rank: 5
+    trophy: 0
+    role: 2
+
+admin:
+    name: admin_user
+    nickname: 'admin_u'
+    email: admin@airforcebye.com
+    status: 1
+    is_banned: false
+    is_email_auth: false
+    rating: 5498
+    rank: 5
+    trophy: 0
+    role: 1
+
+banned_admin:
+    name: banned_admin
+    nickname: 'admin_b'
+    email: banned_admin@airforcebye.com
+    status: 0
+    is_banned: true
+    is_email_auth: false
+    rating: 5497
+    rank: 5
+    trophy: 0
+    role: 1
+
+banned_user:
+    name: banned_user
+    nickname: 'user_b'
+    email: banned_user@airforcebye.com
+    status: 0
+    is_banned: true
+    is_email_auth: false
+    rating: 5496
+    rank: 5
+    trophy: 0
+    role: 1
+
+game_test_user:
+    name: tester
+    nickname: tester
+    email: test@er.co.kr
+    status: 1
+    is_banned: false
+    is_email_auth: false
+    rating: 5495
+    rank: 5
+    trophy: 0
+    role: 0
+
+<% 10.times do |n| %>
+user<%= n %>:
+    name:  <%= "user#{n}" %>
+    nickname: <%= "nickname#{n}" %>
+    email: <%= "user#{n}@student.42seoul.kr" %>
+<% end %>

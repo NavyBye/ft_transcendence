@@ -1,14 +1,23 @@
-<div class="recv-chat mb-3">
+<div class="recv-chat mb-3" chat-id="<%= id %>">
   <div>
-    <img src="/images/send-icon.png" width="50" class="rounded-circle" />
-    <span class="small small-text">hyeyoo</span>
+    <!-- User Profile -->
+    <img
+      src="<%= user.image.url %>"
+      width="45"
+      height="45"
+      class="rounded-circle"
+    />
+    <!-- UserName -->
+    <span class="small small-text"
+      ><%= user.nickname %><%= user.guild ? ` (${user.guild.anagram})` : ""
+      %></span
+    >
   </div>
   <!-- <div class="recv-media-body"> -->
   <div class="bg-light rounded py-2 px-3">
     <!-- Msg-->
-    <p class="text-small mb-0 text-muted"></p>
+    <p class="text-small mb-0 text-muted"><%= body %></p>
   </div>
   <!-- 12:00 PM -->
-  <p class="small small-text"></p>
-  <!-- </div> -->
+  <p class="small small-text"><%= created_at %></p>
 </div>

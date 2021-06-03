@@ -1,7 +1,6 @@
-<div class="container-fluid">
+<!-- <div class="mynav container-fluid">
   <a href="#" class="navbar-brand">Pong</a>
-  <!-- left navigation -->
-  <ul class="navbar-nav me-auto">
+  <ul class="navbar-nav me-auto center-nav">
     <li class="nav-item">
       <a href="admin" class="nav-link"> Admin </a>
     </li>
@@ -15,13 +14,46 @@
       <a href="ranking" class="nav-link"> Ranking </a>
     </li>
   </ul>
-  <!-- right navigation -->
   <ul class="navbar-nav">
     <li class="nav-item">
-      <a href="login" class="nav-link"> Login </a>
+      <a href="mypage" class="nav-link"> My Page </a>
     </li>
     <li class="nav-item">
-      <a href="logout" class="nav-link"> Logout </a>
+      <a href="logout" class="nav-link" id="logout"> Logout </a>
+    </li>
+  </ul>
+</div> -->
+
+<a href="#" class="navbar-brand d-flex w-50 mr-auto">Pong</a>
+<button
+  class="navbar-toggler"
+  type="button"
+  data-toggle="collapse"
+  data-target="#collapsingNavbar"
+>
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="navbar-collapse collapse w-100" id="collapsingNavbar">
+  <ul class="navbar-nav w-100 justify-content-center">
+    <li class="nav-item">
+      <a href="admin" class="nav-link"> Admin </a>
+    </li>
+    <li class="nav-item">
+      <a href="game" class="nav-link"> Game </a>
+    </li>
+    <li class="nav-item">
+      <a href="guild" class="nav-link"> Guild </a>
+    </li>
+    <li class="nav-item">
+      <a href="ranking" class="nav-link"> Rank </a>
+    </li>
+  </ul>
+  <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
+    <li class="nav-item">
+      <a href="mypage" class="nav-link"> MyPage </a>
+    </li>
+    <li class="nav-item">
+      <a href="logout" class="nav-link" id="logout"> Logout </a>
     </li>
   </ul>
 </div>

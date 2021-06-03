@@ -83,4 +83,29 @@ class UserTest < ActiveSupport::TestCase
     assert_not @valid_user.valid?
     @valid_user.trophy = 10
   end
+
+  test 'image can be updated' do
+    file_dir = Rails.root.join('test/fixtures/files/')
+    user = users(:user_without_image)
+    assert_changes 'user.reload.image' do
+      File.open(file_dir.join('rails_logo.png')) do |opened_image|
+        user.image = opened_image
+        user.save!
+      end
+    end
+  end
+
+  # role test
+  test 'role validations' do
+    assert_raises ArgumentError do
+      @valid_user.role = -1
+    end
+    assert_raises ArgumentError do
+      @valid_user.role = 3
+    end
+    (0..2).each do |i|
+      @valid_user.status = i
+      assert @valid_user.valid?
+    end
+  end
 end

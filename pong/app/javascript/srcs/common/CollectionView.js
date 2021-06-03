@@ -1,5 +1,5 @@
 import _ from 'underscore';
-import $ from 'jquery';
+import $ from 'jquery/src/jquery';
 import Backbone from 'backbone';
 import Region from './Region';
 
@@ -12,14 +12,16 @@ const CollectionView = Backbone.View.extend({
     this.listenTo(this, 'initialize', this.onInitialize);
     this.listenTo(this, 'render', this.onRender);
     this.listenTo(this, 'destroy', this.onDestroy);
+    this.listenTo(this, 'afteradd', this.afterAdd);
   },
+  /* {} */
   initialize(obj) {
     if (obj && obj.model) {
       this.model = obj.model;
       this.listenTo(this.model, 'change', this.render);
     }
 
-    this.collection = new this.CollectionType();
+    this.collection = new this.CollectionType(obj);
     this.listenTo(this.collection, 'add', this.add);
 
     this.subViews = [];
@@ -28,9 +30,15 @@ const CollectionView = Backbone.View.extend({
     this.trigger('initialize', obj);
   },
   add(model) {
+    const self = this;
+    self.trigger('afteradd');
     const view = new this.ViewType({ model });
     this.subViews.push(view);
-    $(this.childContainer).append(view.render().el);
+    Promise.all([$(this.childContainer).append(view.render().el)]).then(
+      function afterAdd() {
+        self.trigger('afteradd');
+      },
+    );
   },
   render(selector) {
     const el = selector || this.el;
@@ -67,6 +75,18 @@ const CollectionView = Backbone.View.extend({
   show(regionName, view) {
     const region = this.getRegion(regionName);
     region.show(view);
+  },
+  reRender() {
+    const self = this;
+    $(this.childContainer).empty();
+    _.each(this.subViews, function destroySubViews(subView) {
+      subView.destroy();
+    });
+    this.collection.each(function rerender(model) {
+      const view = new self.ViewType({ model });
+      self.subViews.push(view);
+      Promise.all([$(self.childContainer).append(view.render().el)]);
+    });
   },
 });
 

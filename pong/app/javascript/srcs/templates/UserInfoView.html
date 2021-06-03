@@ -1,0 +1,56 @@
+<div class="user-info row" style="max-height: 200px">
+  <img
+    class="profile-image"
+    style="height: 200px; width: 200px; margin-left: 20px"
+    src="<%= image.url ? image.url : '/images/default-profile.png' %>"
+  />
+  <div class="profile-string" style="margin-left: 10px">
+    <h4>name : <%= nickname %></h4>
+    <h4>rating : <%= rating %></h4>
+    <h4>trophy : <%= trophy %></h4>
+    <h4>ladder rank : <%= rank %></h4>
+    <h4>win : <%= stats.win %> lose : <%= stats.lose %></h4>
+  </div>
+</div>
+<div class="profile-buttons" style="margin-bottom: 10px">
+  <button
+    type="button"
+    class="btn btn-primary"
+    style="width: 105px !important"
+    id="add-friend-button"
+  >
+    Follow
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    style="width: 105px !important"
+    id="block-button"
+  >
+    Block
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    style="width: 105px !important"
+    id="request-pong-or-spectate-button"
+  >
+    Match
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    style="width: 105px !important"
+    id="guild-invite-button"
+  >
+    길드초대
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    style="width: 105px !important"
+    id="dm-button"
+  >
+    DM
+  </button>
+</div>

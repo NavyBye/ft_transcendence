@@ -4,13 +4,16 @@
 // that code so it'll be compiled.
 
 import Rails from '@rails/ujs';
-import Turbolinks from 'turbolinks';
-import $ from 'jquery';
+import _ from 'underscore';
+import $ from 'jquery/src/jquery';
+import jquery from 'jquery';
+import 'bootstrap';
 import app from '../srcs/app';
 
-Rails.start();
-Turbolinks.start();
+_.extend($, jquery);
 
-$(document).on('turbolinks:load', function onLoad() {
-  app.start();
-});
+window.$ = $;
+window.jquery = $;
+
+Rails.start();
+app.start();

@@ -1,0 +1,82 @@
+<div id="guild-war-declare">
+  <h4 style="text-align: center">Guild War Declare</h4>
+  <div class="form-group row">
+    <label for="guild-name" class="col-4 col-form-label">Name</label>
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="text"
+        placeholder="guild name"
+        id="guild-name"
+      />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="end-date" class="col-4 col-form-label">End</label>
+    <div class="col-8">
+      <input class="form-control" type="datetime-local" id="end-date" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="war-time" class="col-4 col-form-label">War time</label>
+    <div class="col-8">
+      <input
+        class="btn btn-primary form-control"
+        type="submit"
+        id="war-time"
+        value="Select War time"
+      />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="avoid-chance" class="col-4 col-form-label">Avoid Chance</label>
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="number"
+        min="1"
+        value="1"
+        id="avoid-chance"
+      />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="prize" class="col-4 col-form-label">Prize</label>
+    <div class="col-8">
+      <input class="form-control" type="number" min="1" value="1" id="prize" />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="tta" class="col-4 col-form-label">Time To Answer</label>
+    <div class="col-8">
+      <input
+        class="form-control"
+        type="number"
+        min="20"
+        value="20"
+        step="10"
+        id="tta"
+      />
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="option" class="col-4 col-form-label">Option</label>
+    <div class="col-8">
+      <label for="is-add-on">add on</label>
+      <input type="checkbox" id="is-add-on" />
+      <label for="is-extended">extend</label>
+      <input type="checkbox" id="is-extended" />
+    </div>
+  </div>
+
+  <button
+    class="btn btn-primary btn-block"
+    type="submit"
+    id="guild-war-declare-btn"
+    style="margin: auto; margin-top: 20px; width: 100px"
+  >
+    Declare
+  </button>
+</div>
+<h6 style="text-align: center; margin-top: 20px">Guild War Invite List</h6>
+<div id="guild-war-invite"></div>
