@@ -133,7 +133,7 @@ const UserProfileModalView = common.View.extend({
       headers: auth.getTokenHeader(),
       success(game) {
         Radio.channel('game').request('set', game);
-        Radio.channel('route').trigger('route', `play`);
+        Radio.channel('route').trigger('route', `play?game_id=${game.game_id}`);
       },
     });
   },
