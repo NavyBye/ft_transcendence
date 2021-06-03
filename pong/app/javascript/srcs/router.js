@@ -28,6 +28,12 @@ const Router = Backbone.Router.extend({
 
     /* register router event handler */
     channel.on('route', function route(target) {
+      if (
+        Backbone.history.getFragment().split('?')[0] === 'play' &&
+        target === 'loading'
+      )
+        return;
+
       router.navigate(target, { trigger: true });
     });
 
