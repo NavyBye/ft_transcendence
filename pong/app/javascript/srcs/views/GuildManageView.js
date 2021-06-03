@@ -18,6 +18,10 @@ const GuildManageView = common.View.extend({
     this.addRegion('guild_war', '#guild-war-invite');
   },
   onRender() {
+    const agent = navigator.userAgent.toLowerCase();
+    if (agent.indexOf('firefox') !== -1) {
+      $('#end-date').attr('type', 'date');
+    }
     this.show('guild_war', new GuildWarCollectionView());
   },
   showGuildWarTimeModalView() {
@@ -25,8 +29,14 @@ const GuildManageView = common.View.extend({
   },
   warDeclare() {
     const data = {};
+    const agent = navigator.userAgent.toLowerCase();
     data.to_guild = $('#guild-name').val();
+
     data.end_at = $('#end-date').val();
+    if (agent.indexOf('firefox') !== -1) {
+      const currentTime = new Date(data.end_at);
+      data.end_at = currentTime;
+    }
     data.war_time = $('#war-time').attr('time');
     data.avoid_chance = $('#avoid-chance').val();
     data.prize_point = $('#prize').val();
