@@ -30,10 +30,16 @@ const CollectionView = Backbone.View.extend({
     this.trigger('initialize', obj);
   },
   add(model) {
+    const self = this;
     const view = new this.ViewType({ model });
     this.subViews.push(view);
-    Promise.all([$(this.childContainer).append(view.render().el)]);
-    this.trigger('afteradd');
+    Promise.all([$(this.childContainer).append(view.render().el)]).then(
+      function afterAdd() {
+        setTimeout(function dummy() {
+          self.trigger('afteradd');
+        }, 0.25);
+      },
+    );
   },
   render(selector) {
     const el = selector || this.el;
