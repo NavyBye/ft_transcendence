@@ -2,6 +2,7 @@ class TournamentStartJob < ApplicationJob
   queue_as :default
 
   def perform(tournament_id)
-    Tournament.find(tournament_id).start
+    tournament = Tournament.find_by id: tournament_id
+    tournament&.start
   end
 end
