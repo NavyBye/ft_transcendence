@@ -9,7 +9,7 @@ module Api
 
     def create
       new_declaration = Declaration.create!(create_params)
-      DeclarationExpireJob.set(wait_until: params[:end_at].to_datetime).perform_later new_declaration.id
+      DeclarationExpireJob.set(wait_until: Time.zone.parse(params[:end_at])).perform_later new_declaration.id
       render json: new_declaration, status: :ok
     end
 
@@ -21,6 +21,8 @@ module Api
       new_war = declaration.accept
       @guild.declaration_received.destroy_all
       WarEndJob.set(wait_until: new_war.end_at).perform_later new_war.id
+      # TODO : reset
+      # WarEndJob.set(wait_until: Time.zone.now + 3.minute).perform_later new_war.id
       render json: {}, status: :no_content
     end
 
