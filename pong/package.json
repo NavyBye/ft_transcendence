@@ -5,6 +5,7 @@
     "@rails/actioncable": "^6.0.0",
     "@rails/ujs": "^6.0.0",
     "@rails/webpacker": "5.2.1",
+    "async-mutex": "^0.3.1",
     "backbone": "^1.4.0",
     "backbone.radio": "^2.0.0",
     "bootstrap": "^4.3.1",
