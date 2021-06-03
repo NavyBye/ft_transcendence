@@ -1,6 +1,6 @@
 module Api
   class TournamentsController < ApplicationController
-    before_action :authenticate_user!, except: %i[start]
+    before_action :authenticate_user!
 
     def index
       tournament = Tournament.first
@@ -16,11 +16,6 @@ module Api
 
       tournament = Tournament.create! tournament_params
       render json: serialize(tournament), status: :created
-    end
-
-    # TODO: tournaments/start is just for test. please delete it
-    def start
-      Tournament.first!.start
     end
 
     private
