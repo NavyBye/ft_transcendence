@@ -50,6 +50,7 @@ class GameReceiver {
     this.canvas.add(this.bars[0].fabricObj);
     this.canvas.add(this.bars[1].fabricObj);
     this.canvas.renderAll();
+    this.fitScreenSize();
 
     this.connection = consumer.subscriptions.create(
       {
