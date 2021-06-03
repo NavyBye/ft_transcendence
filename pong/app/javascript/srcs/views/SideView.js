@@ -64,7 +64,8 @@ const SideView = common.View.extend({
     this.currentTab = target;
   },
   enterChatRoom(chatRoomId) {
-    this.getRegion('content').show(new view.ChatCollectionView(chatRoomId));
+    if (this.currentTab === 'chat-tab')
+      this.getRegion('content').show(new view.ChatCollectionView(chatRoomId));
   },
   enterDmRoom(dmRoomId) {
     this.getRegion('content').show(new view.DmCollectionView(dmRoomId));
