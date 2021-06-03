@@ -16,7 +16,7 @@ import view from '../views';
  */
 
 class GameReceiver {
-  constructor(canvasId, channelId, addon, isHost) {
+  constructor(canvasId, channelId, addon, isHost, isSpectator) {
     this.isStarted = true;
     this.winner = null;
     this.score1 = 0;
@@ -64,7 +64,12 @@ class GameReceiver {
           if (!data || !data.type) return;
           if (data.type === 'end') {
             self.connection.unsubscribe();
-            if (
+            if (isSpectator) {
+              new view.OkModalView().show(
+                'Game ended!',
+                'Game ended. Was spectating fun?',
+              );
+            } else if (
               (isHost && data.winner === 1) ||
               (!isHost && data.winner === 2)
             ) {
