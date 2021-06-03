@@ -23,8 +23,8 @@ class Declaration < ApplicationRecord
   private
 
   def check_wars
-    errors.add(:from_id, 'cannot declare war if already at war.') unless from.war.nil?
-    errors.add(:to_id, 'cannot declare war to other guild already at war.') unless to.war.nil?
+    errors.add(:from_id, ': cannot declare war if already at war.') unless from.war.nil?
+    errors.add(:to_id, ': cannot declare war to other guild already at war.') unless to.war.nil?
   end
 
   def war_params
@@ -39,10 +39,10 @@ class Declaration < ApplicationRecord
   end
 
   def no_self_war
-    errors.add(:from_id, 'a guild cannot declare war to itself.') if from_id == to_id
+    errors.add(:from_id, ': a guild cannot declare war to itself.') if from_id == to_id
   end
 
   def check_end
-    errors.add(:end_at, 'a war cannot end at past.') if end_at < Time.zone.now
+    errors.add(:end_at, ': a war cannot end at past.') if end_at < Time.zone.now
   end
 end

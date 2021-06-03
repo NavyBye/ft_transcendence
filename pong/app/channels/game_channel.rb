@@ -8,7 +8,7 @@ class GameChannel < ApplicationCable::Channel
       rank_apply(game, data) if game.game_type == 'ladder_tournament'
     end
 
-    def self.rating_apply(game, data)
+    private_class_method def self.rating_apply(game, data)
       game.game_players.each do |player|
         my_score = player.is_host ? data["scores"][0] : data["scores"][1]
         if my_score >= 3
@@ -91,12 +91,12 @@ class GameChannel < ApplicationCable::Channel
   def subscribed
     @game = Game.find params[:id]
     @host = @game.game_players.where(is_host: true).first!
+    @is_spectator = @game.players.exists?(current_user.id) ? false : true
     stream_for @game
     stream_for current_user
     stream_for @host if host?
-    @is_spectator = @game.players.exists?(current_user.id) ? false : true
     stream_from "GameChannel:#{@game.id}:spectator" if spectator?
-    current_user.status_update :game
+    spectator? ? current_user.status_update(:online) : current_user.status_update(:game)
   end
 
   def unsubscribed
@@ -113,9 +113,9 @@ class GameChannel < ApplicationCable::Channel
   def receive(data)
     case data["type"]
     when "input"
-      receive_input(data)
+      receive_input(data) unless spectator?
     when "frame"
-      receive_frame(data)
+      receive_frame(data) if host?
     when "end"
       receive_end(data) if host?
     end
@@ -128,10 +128,8 @@ class GameChannel < ApplicationCable::Channel
   end
 
   def receive_input(data)
-    return if spectator?
-
     data["is_host"] = host?
-    GameChannel.broadcast_to @host, data unless spectator?
+    GameChannel.broadcast_to @host, data
   end
 
   def receive_end(data)
@@ -176,7 +174,7 @@ class GameChannel < ApplicationCable::Channel
   def end_tournament_match(data)
     winner = get_winner data["scores"]
     loser = @game.game_players.find_by! is_host: !winner.is_host
-    GameResult.rating_apply @game, data
+    GameResult.result_apply @game, data
     @game.to_history data["scores"]
     ActionCable.server.broadcast "GameChannel:#{@game.id}:spectator", { type: "end" }
     lose_tournament_match loser, data
