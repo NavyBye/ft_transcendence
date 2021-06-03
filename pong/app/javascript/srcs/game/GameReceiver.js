@@ -131,14 +131,17 @@ class GameReceiver {
     $(document).keyup(keyUp);
   }
 
-  simulate() {
+  fitScreenSize() {
     const isDiplayNone = $('#side').css('display') === 'none';
     if (isDiplayNone) this.canvas.setWidth($('body').width());
     else this.canvas.setWidth($('body').width() - $('#side').width());
     this.canvas.setHeight(
       $('body').height() - $('#nav').height() - 50 - 70 - 30,
     );
+  }
 
+  simulate() {
+    this.fitScreenSize();
     this.ball.render();
     this.bars[0].render();
     this.bars[1].render();
