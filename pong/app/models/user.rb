@@ -101,6 +101,13 @@ class User < ApplicationRecord
     FriendChannel.broadcast_to @user, { data: data, status: :ok }
   end
 
+  def stats
+    {
+      win: history_relations.where(score: 3).count,
+      lose: history_relations.where('score < 3').count
+    }
+  end
+
   private
 
   def second_initialize
