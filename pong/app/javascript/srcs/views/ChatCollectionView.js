@@ -105,9 +105,7 @@ const ChatCollectionView = common.CollectionView.extend({
     this.channel.unsubscribe();
   },
   afterAdd() {
-    setTimeout(function callback() {
-      $('#chat-collection').scrollTop($('#chat-collection')[0].scrollHeight);
-    }, 0.25);
+    $('#chat-collection').scrollTop($('#chat-collection')[0].scrollHeight);
   },
   sendMsg() {
     const body = $('#input-chat input').val();
