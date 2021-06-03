@@ -28,8 +28,10 @@ class ApplicationController < ActionController::Base
 
     return unless current_user.is_email_auth
 
-    current_user.issue_auth_code if current_user.auth.nil?
-    raise EmailAuth::AuthenticationNotFinished unless current_user.auth_confirmed?
+    User.with_advisory_lock('AUTH') do
+      current_user.issue_auth_code if current_user.auth.nil?
+      raise EmailAuth::AuthenticationNotFinished unless current_user.auth_confirmed?
+    end
   end
 
   def check_banned
