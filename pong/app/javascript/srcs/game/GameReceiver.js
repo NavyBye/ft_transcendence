@@ -45,11 +45,12 @@ class GameReceiver {
     }
 
     /* canvas related stuffs */
-    this.canvas = new fabric.Canvas(canvasId);
+    this.canvas = new fabric.StaticCanvas(canvasId);
     this.canvas.add(this.ball.fabricObj);
     this.canvas.add(this.bars[0].fabricObj);
     this.canvas.add(this.bars[1].fabricObj);
     this.canvas.renderAll();
+    this.fitScreenSize();
 
     this.connection = consumer.subscriptions.create(
       {
@@ -131,14 +132,18 @@ class GameReceiver {
     $(document).keyup(keyUp);
   }
 
-  simulate() {
+  /* should be called after canvas is created */
+  fitScreenSize() {
     const isDiplayNone = $('#side').css('display') === 'none';
     if (isDiplayNone) this.canvas.setWidth($('body').width());
     else this.canvas.setWidth($('body').width() - $('#side').width());
     this.canvas.setHeight(
       $('body').height() - $('#nav').height() - 50 - 70 - 30,
     );
+  }
 
+  simulate() {
+    this.fitScreenSize();
     this.ball.render();
     this.bars[0].render();
     this.bars[1].render();

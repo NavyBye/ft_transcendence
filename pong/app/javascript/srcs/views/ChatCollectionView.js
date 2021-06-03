@@ -28,6 +28,12 @@ const ChatCollectionView = common.CollectionView.extend({
   onInitialize() {
     const chatRoomId = this.collection.chatRoomId;
     const view = this;
+    this.chatRoomId = chatRoomId;
+
+    Radio.channel('chat-collection').reply('getId', function getId() {
+      return chatRoomId;
+    });
+
     this.channel = consumer.subscriptions.create(
       {
         channel: 'ChatRoomChannel',
@@ -52,14 +58,6 @@ const ChatCollectionView = common.CollectionView.extend({
         },
       },
     );
-
-    Radio.channel('chat-collection').reply('fetch', function fetch() {
-      Radio.channel('side').trigger('enter-chatroom', chatRoomId);
-    });
-
-    Radio.channel('chat-collection').reply('getId', function getId() {
-      return chatRoomId;
-    });
   },
   onRender() {
     const view = this;
@@ -72,6 +70,11 @@ const ChatCollectionView = common.CollectionView.extend({
       if (position === 0) {
         view.pageUp();
       }
+    });
+
+    Radio.channel('chat-collection').stopReplying('fetch');
+    Radio.channel('chat-collection').reply('fetch', function fetch() {
+      Radio.channel('side').trigger('enter-chatroom', view.chatRoomId);
     });
   },
   pageUp() {
@@ -102,6 +105,7 @@ const ChatCollectionView = common.CollectionView.extend({
     });
   },
   onDestroy() {
+    Radio.channel('chat-collection').stopReplying('fetch');
     this.channel.unsubscribe();
   },
   afterAdd() {
