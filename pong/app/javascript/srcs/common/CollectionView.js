@@ -31,13 +31,12 @@ const CollectionView = Backbone.View.extend({
   },
   add(model) {
     const self = this;
+    self.trigger('afteradd');
     const view = new this.ViewType({ model });
     this.subViews.push(view);
     Promise.all([$(this.childContainer).append(view.render().el)]).then(
       function afterAdd() {
-        setTimeout(function dummy() {
-          self.trigger('afteradd');
-        }, 0.25);
+        self.trigger('afteradd');
       },
     );
   },
