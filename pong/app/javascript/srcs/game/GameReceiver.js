@@ -132,6 +132,7 @@ class GameReceiver {
     $(document).keyup(keyUp);
   }
 
+  /* should be called after canvas is created */
   fitScreenSize() {
     const isDiplayNone = $('#side').css('display') === 'none';
     if (isDiplayNone) this.canvas.setWidth($('body').width());
